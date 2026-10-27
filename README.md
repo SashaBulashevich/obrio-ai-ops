@@ -30,3 +30,12 @@ cp .env.example .env   # і встав свій ключ з https://console.groq
 ```
 
 Ключ API зберігається лише в локальному `.env`. Файл внесено в `.gitignore`.
+
+## Швидка перевірка
+
+```bash
+python task1_classifier/classifier.py      # інтерактивний режим: вводиш тікети, отримуєш рішення
+python -m unittest tests.test_failure_handling -v
+```
+
+Детальніше, з прикладами тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити).

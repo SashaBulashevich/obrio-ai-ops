@@ -1,7 +1,8 @@
 """AI-класифікатор тікетів Nebula.
 
 Використання:
-    python task1_classifier/classifier.py "текст тікету"
+    python task1_classifier/classifier.py                  # інтерактивний режим: вводиш тікети по одному
+    python task1_classifier/classifier.py "текст тікету"   # один тікет -> повний JSON
     python task1_classifier/classifier.py "текст" --model openai/gpt-oss-20b --prompt v1
 """
 
@@ -154,12 +155,56 @@ def apply_guardrails(text: str, out: dict) -> dict:
     return out
 
 
+def format_card(r: dict) -> str:
+    """Коротка людська картка замість повного JSON (для інтерактивного режиму)."""
+    m = r["meta"]
+    lines = [
+        f"  Категорія:     {r['category']}" + (f"  (+ {', '.join(r['secondary_categories'])})" if r["secondary_categories"] else ""),
+        f"  Пріоритет:     {r['priority']}",
+        f"  Команда:       {r['assigned_team']}",
+        f"  Наступний крок: {r['next_step']}",
+        f"  Мова / тон:    {r['language']} / {r['sentiment']}",
+        f"  Потрібна людина: {'ТАК' if r['needs_human_review'] else 'ні'}   (confidence {r['confidence']:.2f})",
+    ]
+    if r["guardrail_flags"]:
+        lines.append(f"  Guardrails:    {', '.join(r['guardrail_flags'])}")
+    lines.append(f"  Пояснення:     {r['reasoning']}")
+    lines.append(
+        f"  [{m['model'] or 'fallback'} · {m['api_latency_s']} с · ${m['cost_usd']:.6f} · "
+        f"cached {m['cached_tokens']} токенів · спроб {m['attempts']}]"
+    )
+    return "\n".join(lines)
+
+
+def interactive(prompt: str, models: list[str] | None):
+    print("Nebula ticket classifier — інтерактивний режим.")
+    print("Встав текст тікету й натисни Enter. Команди: 'json' — повна відповідь останнього тікету, 'exit' — вихід.\n")
+    last = None
+    while True:
+        try:
+            text = input("Тікет > ").strip()
+        except (EOFError, KeyboardInterrupt):
+            break
+        if not text:
+            continue
+        if text.lower() in ("exit", "quit", "вихід"):
+            break
+        if text.lower() == "json":
+            print(json.dumps(last, ensure_ascii=False, indent=2) if last else "  Ще немає жодного тікету.")
+            continue
+        last = classify(text, prompt, models)
+        print(format_card(last) + "\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Nebula ticket classifier")
-    parser.add_argument("text", help="текст тікету")
+    parser.add_argument("text", nargs="?", help="текст тікету; без нього — інтерактивний режим")
     parser.add_argument("--prompt", default=DEFAULT_PROMPT)
     parser.add_argument("--model", action="append", help="модель (можна кілька разів — буде fallback-ланцюжок)")
     args = parser.parse_args()
+    if args.text is None:
+        interactive(args.prompt, args.model)
+        return
     result = classify(args.text, args.prompt, args.model)
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

@@ -140,6 +140,20 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertEqual(out["priority"], "P1")
         self.assertEqual(out["assigned_team"], "Trust & Safety")
 
+    def test_legal_guardrail_overrides_model_priority(self):
+        # модель повернула P2, але в тексті погроза chargeback -> guardrail піднімає до P1
+        llm = llm_client.LLMResult(data=classifier.LLMClassification.model_validate_json(VALID), model="model-a")
+        with patch.object(classifier, "call_json", return_value=llm):
+            out = classifier.classify("I was charged twice, refund me or I'll dispute with my bank")
+        self.assertEqual(out["priority"], "P1")
+        self.assertIn("legal_threat_override", out["guardrail_flags"])
+
+    def test_legal_guardrail_works_even_when_llm_down(self):
+        with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=None, model=None)):
+            out = classifier.classify("Мій юрист вже готує позов")
+        self.assertEqual(out["priority"], "P1")
+        self.assertTrue(out["needs_human_review"])
+
 
 if __name__ == "__main__":
     unittest.main()
