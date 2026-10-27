@@ -32,7 +32,8 @@ BACKOFF_BASE_S = 1.5     # 1.5s, 3s, 6s ...
 class LLMResult:
     data: BaseModel | None          # розпарсена і провалідована відповідь
     model: str | None               # яка модель реально відповіла
-    latency_s: float = 0.0
+    latency_s: float = 0.0          # повний час, включно з retry і паузами
+    api_latency_s: float = 0.0      # час лише успішного запиту — "чиста" швидкість моделі
     prompt_tokens: int = 0
     completion_tokens: int = 0
     cached_tokens: int = 0
@@ -74,6 +75,7 @@ def call_json(
     models: list[str],
     temperature: float = 0.0,
     max_tokens: int = 1200,
+    reasoning_effort: str | None = None,
 ) -> LLMResult:
     """Викликає моделі по черзі (fallback), поки одна не поверне валідний JSON.
 
@@ -82,6 +84,10 @@ def call_json(
     """
     result = LLMResult(data=None, model=None)
     started = time.perf_counter()
+    extra = {}
+    if reasoning_effort:
+        # gpt-oss — reasoning-моделі; "low" скорочує приховані reasoning-токени (= output cost)
+        extra["reasoning_effort"] = reasoning_effort
 
     for model in models:
         msgs = list(messages)
@@ -89,6 +95,7 @@ def call_json(
         retries = 0
         while True:
             result.attempts += 1
+            call_started = time.perf_counter()
             try:
                 resp = get_client().chat.completions.create(
                     model=model,
@@ -96,6 +103,7 @@ def call_json(
                     temperature=temperature,
                     max_tokens=max_tokens,
                     response_format={"type": "json_object"},
+                    **(extra if model.startswith("openai/gpt-oss") else {}),
                 )
             except (groq.RateLimitError, groq.APITimeoutError, groq.APIConnectionError, groq.InternalServerError) as e:
                 result.errors.append(f"{model}: {type(e).__name__}")
@@ -113,6 +121,7 @@ def call_json(
                     continue
                 break
 
+            result.api_latency_s = time.perf_counter() - call_started
             usage = resp.usage
             result.prompt_tokens += usage.prompt_tokens
             result.completion_tokens += usage.completion_tokens

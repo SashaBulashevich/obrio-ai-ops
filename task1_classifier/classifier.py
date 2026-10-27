@@ -21,9 +21,9 @@ from common.llm_client import call_json  # noqa: E402
 
 PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
 
-DEFAULT_PROMPT = "v1"
-# Основна модель + fallback-ланцюжок (порядок обґрунтований у README)
-DEFAULT_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
+DEFAULT_PROMPT = "v3"
+# Основна модель + fallback-ланцюжок (вибір обґрунтований у README, розділ 4)
+DEFAULT_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
 
 Category = Literal[
     "billing_subscription", "refund_request", "technical_issue", "expert_complaint",
@@ -72,18 +72,24 @@ def load_prompt(version: str) -> str:
     return (PROMPTS_DIR / f"{version}.md").read_text(encoding="utf-8")
 
 
-def classify(text: str, prompt_version: str = DEFAULT_PROMPT, models: list[str] | None = None) -> dict:
+def classify(
+    text: str,
+    prompt_version: str = DEFAULT_PROMPT,
+    models: list[str] | None = None,
+    reasoning_effort: str | None = None,
+) -> dict:
     models = models or DEFAULT_MODELS
     messages = [
         {"role": "system", "content": load_prompt(prompt_version)},
         # тікет у тегах: модель бачить, де дані користувача, а де інструкції
         {"role": "user", "content": f"<ticket>\n{text}\n</ticket>"},
     ]
-    res = call_json(messages, LLMClassification, models)
+    res = call_json(messages, LLMClassification, models, reasoning_effort=reasoning_effort)
 
     meta = {
         "model": res.model,
         "latency_s": round(res.latency_s, 3),
+        "api_latency_s": round(res.api_latency_s, 3),
         "prompt_tokens": res.prompt_tokens,
         "completion_tokens": res.completion_tokens,
         "cached_tokens": res.cached_tokens,
