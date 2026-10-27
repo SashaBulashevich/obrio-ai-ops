@@ -67,6 +67,13 @@ SAFETY_PATTERNS = re.compile(
     re.IGNORECASE,
 )
 
+# Юридичні ризики: юрист, регулятор або chargeback — завжди P1, незалежно від моделі.
+LEGAL_PATTERNS = re.compile(
+    r"chargeback|dispute (it |this |the charges? )?with my bank|lawyer|attorney|\bsue\b|\bFTC\b|"
+    r"юрист|адвокат|чарджбек|до суду|в суд",
+    re.IGNORECASE,
+)
+
 
 def load_prompt(version: str) -> str:
     return (PROMPTS_DIR / f"{version}.md").read_text(encoding="utf-8")
@@ -132,6 +139,11 @@ def apply_guardrails(text: str, out: dict) -> dict:
     if out["category"] == "safety_crisis":
         out["priority"] = "P1"
         out["needs_human_review"] = True
+    if LEGAL_PATTERNS.search(text) and out["priority"] != "P1":
+        # Модель пропускала погрозу chargeback, якщо вона після refund-запиту
+        out["priority"] = "P1"
+        out["needs_human_review"] = True
+        flags.append("legal_threat_override")
     if out["category"] in ("refund_request", "account_privacy", "expert_complaint"):
         # гроші, персональні дані, звинувачення людей — тільки з людиною
         out["needs_human_review"] = True
