@@ -1,0 +1,151 @@
+"""AI-класифікатор тікетів Nebula.
+
+Використання:
+    python task1_classifier/classifier.py "текст тікету"
+    python task1_classifier/classifier.py "текст" --model openai/gpt-oss-20b --prompt v1
+"""
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+from typing import Literal
+
+from pydantic import BaseModel, Field
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from common.llm_client import call_json  # noqa: E402
+
+PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
+
+DEFAULT_PROMPT = "v1"
+# Основна модель + fallback-ланцюжок (порядок обґрунтований у README)
+DEFAULT_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
+
+Category = Literal[
+    "billing_subscription", "refund_request", "technical_issue", "expert_complaint",
+    "account_privacy", "product_question", "feedback", "safety_crisis", "other",
+]
+Priority = Literal["P1", "P2", "P3", "P4"]
+
+# Маршрутизація — детермінована, в коді, а не в LLM: команда залежить лише від категорії.
+TEAM_BY_CATEGORY = {
+    "billing_subscription": "Billing",
+    "refund_request": "Billing",
+    "technical_issue": "Tech Support",
+    "expert_complaint": "Expert Quality",
+    "account_privacy": "Privacy / Legal",
+    "product_question": "Tier-1 Support",
+    "feedback": "Product",
+    "safety_crisis": "Trust & Safety",
+    "other": "Tier-1 Support",
+}
+
+
+class LLMClassification(BaseModel):
+    """Схема, яку має повернути модель. Невалідні значення -> retry/fallback."""
+    category: Category
+    secondary_categories: list[Category] = Field(default_factory=list)
+    priority: Priority
+    next_step: str
+    language: str
+    sentiment: Literal["calm", "frustrated", "aggressive"]
+    needs_human_review: bool
+    confidence: float = Field(ge=0, le=1)
+    reasoning: str
+
+
+# Safety net: детермінована перевірка, яка НЕ залежить від LLM.
+# Якщо модель помилиться або впаде — кризовий тікет все одно піде людині з P1.
+SAFETY_PATTERNS = re.compile(
+    r"suicid|kill myself|end my life|self[- ]?harm|don'?t want to live|"
+    r"самогубств|покінчити з собою|не хочу жити|вбити себе|"
+    r"суицид|покончить с собой|не хочу жить|убить себя",
+    re.IGNORECASE,
+)
+
+
+def load_prompt(version: str) -> str:
+    return (PROMPTS_DIR / f"{version}.md").read_text(encoding="utf-8")
+
+
+def classify(text: str, prompt_version: str = DEFAULT_PROMPT, models: list[str] | None = None) -> dict:
+    models = models or DEFAULT_MODELS
+    messages = [
+        {"role": "system", "content": load_prompt(prompt_version)},
+        # тікет у тегах: модель бачить, де дані користувача, а де інструкції
+        {"role": "user", "content": f"<ticket>\n{text}\n</ticket>"},
+    ]
+    res = call_json(messages, LLMClassification, models)
+
+    meta = {
+        "model": res.model,
+        "latency_s": round(res.latency_s, 3),
+        "prompt_tokens": res.prompt_tokens,
+        "completion_tokens": res.completion_tokens,
+        "cached_tokens": res.cached_tokens,
+        "cost_usd": res.cost_usd,
+        "attempts": res.attempts,
+        "errors": res.errors,
+    }
+
+    if res.ok:
+        out = res.data.model_dump()
+        out["source"] = "llm"
+    else:
+        # Усі моделі недоступні / повертають сміття -> не вгадуємо, віддаємо людині
+        out = {
+            "category": "other",
+            "secondary_categories": [],
+            "priority": "P2",
+            "next_step": "LLM unavailable — route to manual triage queue",
+            "language": "unknown",
+            "sentiment": "calm",
+            "needs_human_review": True,
+            "confidence": 0.0,
+            "reasoning": "Fallback: classification failed after retries on all models.",
+            "source": "fallback",
+        }
+
+    out = apply_guardrails(text, out)
+    out["assigned_team"] = TEAM_BY_CATEGORY[out["category"]]
+    out["meta"] = meta
+    return out
+
+
+def apply_guardrails(text: str, out: dict) -> dict:
+    """Детерміновані правила поверх відповіді моделі (рішення людини, не AI)."""
+    flags = []
+    if SAFETY_PATTERNS.search(text) and out["category"] != "safety_crisis":
+        out["secondary_categories"] = [out["category"], *out["secondary_categories"]]
+        out["category"] = "safety_crisis"
+        flags.append("safety_keyword_override")
+    if out["category"] == "safety_crisis":
+        out["priority"] = "P1"
+        out["needs_human_review"] = True
+    if out["category"] in ("refund_request", "account_privacy", "expert_complaint"):
+        # гроші, персональні дані, звинувачення людей — тільки з людиною
+        out["needs_human_review"] = True
+    if out["confidence"] < 0.6:
+        out["needs_human_review"] = True
+        flags.append("low_confidence")
+    out["guardrail_flags"] = flags
+    return out
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Nebula ticket classifier")
+    parser.add_argument("text", help="текст тікету")
+    parser.add_argument("--prompt", default=DEFAULT_PROMPT)
+    parser.add_argument("--model", action="append", help="модель (можна кілька разів — буде fallback-ланцюжок)")
+    args = parser.parse_args()
+    result = classify(args.text, args.prompt, args.model)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")
+    main()

@@ -1,0 +1,14 @@
+# Секрети — ніколи не комітимо
+.env
+
+# Віртуальне середовище Python
+.venv/
+venv/
+
+# Кеш Python
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
