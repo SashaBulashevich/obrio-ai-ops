@@ -9,6 +9,9 @@ venv/
 __pycache__/
 *.pyc
 
+# Локальні налаштування Claude Code
+.claude/
+
 # IDE
 .vscode/
 .idea/

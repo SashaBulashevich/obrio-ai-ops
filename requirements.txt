@@ -1,2 +1,5 @@
 groq>=0.30
 python-dotenv>=1.0
+streamlit>=1.40
+rank-bm25>=0.2.2
+langdetect>=1.0.9
