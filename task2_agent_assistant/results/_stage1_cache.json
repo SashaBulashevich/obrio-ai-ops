@@ -1,0 +1,1064 @@
+{
+ "analyze_v1|task1-v3|Добрий день, з мене списали гроші двічі за підписку цього місяця. Поверніть, будь ласка, один платіж.": {
+  "classification": {
+   "category": "refund_request",
+   "secondary_categories": [
+    "billing_subscription"
+   ],
+   "priority": "P2",
+   "next_step": "Verify the duplicate charge in the payment system and issue a refund for the extra payment.",
+   "language": "uk",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 0.95,
+   "reasoning": "User explicitly requests a refund for a duplicate subscription charge.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 0.946,
+    "api_latency_s": 0.946,
+    "prompt_tokens": 1105,
+    "completion_tokens": 269,
+    "cached_tokens": 0,
+    "cost_usd": 0.00016357499999999998,
+    "attempts": 1,
+    "errors": []
+   }
+  },
+  "analysis": {
+   "summary": "The customer was charged twice for their subscription this month and requests a refund of one of the payments.",
+   "customer_language": "uk",
+   "search_queries": [
+    "duplicate subscription charge",
+    "refund duplicate payment",
+    "subscription double charge"
+   ],
+   "key_facts": [
+    "charged twice for subscription this month",
+    "customer requests refund of one payment"
+   ],
+   "missing_info": [
+    "subscription plan name",
+    "amount of duplicate charge",
+    "date of charges",
+    "account email or ID"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 1.18,
+   "cost_usd": 0.000205425,
+   "prompt_tokens": 311,
+   "completion_tokens": 607,
+   "cached_tokens": 0,
+   "attempts": 1,
+   "errors": []
+  }
+ },
+ "analyze_v1|task1-v3|Hi, how do I cancel my subscription? I don't want it to renew next month.": {
+  "classification": {
+   "category": "billing_subscription",
+   "secondary_categories": [],
+   "priority": "P3",
+   "next_step": "Please open the app, go to Settings > Subscription, and tap \"Cancel Subscription\". If you’re on iOS, you can also cancel via your Apple ID settings; on Android, via Google Play > Subscriptions. Let us know if you need further assistance.",
+   "language": "en",
+   "sentiment": "calm",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User requests subscription cancellation.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 0.529,
+    "api_latency_s": 0.529,
+    "prompt_tokens": 1088,
+    "completion_tokens": 212,
+    "cached_tokens": 0,
+    "cost_usd": 0.00014519999999999998,
+    "attempts": 1,
+    "errors": []
+   }
+  },
+  "analysis": {
+   "summary": "The customer wants to cancel their subscription so it does not renew next month.",
+   "customer_language": "en",
+   "search_queries": [
+    "cancel subscription",
+    "stop renewal next month",
+    "how to cancel subscription"
+   ],
+   "key_facts": [
+    "request to cancel subscription",
+    "avoid renewal next month"
+   ],
+   "missing_info": [
+    "account email or phone",
+    "subscription ID or plan name",
+    "device used"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.531,
+   "cost_usd": 9.644999999999999e-05,
+   "prompt_tokens": 294,
+   "completion_tokens": 248,
+   "cached_tokens": 0,
+   "attempts": 1,
+   "errors": []
+  }
+ },
+ "analyze_v1|task1-v3|I can't log in. The verification code email never arrives, I checked spam. I'm a paying premium user.": {
+  "classification": {
+   "category": "technical_issue",
+   "secondary_categories": [],
+   "priority": "P2",
+   "next_step": "Verify the user’s email address, resend the verification code, and check if the email is blocked or marked as spam; if the issue persists, ask the user to try a different email or contact support for manual account recovery.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User reports login failure due to missing verification code, a clear technical issue.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Tech Support",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 1.039,
+    "api_latency_s": 1.039,
+    "prompt_tokens": 1092,
+    "completion_tokens": 393,
+    "cached_tokens": 1024,
+    "cost_usd": 0.00016139999999999997,
+    "attempts": 1,
+    "errors": []
+   }
+  },
+  "analysis": {
+   "summary": "The user cannot log in because the verification code email never arrives, even after checking spam. They are a paying premium subscriber and need help getting the code or accessing their account.",
+   "customer_language": "en",
+   "search_queries": [
+    "verification code email not received",
+    "login verification code not arriving",
+    "premium user login issue"
+   ],
+   "key_facts": [
+    "User cannot log in",
+    "Verification code email not received",
+    "Checked spam folder",
+    "User is a paying premium subscriber"
+   ],
+   "missing_info": [
+    "Email address used for login",
+    "Device type (iOS/Android/desktop)",
+    "Last time attempted login",
+    "Subscription ID or account details"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.702,
+   "cost_usd": 0.00012675,
+   "prompt_tokens": 298,
+   "completion_tokens": 348,
+   "cached_tokens": 0,
+   "attempts": 1,
+   "errors": []
+  }
+ },
+ "analyze_v1|task1-v3|¿Cómo puedo ver mi signo ascendente en la app? No lo encuentro.": {
+  "classification": {
+   "category": "product_question",
+   "secondary_categories": [],
+   "priority": "P4",
+   "next_step": "Open the app, go to your profile, tap on the birth chart section, and you’ll see the ascendant sign displayed there.",
+   "language": "es",
+   "sentiment": "calm",
+   "needs_human_review": false,
+   "confidence": 1.0,
+   "reasoning": "User is asking how to locate a feature in the app.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Tier-1 Support",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 0.514,
+    "api_latency_s": 0.514,
+    "prompt_tokens": 1085,
+    "completion_tokens": 215,
+    "cached_tokens": 0,
+    "cost_usd": 0.000145875,
+    "attempts": 1,
+    "errors": []
+   }
+  },
+  "analysis": {
+   "summary": "The customer is asking how to view their ascendant sign in the Nebula app and cannot find it.",
+   "customer_language": "es",
+   "search_queries": [
+    "view ascendant sign app",
+    "where to find ascendant Nebula",
+    "ascendant sign location Nebula app"
+   ],
+   "key_facts": [],
+   "missing_info": []
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.549,
+   "cost_usd": 7.9125e-05,
+   "prompt_tokens": 291,
+   "completion_tokens": 191,
+   "cached_tokens": 0,
+   "attempts": 1,
+   "errors": []
+  }
+ },
+ "analyze_v1|task1-v3|Удалите мой аккаунт и все мои данные. Больше не хочу пользоваться приложением.": {
+  "classification": {
+   "category": "account_privacy",
+   "secondary_categories": [],
+   "priority": "P2",
+   "next_step": "Please confirm your request and we will proceed with account deletion. Verify your identity via email or phone to ensure security.",
+   "language": "ru",
+   "sentiment": "calm",
+   "needs_human_review": true,
+   "confidence": 1.0,
+   "reasoning": "User explicitly requests account deletion and data removal, which is an account_privacy request requiring verification.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Privacy / Legal",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 0.504,
+    "api_latency_s": 0.504,
+    "prompt_tokens": 1088,
+    "completion_tokens": 255,
+    "cached_tokens": 0,
+    "cost_usd": 0.0001581,
+    "attempts": 1,
+    "errors": []
+   }
+  },
+  "analysis": {
+   "summary": "The customer requests deletion of their account and all personal data, stating they no longer wish to use the app.",
+   "customer_language": "ru",
+   "search_queries": [
+    "delete account",
+    "remove personal data",
+    "account deletion process"
+   ],
+   "key_facts": [
+    "request to delete account and all data"
+   ],
+   "missing_info": [
+    "account email or phone number",
+    "confirmation of identity"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.821,
+   "cost_usd": 0.00019485,
+   "prompt_tokens": 294,
+   "completion_tokens": 576,
+   "cached_tokens": 0,
+   "attempts": 3,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError",
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|An expert told me my aura is blocked and asked me to send $150 via PayPal directly to her for a cleansing ritual. Is this allowed?": {
+  "classification": {
+   "category": "expert_complaint",
+   "secondary_categories": [],
+   "priority": "P1",
+   "next_step": "Escalate to compliance, block the expert, advise user not to send money and provide instructions to report the incident.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 0.95,
+   "reasoning": "User reports an expert requesting payment outside the app, which is a violation and requires immediate review.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Expert Quality",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 12.612,
+    "api_latency_s": 1.512,
+    "prompt_tokens": 1100,
+    "completion_tokens": 282,
+    "cached_tokens": 0,
+    "cost_usd": 0.0001671,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "Customer was asked by an expert to pay $150 via PayPal directly for a cleansing ritual and wants to know if this is allowed under Nebula policies.",
+   "customer_language": "en",
+   "search_queries": [
+    "Nebula policy direct payments",
+    "PayPal payments to astrologers",
+    "Allowed payment methods for paid chats"
+   ],
+   "key_facts": [
+    "Expert requested $150 via PayPal directly",
+    "Requested for a cleansing ritual"
+   ],
+   "missing_info": [
+    "Is the expert a Nebula partner?",
+    "Does the customer have a Nebula account?"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.74,
+   "cost_usd": 0.00019784999999999998,
+   "prompt_tokens": 306,
+   "completion_tokens": 583,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Nothing matters anymore. My reading said things won't get better. I don't see the point in going on.": {
+  "classification": {
+   "category": "safety_crisis",
+   "secondary_categories": [],
+   "priority": "P1",
+   "next_step": "Please call emergency services or a suicide helpline immediately (e.g., 988 in the US). If you are outside the US, use your local crisis helpline. We are here to help you and encourage you to seek professional support right away.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 1.0,
+   "reasoning": "User expresses suicidal thoughts and hopelessness, requiring immediate crisis intervention.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Trust & Safety",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 10.858,
+    "api_latency_s": 0.757,
+    "prompt_tokens": 1091,
+    "completion_tokens": 414,
+    "cached_tokens": 0,
+    "cost_usd": 0.00020602499999999998,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer is expressing suicidal thoughts and hopelessness after a reading that said things wouldn't improve. They are in crisis and need immediate support.",
+   "customer_language": "en",
+   "search_queries": [
+    "how to respond to suicidal customer",
+    "counseling resources for customers",
+    "Nebula crisis support"
+   ],
+   "key_facts": [
+    "expressed suicidal ideation",
+    "hopelessness after reading",
+    "no mention of subscription or payment"
+   ],
+   "missing_info": [
+    "customer's location for local crisis helpline",
+    "whether they are in immediate danger or have a self-harm plan"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 1.475,
+   "cost_usd": 0.00024967500000000004,
+   "prompt_tokens": 297,
+   "completion_tokens": 758,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|I was charged twice, refund me or I'll dispute with my bank.": {
+  "classification": {
+   "category": "refund_request",
+   "secondary_categories": [],
+   "priority": "P1",
+   "next_step": "Please provide the order number and the date of the transaction so we can process your refund promptly.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 0.95,
+   "reasoning": "User explicitly requests a refund for a double charge and threatens a bank dispute.",
+   "source": "llm",
+   "guardrail_flags": [
+    "legal_threat_override"
+   ],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 11.732,
+    "api_latency_s": 0.632,
+    "prompt_tokens": 1084,
+    "completion_tokens": 266,
+    "cached_tokens": 0,
+    "cost_usd": 0.00016109999999999999,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer was charged twice for a Nebula service and requests a refund, threatening to dispute the charge with their bank.",
+   "customer_language": "en",
+   "search_queries": [
+    "duplicate charge refund",
+    "refund double charge Nebula",
+    "dispute charge bank"
+   ],
+   "key_facts": [
+    "charged twice",
+    "requesting refund"
+   ],
+   "missing_info": [
+    "exact amount charged",
+    "date of transaction",
+    "transaction IDs or receipt numbers",
+    "customer account details"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.466,
+   "cost_usd": 8.325e-05,
+   "prompt_tokens": 290,
+   "completion_tokens": 205,
+   "cached_tokens": 0,
+   "attempts": 3,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError",
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|privet, uzhe nedelyu ne prihodyat push uvedomleniya s goroskopom, v nastroikah vse vklyucheno": {
+  "classification": {
+   "category": "technical_issue",
+   "secondary_categories": [],
+   "priority": "P3",
+   "next_step": "Ask the user to check if notifications are blocked in the device settings, ensure the app is allowed to send notifications, and suggest reinstalling the app if the issue persists.",
+   "language": "ru",
+   "sentiment": "calm",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User reports missing push notifications, which is a technical issue.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Tech Support",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 10.781,
+    "api_latency_s": 0.709,
+    "prompt_tokens": 1104,
+    "completion_tokens": 276,
+    "cached_tokens": 0,
+    "cost_usd": 0.0001656,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The user reports that they have not received push horoscope notifications for a week, despite having notifications enabled in the app settings.",
+   "customer_language": "ru",
+   "search_queries": [
+    "push notifications not working",
+    "horoscope notifications missing",
+    "app notifications disabled"
+   ],
+   "key_facts": [
+    "no push notifications for a week",
+    "settings all enabled",
+    "notifications for horoscope"
+   ],
+   "missing_info": [
+    "device type and OS version",
+    "app version",
+    "whether system notification settings allow the app",
+    "whether other app notifications work"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.547,
+   "cost_usd": 0.00013905000000000002,
+   "prompt_tokens": 310,
+   "completion_tokens": 386,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Ich habe gestern für Premium bezahlt, aber die App zeigt immer noch die kostenlose Version an.": {
+  "classification": {
+   "category": "billing_subscription",
+   "secondary_categories": [],
+   "priority": "P2",
+   "next_step": "Verify the payment transaction in the payment gateway, confirm the subscription status in the backend, and if still inactive, manually activate the Premium subscription for the user.",
+   "language": "de",
+   "sentiment": "frustrated",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User paid for Premium but app still shows free version, indicating a subscription activation issue.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 13.33,
+    "api_latency_s": 0.507,
+    "prompt_tokens": 1088,
+    "completion_tokens": 314,
+    "cached_tokens": 0,
+    "cost_usd": 0.00017580000000000002,
+    "attempts": 3,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError",
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "Customer paid for Premium yesterday but the app still displays the free version. They want the Premium subscription to be activated and access restored.",
+   "customer_language": "de",
+   "search_queries": [
+    "Premium subscription not activated",
+    "app still shows free version after payment",
+    "subscription not reflected in app"
+   ],
+   "key_facts": [
+    "Paid for Premium yesterday",
+    "App still shows free version"
+   ],
+   "missing_info": [
+    "Payment method and transaction ID",
+    "Date and time of payment",
+    "Device type and OS",
+    "App version",
+    "Whether the customer logged out/in after payment"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.639,
+   "cost_usd": 0.00010425,
+   "prompt_tokens": 294,
+   "completion_tokens": 274,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|I have a promo code from your Instagram ad but the app says it's invalid.": {
+  "classification": {
+   "category": "billing_subscription",
+   "secondary_categories": [],
+   "priority": "P3",
+   "next_step": "Verify the promo code in the system and apply it; if it remains invalid, explain the issue and offer a new code or assistance.",
+   "language": "en",
+   "sentiment": "calm",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User reports a promo code from an Instagram ad is invalid, which falls under billing_subscription.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 13.131,
+    "api_latency_s": 1.064,
+    "prompt_tokens": 1086,
+    "completion_tokens": 500,
+    "cached_tokens": 0,
+    "cost_usd": 0.00023145,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "Customer received a promo code from an Instagram ad but the Nebula app reports it as invalid and wants help redeeming it.",
+   "customer_language": "en",
+   "search_queries": [
+    "promo code invalid Nebula",
+    "redeem Instagram promo code Nebula",
+    "Nebula app promo code not working"
+   ],
+   "key_facts": [
+    "promo code from Instagram ad",
+    "app says promo code is invalid"
+   ],
+   "missing_info": [
+    "promo code value",
+    "device type and operating system",
+    "app version"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.47,
+   "cost_usd": 0.00010319999999999999,
+   "prompt_tokens": 292,
+   "completion_tokens": 271,
+   "cached_tokens": 0,
+   "attempts": 3,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError",
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|The app crashes whenever I open the chat, and I was charged for 30 minutes of credits I couldn't even use. I want that money back.": {
+  "classification": {
+   "category": "refund_request",
+   "secondary_categories": [
+    "technical_issue"
+   ],
+   "priority": "P2",
+   "next_step": "Ask the user for the transaction ID and confirm the refund, and advise them to update or reinstall the app to fix the crash.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 0.95,
+   "reasoning": "User explicitly requests a refund and reports a crash, so refund_request is primary with technical_issue as secondary.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 10.136,
+    "api_latency_s": 1.022,
+    "prompt_tokens": 1100,
+    "completion_tokens": 452,
+    "cached_tokens": 0,
+    "cost_usd": 0.0002181,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The user reports that the app crashes whenever they open a chat and was charged for 30 minutes of credits that were not used. They are requesting a refund for the unused credits.",
+   "customer_language": "en",
+   "search_queries": [
+    "app crashes chat",
+    "refund for unused credits",
+    "billing dispute chat credits"
+   ],
+   "key_facts": [
+    "app crashes when opening chat",
+    "charged for 30 minutes of credits",
+    "credits not used",
+    "request for refund"
+   ],
+   "missing_info": [
+    "device type (iOS/Android)",
+    "app version",
+    "date/time of crash",
+    "transaction ID or receipt",
+    "user account email or username"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.579,
+   "cost_usd": 0.00012765,
+   "prompt_tokens": 306,
+   "completion_tokens": 349,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Астролог у чаті був дуже грубий і закінчив сесію на 10 хвилин раніше. Я витратила кредити даремно.": {
+  "classification": {
+   "category": "expert_complaint",
+   "secondary_categories": [],
+   "priority": "P3",
+   "next_step": "Please provide your session ID and we will investigate the expert's conduct and refund your credits if applicable.",
+   "language": "uk",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 0.9,
+   "reasoning": "User complains about rude expert and wasted credits, primary issue is expert misconduct.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Expert Quality",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 10.912,
+    "api_latency_s": 0.824,
+    "prompt_tokens": 1106,
+    "completion_tokens": 362,
+    "cached_tokens": 0,
+    "cost_usd": 0.00019155000000000002,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer reports that an astrologer in a chat was rude and ended the session 10 minutes early, resulting in wasted credits. They are seeking a refund or compensation for the unused portion of the session.",
+   "customer_language": "uk",
+   "search_queries": [
+    "refund for early termination chat",
+    "how to request refund for astrologer chat",
+    "credits wasted due to early termination"
+   ],
+   "key_facts": [
+    "Session ended 10 minutes early",
+    "Astrologer was rude",
+    "Credits were wasted"
+   ],
+   "missing_info": [
+    "Date and time of the session",
+    "Number of credits used",
+    "Name or ID of the astrologer"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.599,
+   "cost_usd": 0.00012929999999999997,
+   "prompt_tokens": 312,
+   "completion_tokens": 353,
+   "cached_tokens": 0,
+   "attempts": 3,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError",
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Is my birth data sold to advertisers or shared with anyone?": {
+  "classification": {
+   "category": "account_privacy",
+   "secondary_categories": [],
+   "priority": "P4",
+   "next_step": "Explain that birth data is not sold or shared with advertisers and refer to the privacy policy for details.",
+   "language": "en",
+   "sentiment": "calm",
+   "needs_human_review": true,
+   "confidence": 0.95,
+   "reasoning": "User is asking about data privacy, which falls under account_privacy.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Privacy / Legal",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 9.943,
+    "api_latency_s": 0.57,
+    "prompt_tokens": 1082,
+    "completion_tokens": 186,
+    "cached_tokens": 0,
+    "cost_usd": 0.00013695,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer is asking whether their birth data is sold to advertisers or shared with anyone. They want confirmation about the privacy of their personal information.",
+   "customer_language": "en",
+   "search_queries": [
+    "Nebula privacy policy birth data",
+    "personal data sharing policy",
+    "data sold to advertisers"
+   ],
+   "key_facts": [],
+   "missing_info": [
+    "Which birth data are you referring to?"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.563,
+   "cost_usd": 9.3e-05,
+   "prompt_tokens": 288,
+   "completion_tokens": 270,
+   "cached_tokens": 256,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|your stupid app keeps freezing every 2 minutes, worst garbage I've ever paid for. fix it!!!": {
+  "classification": {
+   "category": "technical_issue",
+   "secondary_categories": [],
+   "priority": "P3",
+   "next_step": "Ask the user for device model, OS version, app version, and steps to reproduce the freezing; suggest reinstalling the app and clearing cache.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": false,
+   "confidence": 0.9,
+   "reasoning": "User reports app freezing, a technical issue.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Tech Support",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 5.703,
+    "api_latency_s": 0.603,
+    "prompt_tokens": 1090,
+    "completion_tokens": 253,
+    "cached_tokens": 0,
+    "cost_usd": 0.00015764999999999998,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "Customer reports the Nebula app freezes every 2 minutes and requests a fix.",
+   "customer_language": "en",
+   "search_queries": [
+    "Nebula app freezing every 2 minutes",
+    "Nebula app performance issues",
+    "Nebula app troubleshooting"
+   ],
+   "key_facts": [
+    "App freezes every 2 minutes",
+    "Customer is dissatisfied",
+    "No device or version info provided"
+   ],
+   "missing_info": [
+    "Device type and OS",
+    "App version",
+    "When issue started",
+    "Any error logs or screenshots"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 1.001,
+   "cost_usd": 0.0001479,
+   "prompt_tokens": 296,
+   "completion_tokens": 419,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Wow, great job charging me AGAIN after I cancelled last week. Truly amazing service 👏": {
+  "classification": {
+   "category": "billing_subscription",
+   "secondary_categories": [],
+   "priority": "P2",
+   "next_step": "Verify the user’s cancellation status, confirm the duplicate charge, and issue a refund while updating the subscription record.",
+   "language": "en",
+   "sentiment": "frustrated",
+   "needs_human_review": true,
+   "confidence": 0.95,
+   "reasoning": "User reports being charged again after cancellation, a billing error requiring human review.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Billing",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 11.328,
+    "api_latency_s": 0.965,
+    "prompt_tokens": 1089,
+    "completion_tokens": 315,
+    "cached_tokens": 0,
+    "cost_usd": 0.000176175,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer was charged again after cancelling their subscription last week and is upset, requesting an explanation or refund.",
+   "customer_language": "en",
+   "search_queries": [
+    "charged after cancellation",
+    "subscription cancellation not processed",
+    "refund for subscription"
+   ],
+   "key_facts": [
+    "charged again after cancellation last week"
+   ],
+   "missing_info": [
+    "date of cancellation",
+    "subscription plan and amount charged",
+    "device used",
+    "account details",
+    "any screenshots of the charge"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.768,
+   "cost_usd": 9.8625e-05,
+   "prompt_tokens": 295,
+   "completion_tokens": 255,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Aplikacja nie działa od rana u nikogo w mojej rodzinie, mamy 4 konta i u wszystkich biały ekran.": {
+  "classification": {
+   "category": "technical_issue",
+   "secondary_categories": [],
+   "priority": "P1",
+   "next_step": "Check the app's server status and advise the user to reinstall the app.",
+   "language": "pl",
+   "sentiment": "frustrated",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User reports a white screen for all accounts, indicating a technical outage.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Tech Support",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 10.076,
+    "api_latency_s": 0.98,
+    "prompt_tokens": 1098,
+    "completion_tokens": 443,
+    "cached_tokens": 0,
+    "cost_usd": 0.00021525,
+    "attempts": 2,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer reports that the Nebula app has been showing a white screen for all four family accounts since this morning and is currently not functioning.",
+   "customer_language": "pl",
+   "search_queries": [
+    "Nebula app white screen",
+    "Nebula app not working",
+    "Nebula app troubleshooting"
+   ],
+   "key_facts": [
+    "4 accounts affected",
+    "Issue started this morning",
+    "All users see a white screen"
+   ],
+   "missing_info": [
+    "Device type and model",
+    "Operating system and version",
+    "Nebula app version",
+    "Internet connectivity status",
+    "Any recent app updates or reinstall attempts",
+    "Error logs or screenshots"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 0.813,
+   "cost_usd": 0.0001266,
+   "prompt_tokens": 304,
+   "completion_tokens": 346,
+   "cached_tokens": 0,
+   "attempts": 3,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError",
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ },
+ "analyze_v1|task1-v3|Can I order a personalized printed horoscope book as a gift for my mom's birthday?": {
+  "classification": {
+   "category": "product_question",
+   "secondary_categories": [],
+   "priority": "P4",
+   "next_step": "Explain how to order a personalized printed horoscope book, including steps to select the book, add personalization details, and complete checkout.",
+   "language": "en",
+   "sentiment": "calm",
+   "needs_human_review": false,
+   "confidence": 0.95,
+   "reasoning": "User is asking how to order a printed horoscope book, which is a product usage question.",
+   "source": "llm",
+   "guardrail_flags": [],
+   "assigned_team": "Tier-1 Support",
+   "meta": {
+    "model": "openai/gpt-oss-20b",
+    "latency_s": 13.453,
+    "api_latency_s": 0.59,
+    "prompt_tokens": 1087,
+    "completion_tokens": 189,
+    "cached_tokens": 0,
+    "cost_usd": 0.00013822499999999999,
+    "attempts": 3,
+    "errors": [
+     "openai/gpt-oss-20b: RateLimitError",
+     "openai/gpt-oss-20b: RateLimitError"
+    ]
+   }
+  },
+  "analysis": {
+   "summary": "The customer wants to know if they can order a personalized printed horoscope book as a gift for their mom's birthday.",
+   "customer_language": "en",
+   "search_queries": [
+    "personalized printed horoscope book",
+    "order printed horoscope book",
+    "gift horoscope book"
+   ],
+   "key_facts": [
+    "wants personalized printed horoscope book as gift for mom's birthday"
+   ],
+   "missing_info": [
+    "birthday date",
+    "shipping address",
+    "personalization details"
+   ]
+  },
+  "analyze_meta": {
+   "model": "openai/gpt-oss-20b",
+   "api_latency_s": 1.678,
+   "cost_usd": 0.00028717500000000003,
+   "prompt_tokens": 293,
+   "completion_tokens": 884,
+   "cached_tokens": 0,
+   "attempts": 2,
+   "errors": [
+    "openai/gpt-oss-20b: RateLimitError"
+   ]
+  }
+ }
+}

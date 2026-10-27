@@ -26,6 +26,7 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 REQUEST_TIMEOUT_S = 20
 MAX_RETRIES = 3          # на одну модель, для rate limit / timeout / 5xx
 BACKOFF_BASE_S = 1.5     # 1.5s, 3s, 6s ...
+RETRY_AFTER_CAP_S = 30.0 # довше не чекаємо в інтерактивному режимі; batch-скрипти можуть підняти
 
 
 @dataclass
@@ -159,7 +160,7 @@ def _retry_delay(err: Exception, attempt: int) -> float:
         retry_after = response.headers.get("retry-after")
         if retry_after:
             try:
-                return min(float(retry_after), 30.0)
+                return min(float(retry_after), RETRY_AFTER_CAP_S)
             except ValueError:
                 pass
     return BACKOFF_BASE_S * (2 ** attempt)

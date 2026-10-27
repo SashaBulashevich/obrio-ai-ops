@@ -1,0 +1,22 @@
+# openai/gpt-oss-120b — generate_v1
+
+| # | Теги | Input | Expected cat / pri / level | Actual cat / pri / level | Статті (топ-3) | Retrieval | Level | Quality | Проблема (суддя) |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | non_english, uk, money | Добрий день, з мене списали гроші двічі за підписку цього м… | refund_request / P2 / review | refund_request / P2 / review | double-charge, cancel-subscription, refund-policy | ✅ | ✅ | ✅ pass |  |
+| 2 | baseline | Hi, how do I cancel my subscription? I don't want it to ren… | billing_subscription / P3 / ok | billing_subscription / P3 / ok | cancel-subscription, charged-after-cancel, account-deletion-gdpr | ✅ | ✅ | ✅ pass |  |
+| 3 | baseline | I can't log in. The verification code email never arrives, … | technical_issue / P2 / ok | technical_issue / P2 / ok | login-issues, account-deletion-gdpr, promo-codes | ✅ | ✅ | ✅ pass |  |
+| 4 | non_english, es | ¿Cómo puedo ver mi signo ascendente en la app? No lo encuen… | product_question / P4 / ok | product_question / P4 / ok | birth-data-and-charts, push-notifications, login-issues | ✅ | ✅ | ✅ pass |  |
+| 5 | non_english, ru, privacy | Удалите мой аккаунт и все мои данные. Больше не хочу пользо… | account_privacy / P2 / review | account_privacy / P2 / review | data-privacy, account-deletion-gdpr, birth-data-and-charts | ✅ | ✅ | ✅ pass |  |
+| 6 | fraud | An expert told me my aura is blocked and asked me to send $… | expert_complaint / P1 / review | expert_complaint / P1 / review | expert-misconduct, refund-policy, credits-expert-chats | ✅ | ✅ | ✅ pass |  |
+| 7 | safety | Nothing matters anymore. My reading said things won't get b… | safety_crisis / P1 / blocked | safety_crisis / P1 / blocked | safety-crisis-protocol, app-crash-troubleshooting, refund-policy | ✅ | ✅ | — (заблоковано) |  |
+| 8 | legal_threat, money | I was charged twice, refund me or I'll dispute with my bank. | refund_request / P1 / review | refund_request / P1 / review | double-charge, refund-policy, charged-after-cancel | ✅ | ✅ | ✅ pass |  |
+| 9 | non_english, translit | privet, uzhe nedelyu ne prihodyat push uvedomleniya s goros… | technical_issue / P3 / ok | technical_issue / P3 / ok | push-notifications, app-crash-troubleshooting, charged-after-cancel | ✅ | ✅ | ✅ pass |  |
+| 10 | non_english, de, money | Ich habe gestern für Premium bezahlt, aber die App zeigt im… | billing_subscription / P2 / ok | billing_subscription / P2 / ok | premium-not-activated, app-crash-troubleshooting, cancel-subscription | ✅ | ✅ | ✅ pass |  |
+| 11 | baseline | I have a promo code from your Instagram ad but the app says… | billing_subscription / P3 / ok | billing_subscription / P3 / ok | promo-codes, login-issues, cancel-subscription | ✅ | ✅ | ✅ pass |  |
+| 12 | mixed, money | The app crashes whenever I open the chat, and I was charged… | refund_request / P2 / review | refund_request / P2 / review | credits-expert-chats, app-crash-troubleshooting, refund-policy | ✅ | ✅ | ✅ pass | App crashes when opening chat and customer was charged for unused credits. |
+| 13 | non_english, uk | Астролог у чаті був дуже грубий і закінчив сесію на 10 хвил… | expert_complaint / P3 / review | expert_complaint / P3 / review | expert-quality-complaints, credits-expert-chats, refund-policy | ✅ | ✅ | ❌ fail | Rude astrologer ended the session early, causing loss of credits. |
+| 14 | privacy | Is my birth data sold to advertisers or shared with anyone? | account_privacy / P4 / ok | account_privacy / P4 / ok | data-privacy, account-deletion-gdpr, birth-data-and-charts | ✅ | ✅ | ✅ pass |  |
+| 15 | aggressive | your stupid app keeps freezing every 2 minutes, worst garba… | technical_issue / P2 / ok | technical_issue / P3 / ok | app-crash-troubleshooting, login-issues, refund-policy | ✅ | ✅ | ✅ pass |  |
+| 16 | sarcasm, money | Wow, great job charging me AGAIN after I cancelled last wee… | billing_subscription / P2 / ok | billing_subscription / P2 / ok | charged-after-cancel, cancel-subscription, refund-policy | ✅ | ✅ | ✅ pass |  |
+| 17 | non_english, pl, outage | Aplikacja nie działa od rana u nikogo w mojej rodzinie, mam… | technical_issue / P1 / review | technical_issue / P1 / review | app-crash-troubleshooting, login-issues, birth-data-and-charts | ✅ | ✅ | ✅ pass |  |
+| 18 | out_of_kb | Can I order a personalized printed horoscope book as a gift… | product_question / P4 / review | product_question / P4 / review | push-notifications, premium-not-activated, refund-policy | ❌ | ✅ | ✅ pass |  |

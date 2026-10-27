@@ -18,6 +18,7 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from typing import Literal
 
 from langdetect import DetectorFactory, LangDetectException, detect
 from pydantic import BaseModel, Field
@@ -69,6 +70,8 @@ class Generation(BaseModel):
     replies: Replies
     citations: list[Citation] = Field(default_factory=list)
     agent_notes: str = ""
+    # чи відповідають надані статті на питання клієнта (з generate_v2); BM25 сам цього не знає
+    kb_coverage: Literal["full", "partial", "none"] = "full"
 
 
 # ---------- перевірки в коді ----------
@@ -119,6 +122,7 @@ def run_checks(gen: Generation, hits: list[retrieval.Hit], customer_language: st
         ],
         "short_too_long": len(replies["short"].split()) > SHORT_MAX_WORDS,
         "formal_has_emoji": bool(EMOJI.search(replies["formal"])),
+        "kb_coverage": gen.kb_coverage,
         "detected_languages": langs,
     }
     return checks, citations
@@ -140,14 +144,19 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
         reasons.append("Рішення про повернення коштів ухвалює Billing після перевірки транзакції.")
     if cat == "expert_complaint":
         reasons.append("Скарга на експерта: не оцінювати експерта до перевірки логу чату; misconduct → Trust & Safety.")
-    if cat == "account_privacy":
-        reasons.append("Персональні дані / видалення акаунта: підтвердити, що запит від власника акаунта.")
+    if cat == "account_privacy" and classification["priority"] in ("P1", "P2"):
+        # запит на видалення / експорт даних (P2), а не просте питання про дані (P4)
+        reasons.append("Видалення / експорт персональних даних: підтвердити, що запит від власника акаунта.")
+    if classification["priority"] == "P1" and not reasons:
+        reasons.append("Критичний пріоритет (P1): перевір, чи не потрібна ескалація, перш ніж відповідати.")
     if classification.get("confidence", 1) < 0.6 or cat == "other":
         reasons.append("AI не впевнений, про що тікет: прочитай оригінал уважно.")
-    if not hits or hits[0].score < MIN_RETRIEVAL_SCORE:
-        reasons.append("У базі знань немає релевантної статті: факти у відповідях можуть бути вигадані.")
+    if not hits or hits[0].score < MIN_RETRIEVAL_SCORE or (checks and checks.get("kb_coverage") == "none"):
+        reasons.append("У базі знань немає відповіді на це питання: не покладайся на AI-варіанти, уточни в команді.")
+    elif checks and checks.get("kb_coverage") == "partial":
+        reasons.append("База знань відповідає лише частково: перевір, що решта відповіді не вигадана.")
     if checks:
-        if checks["invalid_citations"] or checks["no_citations"]:
+        if checks["invalid_citations"] or (checks["no_citations"] and checks.get("kb_coverage") != "none"):
             reasons.append("Цитата не підтверджена базою знань: перевір факти перед відправкою.")
         if checks["refund_promise"]:
             reasons.append(f"Відповідь обіцяє повернення коштів ({', '.join(checks['refund_promise'])}) — "
