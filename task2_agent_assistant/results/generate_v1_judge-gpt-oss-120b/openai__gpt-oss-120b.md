@@ -1,4 +1,4 @@
-# openai/gpt-oss-120b — generate_v1
+# openai/gpt-oss-120b — generate_v1_judge-gpt-oss-120b
 
 | # | Теги | Input | Expected cat / pri / level | Actual cat / pri / level | Статті (топ-3) | Retrieval | Level | Quality | Проблема (суддя) |
 |---|---|---|---|---|---|---|---|---|---|

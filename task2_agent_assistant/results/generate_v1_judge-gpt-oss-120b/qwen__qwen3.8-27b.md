@@ -1,4 +1,4 @@
-# qwen/qwen3.8-27b — generate_v1
+# qwen/qwen3.8-27b — generate_v1_judge-gpt-oss-120b
 
 | # | Теги | Input | Expected cat / pri / level | Actual cat / pri / level | Статті (топ-3) | Retrieval | Level | Quality | Проблема (суддя) |
 |---|---|---|---|---|---|---|---|---|---|

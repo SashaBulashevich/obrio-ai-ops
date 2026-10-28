@@ -79,7 +79,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 2,
@@ -116,13 +117,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
+      "short_ok": true,
       "tone_distinct": 5,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "Short draft exceeds the 1-3 sentence limit"
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -168,7 +169,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 3,
@@ -205,13 +207,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
-      "tone_distinct": 4,
+      "short_ok": true,
+      "tone_distinct": 5,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "Verification code email never arrives."
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -247,7 +249,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 4,
@@ -323,7 +326,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 5,
@@ -365,13 +369,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
-      "tone_distinct": 5,
+      "short_ok": true,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": false,
-      "issues": "Drafts are not in Russian, not matching the ticket language."
+      "issues": "The drafts are written in English while the customer ticket is in Russian."
     },
     "checks": {
       "invalid_citations": [],
@@ -411,7 +415,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": false,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 6,
@@ -450,13 +455,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
-      "tone_distinct": 4,
+      "short_ok": true,
+      "tone_distinct": 5,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "Expert asked for off‑platform payment"
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -492,7 +497,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 7,
@@ -572,13 +578,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
+      "short_ok": true,
       "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "Short draft exceeds the 3‑sentence limit."
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -617,7 +623,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 9,
@@ -698,7 +705,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 10,
@@ -738,12 +746,12 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
-      "unauthorized_promise": true,
+      "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "Empathetic draft promises quick activation before verification"
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -779,7 +787,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 11,
@@ -858,7 +867,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 12,
@@ -901,7 +911,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -943,7 +953,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 13,
@@ -983,13 +994,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
+      "short_ok": true,
       "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "Expert was rude and ended the session early, causing wasted credits."
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -1020,7 +1031,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 14,
@@ -1057,13 +1069,13 @@
     "judge": {
       "formal_ok": true,
       "empathetic_ok": true,
-      "short_ok": false,
-      "tone_distinct": 5,
+      "short_ok": true,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "short draft exceeds 3-sentence limit"
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -1101,7 +1113,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 15,
@@ -1135,7 +1148,17 @@
     "generated": true,
     "gen_cost": 0.0026431999999999996,
     "gen_latency": 1.35,
-    "judge": null,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
     "checks": {
       "invalid_citations": [],
       "no_citations": false,
@@ -1165,7 +1188,8 @@
       "qwen/qwen3.8-27b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 16,
@@ -1200,7 +1224,17 @@
     "generated": true,
     "gen_cost": 0.0030616,
     "gen_latency": 1.482,
-    "judge": null,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
     "checks": {
       "invalid_citations": [],
       "no_citations": false,
@@ -1233,7 +1267,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 17,
@@ -1271,7 +1306,17 @@
     "generated": true,
     "gen_cost": 0.0026128,
     "gen_latency": 1.605,
-    "judge": null,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
     "checks": {
       "invalid_citations": [],
       "no_citations": false,
@@ -1299,7 +1344,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 18,
@@ -1337,12 +1383,12 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
-      "grounded": true,
+      "tone_distinct": 4,
+      "grounded": false,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": ""
+      "issues": "The drafts assert that Nebula does not offer physical merchandise, a policy detail not supported by the provided help-center articles."
     },
     "checks": {
       "invalid_citations": [],
@@ -1360,6 +1406,7 @@
     "citations": [],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": false,
+    "judge_model": "qwen/qwen3.8-27b"
   }
 ]

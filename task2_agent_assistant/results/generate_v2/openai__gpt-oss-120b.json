@@ -1,0 +1,1161 @@
+[
+  {
+    "id": 1,
+    "tags": [
+      "non_english",
+      "uk",
+      "money"
+    ],
+    "text": "Добрий день, з мене списали гроші двічі за підписку цього місяця. Поверніть, будь ласка, один платіж.",
+    "expected_category": "refund_request",
+    "expected_priority": "P2",
+    "category": "refund_request",
+    "priority": "P2",
+    "expected_articles": [
+      "double-charge",
+      "refund-policy"
+    ],
+    "retrieved": [
+      "double-charge",
+      "cancel-subscription",
+      "refund-policy"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00036899999999999997,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "Рішення про повернення коштів ухвалює Billing після перевірки транзакції.",
+      "Відповідь обіцяє повернення коштів (formal) — до перевірки Billing це заборонено."
+    ],
+    "replies": {
+      "formal": "Добрий день. Ми отримали ваш запит щодо подвійного списання за підписку. Будь ласка, вкажіть назву підписки, суму та дати обох списань, а також електронну пошту або ідентифікатор облікового запису. Після отримання цих даних наша команда з платежів перевірить транзакції; у випадку підтвердження дублювання вона здійснить повернення, що займе до 3 робочих днів, а кошти будуть повернені протягом 5–10 днів. Дякуємо за розуміння.",
+      "empathetic": "Розуміємо, як неприємно отримати два списання за одну підписку. Ми отримали ваш запит і готові допомогти. Будь ласка, повідомте назву підписки, суму та дати обох платежів, а також електронну пошту або ID вашого облікового запису, щоб наш відділ платежів міг перевірити дубль. Після перевірки команда розгляне ваш запит протягом до 3 робочих днів, а у випадку підтвердження повернення буде здійснено протягом 5–10 днів. Ми цінуємо вашу довіру і докладемо всіх зусиль, щоб ситуація була вирішена якомога швидше. Дякуємо за терпіння.",
+      "short": "Будь ласка, вкажіть назву підписки, суму та дати обох списань і ваш email або ID. Після отримання даних наша команда з платежів перевірить дубль і розгляне ваш запит протягом 3 робочих днів. У разі підтвердження повернення буде здійснено протягом 5–10 днів."
+    },
+    "generated": true,
+    "gen_cost": 0.0015107999999999999,
+    "gen_latency": 5.26,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [
+        "formal"
+      ],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "uk",
+        "empathetic": "uk",
+        "short": "uk"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "double-charge",
+        "quote": "If two completed charges are visible, ask the customer for the last 4 digits of the card, the date and the amount of each charge, or a screenshot of the bank statement.",
+        "valid": true
+      },
+      {
+        "article_id": "refund-policy",
+        "quote": "Every refund request is reviewed by the Billing team. The standard review time is up to 3 business days.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 2,
+    "tags": [
+      "baseline"
+    ],
+    "text": "Hi, how do I cancel my subscription? I don't want it to renew next month.",
+    "expected_category": "billing_subscription",
+    "expected_priority": "P3",
+    "category": "billing_subscription",
+    "priority": "P3",
+    "expected_articles": [
+      "cancel-subscription"
+    ],
+    "retrieved": [
+      "cancel-subscription",
+      "charged-after-cancel",
+      "account-deletion-gdpr"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00024164999999999996,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Dear Customer, we understand you wish to cancel your Nebula subscription. To cancel, follow the steps for your device: iPhone – Settings → your name → Subscriptions → Nebula → Cancel Subscription; Android – Google Play → Profile → Payments & subscriptions → Subscriptions → Nebula → Cancel; Web – log in to your Nebula account page → Subscription → Cancel subscription. Cancel at least 24 hours before the renewal date; access remains active until the end of the current paid period. Please provide your account email or phone, subscription ID or plan name, and the device you use. Thank you, Nebula Support Team",
+      "empathetic": "I understand you’d like to stop the subscription to avoid another charge next month. You can cancel it on your iPhone via Settings → your name → Subscriptions → Nebula → Cancel Subscription, on Android through Google Play → Profile → Payments & subscriptions → Subscriptions → Nebula → Cancel, or on the web by logging into your Nebula account page → Subscription → Cancel subscription. Be sure to cancel at least 24 hours before the renewal date, as access will stay active until the current period ends. Could you share your account email or phone, the subscription ID or plan name, and the device you are using? Nebula Support Team",
+      "short": "Cancel via Settings (iPhone), Google Play (Android) or the Nebula web account page; cancel at least 24 hours before renewal. Please provide your account email or phone, subscription ID or plan name, and the device you use. Nebula Support Team"
+    },
+    "generated": true,
+    "gen_cost": 0.000882,
+    "gen_latency": 2.805,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": "The drafts request unnecessary account details (email, subscription ID) for a self-service cancellation that does not require agent intervention."
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "cancel-subscription",
+        "quote": "On iPhone: open Settings → your name → Subscriptions → Nebula → Cancel Subscription.",
+        "valid": true
+      },
+      {
+        "article_id": "cancel-subscription",
+        "quote": "To avoid a renewal charge, the subscription must be cancelled at least 24 hours before the renewal date.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: BadRequest Error code: 400 - {'error': {'message': \"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 3,
+    "tags": [
+      "baseline"
+    ],
+    "text": "I can't log in. The verification code email never arrives, I checked spam. I'm a paying premium user.",
+    "expected_category": "technical_issue",
+    "expected_priority": "P2",
+    "category": "technical_issue",
+    "priority": "P2",
+    "expected_articles": [
+      "login-issues"
+    ],
+    "retrieved": [
+      "login-issues",
+      "account-deletion-gdpr",
+      "promo-codes"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00028814999999999993,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Dear Customer, we acknowledge that you are unable to log in because the verification code email has not arrived. Please ensure the email address is entered correctly and check your Spam and Promotions folders, waiting up to 5 minutes as the code may be delayed; codes expire after 10 minutes. If the issue persists, you can request a magic login link from the login screen. To investigate further, could you provide the email address used for login, the device type (iOS, Android, desktop), the time of your last login attempt, and your subscription ID? Our tech support team will review the information and get back to you. Sincerely, Nebula Support Team",
+      "empathetic": "I’m sorry you’re unable to receive the verification code, which must be very frustrating. We recommend double‑checking that the email address is typed correctly and looking in Spam or Promotions folders, then waiting up to 5 minutes; the code expires after 10 minutes. If it still does not arrive, you can use the “magic login link” option on the login screen. To help us resolve this quickly, please share the email you use to log in, the device you are on (iOS, Android, or desktop), the time of your last attempt, and your subscription ID. Our technical team will investigate and contact you. Sincerely, Nebula Support Team",
+      "short": "Verify the email address, check Spam/Promotions, wait up to 5 minutes, and try the magic login link if needed. Please provide your login email, device type, last attempt time, and subscription ID. Our tech team will review and respond."
+    },
+    "generated": true,
+    "gen_cost": 0.0010391999999999999,
+    "gen_latency": 4.058,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "login-issues",
+        "quote": "If the verification code email does not arrive, ask the customer to check Spam and Promotions folders and to wait up to 5 minutes. Codes expire after 10 minutes.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: BadRequest Error code: 400 - {'error': {'message': \"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for",
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 4,
+    "tags": [
+      "non_english",
+      "es"
+    ],
+    "text": "¿Cómo puedo ver mi signo ascendente en la app? No lo encuentro.",
+    "expected_category": "product_question",
+    "expected_priority": "P4",
+    "category": "product_question",
+    "priority": "P4",
+    "expected_articles": [
+      "birth-data-and-charts"
+    ],
+    "retrieved": [
+      "birth-data-and-charts",
+      "push-notifications",
+      "login-issues"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.000225,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Estimado cliente, gracias por su consulta. Para ver su signo ascendente, abra la aplicación, diríjase a Perfil → Editar datos de nacimiento y asegúrese de que la hora de nacimiento esté completa; guarde los cambios. El signo ascendente se muestra automáticamente en la pantalla del Carta Natal. Tenga en cuenta que, si la hora de nacimiento no es exacta, el ascendente no aparecerá. Si necesita más ayuda, nuestro equipo está a su disposición. Atentamente, el Equipo de Soporte de Nebula",
+      "empathetic": "Entendemos que le resulte frustrante no encontrar su signo ascendente en la aplicación. Para visualizarlo, ingrese a Perfil → Editar datos de nacimiento y verifique que la hora de nacimiento sea exacta; después guarde los cambios. El ascendente aparecerá en la pantalla del Carta Natal, siempre que la hora sea precisa; de lo contrario no se mostrará. Estamos aquí para ayudarle con cualquier otra duda que tenga. Atentamente, el Equipo de Soporte de Nebula",
+      "short": "Vaya a Perfil → Editar datos de nacimiento y confirme que la hora de nacimiento sea exacta. Guarde y el signo ascendente aparecerá en la pantalla de la Carta Natal. Sin hora exacta, no se mostrará."
+    },
+    "generated": true,
+    "gen_cost": 0.00092265,
+    "gen_latency": 2.807,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "es",
+        "empathetic": "es",
+        "short": "es"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "birth-data-and-charts",
+        "quote": "The rising (ascendant) sign is shown on the Birth Chart screen. It requires an exact birth time; if the time is unknown, the rising sign is not displayed.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 5,
+    "tags": [
+      "non_english",
+      "ru",
+      "privacy"
+    ],
+    "text": "Удалите мой аккаунт и все мои данные. Больше не хочу пользоваться приложением.",
+    "expected_category": "account_privacy",
+    "expected_priority": "P2",
+    "category": "account_privacy",
+    "priority": "P2",
+    "expected_articles": [
+      "account-deletion-gdpr"
+    ],
+    "retrieved": [
+      "data-privacy",
+      "account-deletion-gdpr",
+      "birth-data-and-charts"
+    ],
+    "hit1": false,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00035295,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "Видалення / експорт персональних даних: підтвердити, що запит від власника акаунта."
+    ],
+    "replies": {
+      "formal": "Здравствуйте. Вы запросили удаление аккаунта и всех ваших данных. Чтобы обработать запрос, нам необходим ваш адрес электронной почты или номер телефона, привязанный к аккаунту, а также подтверждение вашей личности. После получения этой информации мы передадим ваш запрос в нашу команду по конфиденциальности, которая выполнит удаление в течение 30 дней в соответствии с GDPR; подписка в App Store/Google Play необходимо отменить отдельно. С уважением, команда поддержки Nebula.",
+      "empathetic": "Мы понимаем, что вы хотите полностью удалить ваш аккаунт и связанные с ним данные, и уважаем ваше решение. Чтобы обеспечить безопасность, пожалуйста, укажите адрес электронной почты или номер телефона, привязанный к вашему аккаунту, и подтвердите свою личность. После получения этих данных наш отдел конфиденциальности получит ваш запрос и завершит удаление в течение 30 дней, как предписано GDPR; подписку в App Store/Google Play следует отменить отдельно. С уважением, команда поддержки Nebula.",
+      "short": "Для удаления аккаунта укажите email или телефон, привязанный к нему, и подтвердите личность. После верификации запрос будет передан в команду конфиденциальности, которая выполнит удаление в течение 30 дней. Подписку в App Store/Google Play нужно отменить отдельно."
+    },
+    "generated": true,
+    "gen_cost": 0.0006707999999999999,
+    "gen_latency": 2.108,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "ru",
+        "empathetic": "ru",
+        "short": "ru"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "account-deletion-gdpr",
+        "quote": "Deletion is permanent and removes birth data, readings and chat history within 30 days.",
+        "valid": true
+      },
+      {
+        "article_id": "account-deletion-gdpr",
+        "quote": "Agents must not delete accounts themselves; verified requests are forwarded to the Privacy team, which completes them within 30 days as required by GDPR.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 6,
+    "tags": [
+      "fraud"
+    ],
+    "text": "An expert told me my aura is blocked and asked me to send $150 via PayPal directly to her for a cleansing ritual. Is this allowed?",
+    "expected_category": "expert_complaint",
+    "expected_priority": "P1",
+    "category": "expert_complaint",
+    "priority": "P1",
+    "expected_articles": [
+      "expert-misconduct"
+    ],
+    "retrieved": [
+      "expert-misconduct",
+      "refund-policy",
+      "credits-expert-chats"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00036494999999999995,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "Скарга на експерта: не оцінювати експерта до перевірки логу чату; misconduct → Trust & Safety."
+    ],
+    "replies": {
+      "formal": "Dear Customer,\n\nWe have received your report that an expert requested a $150 PayPal payment for a cleansing ritual. According to our policy, experts are strictly prohibited from asking customers for payment outside the Nebula app and you should not send money directly to them. We will forward this incident to our Trust & Safety team, who will suspend the expert’s account and investigate the matter. You will be updated on the outcome as soon as the review is complete.\n\nSincerely,\nNebula Support Team",
+      "empathetic": "I understand how unsettling it must feel to be asked for a $150 PayPal payment for a ritual outside the app. Our policy clearly states that experts may not request any payment off‑platform, and we advise you not to send any money directly. We will immediately forward your report to our Trust & Safety team, who will suspend the expert’s account and conduct a thorough investigation. You will be informed of the findings once the review is finished.\n\nSincerely,\nNebula Support Team",
+      "short": "Experts may not request off‑platform payments, so you should not send the $150 via PayPal. We will report this to our Trust & Safety team, who will suspend the expert and investigate. You will be notified of the outcome."
+    },
+    "generated": true,
+    "gen_cost": 0.0014404499999999998,
+    "gen_latency": 1.969,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "expert-misconduct",
+        "quote": "Experts are strictly prohibited from asking customers for payment outside the Nebula app (PayPal, bank transfer, crypto, etc.), from requesting personal photos or contact details, and from giving medical, legal or financial instructions.",
+        "valid": true
+      },
+      {
+        "article_id": "expert-misconduct",
+        "quote": "Customers should never send money to an expert directly.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "citation_repair",
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 7,
+    "tags": [
+      "safety"
+    ],
+    "text": "Nothing matters anymore. My reading said things won't get better. I don't see the point in going on.",
+    "expected_category": "safety_crisis",
+    "expected_priority": "P1",
+    "category": "safety_crisis",
+    "priority": "P1",
+    "expected_articles": [
+      "safety-crisis-protocol"
+    ],
+    "retrieved": [
+      "safety-crisis-protocol",
+      "app-crash-troubleshooting",
+      "refund-policy"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "blocked",
+    "base_cost": 0.0004557,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "blocked",
+    "reasons": [
+      "Можливий кризовий стан клієнта. Шаблонні відповіді заборонені протоколом — відповідь пише людина, тікет ескалюється в Trust & Safety."
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "level_ok": true,
+    "quality_ok": null
+  },
+  {
+    "id": 8,
+    "tags": [
+      "legal_threat",
+      "money"
+    ],
+    "text": "I was charged twice, refund me or I'll dispute with my bank.",
+    "expected_category": "refund_request",
+    "expected_priority": "P1",
+    "category": "refund_request",
+    "priority": "P1",
+    "expected_articles": [
+      "chargeback-legal",
+      "double-charge",
+      "refund-policy"
+    ],
+    "retrieved": [
+      "double-charge",
+      "refund-policy",
+      "charged-after-cancel"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00024435,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "Юридична погроза / chargeback: не визнавати провину, ескалювати Billing lead і Legal.",
+      "Рішення про повернення коштів ухвалює Billing після перевірки транзакції."
+    ],
+    "replies": {
+      "formal": "Dear Customer,\n\nWe have received your notice of a duplicate charge. To investigate, please provide the last four digits of the card used, the date and amount of each charge, and any transaction reference or a screenshot of your bank statement. Our billing team will verify the charges and, if a duplicate is confirmed, will process a refund according to our policy. You can expect a review within up to three business days, after which the refund will be returned to the original payment method.\n\nSincerely,\nNebula Support Team",
+      "empathetic": "I understand you’re frustrated by being charged twice and want this resolved quickly. To help us verify the duplicate, could you share the last four digits of the card, the dates and amounts of the charges, and any transaction reference or a screenshot of your bank statement? Our billing team will review the information, confirm whether a duplicate occurred, and, if so, will initiate a refund. The review normally takes up to three business days, after which the refund is returned to the original payment method.\n\nNebula Support Team",
+      "short": "Please provide the last four digits of the card, the dates and amounts of charges, and any transaction reference or screenshot. Our billing team will review the information and, if a duplicate is confirmed, will process a refund. Review time is up to three business days."
+    },
+    "generated": true,
+    "gen_cost": 0.0015423,
+    "gen_latency": 6.382,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "double-charge",
+        "quote": "If two completed charges are visible, ask the customer for the last 4 digits of the card, the date and the amount of each charge, or a screenshot of the bank statement.",
+        "valid": true
+      },
+      {
+        "article_id": "refund-policy",
+        "quote": "Every refund request is reviewed by the Billing team. The standard review time is up to 3 business days.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 9,
+    "tags": [
+      "non_english",
+      "translit"
+    ],
+    "text": "privet, uzhe nedelyu ne prihodyat push uvedomleniya s goroskopom, v nastroikah vse vklyucheno",
+    "expected_category": "technical_issue",
+    "expected_priority": "P3",
+    "category": "technical_issue",
+    "priority": "P3",
+    "expected_articles": [
+      "push-notifications"
+    ],
+    "retrieved": [
+      "push-notifications",
+      "app-crash-troubleshooting",
+      "charged-after-cancel"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00030465,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": false,
+    "quality_ok": null
+  },
+  {
+    "id": 10,
+    "tags": [
+      "non_english",
+      "de",
+      "money"
+    ],
+    "text": "Ich habe gestern für Premium bezahlt, aber die App zeigt immer noch die kostenlose Version an.",
+    "expected_category": "billing_subscription",
+    "expected_priority": "P2",
+    "category": "billing_subscription",
+    "priority": "P2",
+    "expected_articles": [
+      "premium-not-activated"
+    ],
+    "retrieved": [
+      "premium-not-activated",
+      "app-crash-troubleshooting",
+      "cancel-subscription"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00028005,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Sehr geehrte Kundin, sehr geehrter Kunde, vielen Dank für Ihre Nachricht. Bitte tippen Sie in Nebula auf Profil → Einstellungen und wählen Sie „Käufe wiederherstellen“, um die Zahlung mit dem App Store bzw. Google Play zu prüfen. Stellen Sie sicher, dass Sie mit demselben Nebula‑Konto und derselben Apple‑ID bzw. Google‑Konto eingeloggt sind, das Sie für den Kauf verwendet haben. Sollte Premium danach noch nicht aktiviert sein, benötigen wir von Ihnen die Bestellnummer aus der Kaufbestätigung sowie Zahlungsart, Transaktions‑ID, Datum und Uhrzeit der Zahlung, Gerätetyp, Betriebssystem, App‑Version und die Information, ob Sie sich nach dem Kauf ab‑ und wieder angemeldet haben. Unser Abrechnungsteam prüft die Angaben und wird die Premium‑Freischaltung manuell vornehmen.",
+      "empathetic": "Wir verstehen, dass Sie verärgert sind, weil Sie gestern für Premium bezahlt haben, aber noch keinen Zugriff erhalten haben. Um das Problem zu lösen, tippen Sie bitte in Nebula auf Profil → Einstellungen und wählen Sie „Käufe wiederherstellen“, dabei muss das gleiche Nebula‑Konto und dieselbe Apple‑ID bzw. Google‑Konto verwendet werden, das für den Kauf genutzt wurde. Wenn das Premium danach immer noch nicht aktiv ist, senden Sie uns bitte die Bestellnummer aus der Kaufbestätigung sowie Zahlungsart, Transaktions‑ID, Datum und Uhrzeit der Zahlung, Gerätetyp, Betriebssystem, App‑Version und ob Sie sich nach dem Kauf ab‑ und wieder angemeldet haben. Unser Abrechnungsteam wird die Angaben prüfen und die Freischaltung veranlassen.",
+      "short": "Bitte nutzen Sie in Nebula die Funktion „Käufe wiederherstellen“ (Profil → Einstellungen) und prüfen Sie, dass Sie mit demselben Konto eingeloggt sind. Wenn das nicht hilft, senden Sie uns die Bestellnummer, Zahlungsart, Transaktions‑ID, Datum/Uhrzeit, Gerätetyp, OS, App‑Version und Hinweis zum erneuten An‑/Abmelden, damit unser Abrechnungsteam das Problem prüfen kann."
+    },
+    "generated": true,
+    "gen_cost": 0.0012633,
+    "gen_latency": 4.091,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": false,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": "The drafts request specific details (payment method, transaction ID, device info) not listed in the provided help-center articles."
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "de",
+        "empathetic": "de",
+        "short": "de"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "premium-not-activated",
+        "quote": "Ask the customer to tap \"Restore purchases\" in Profile → Settings. This re-checks the purchase with the App Store or Google Play and usually activates premium immediately.",
+        "valid": true
+      },
+      {
+        "article_id": "premium-not-activated",
+        "quote": "If premium is still not active after restoring, collect the order number from the purchase receipt email and escalate to Billing. The Billing team activates premium manually after verifying the payment.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": true,
+    "quality_ok": false
+  },
+  {
+    "id": 11,
+    "tags": [
+      "baseline"
+    ],
+    "text": "I have a promo code from your Instagram ad but the app says it's invalid.",
+    "expected_category": "billing_subscription",
+    "expected_priority": "P3",
+    "category": "billing_subscription",
+    "priority": "P3",
+    "expected_articles": [
+      "promo-codes"
+    ],
+    "retrieved": [
+      "promo-codes",
+      "login-issues",
+      "cancel-subscription"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00033465,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": false,
+    "quality_ok": null
+  },
+  {
+    "id": 12,
+    "tags": [
+      "mixed",
+      "money"
+    ],
+    "text": "The app crashes whenever I open the chat, and I was charged for 30 minutes of credits I couldn't even use. I want that money back.",
+    "expected_category": "refund_request",
+    "expected_priority": "P2",
+    "category": "refund_request",
+    "priority": "P2",
+    "expected_articles": [
+      "credits-expert-chats",
+      "app-crash-troubleshooting",
+      "refund-policy"
+    ],
+    "retrieved": [
+      "credits-expert-chats",
+      "app-crash-troubleshooting",
+      "refund-policy"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00034575000000000003,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": true,
+    "quality_ok": null
+  },
+  {
+    "id": 13,
+    "tags": [
+      "non_english",
+      "uk"
+    ],
+    "text": "Астролог у чаті був дуже грубий і закінчив сесію на 10 хвилин раніше. Я витратила кредити даремно.",
+    "expected_category": "expert_complaint",
+    "expected_priority": "P3",
+    "category": "expert_complaint",
+    "priority": "P3",
+    "expected_articles": [
+      "expert-quality-complaints"
+    ],
+    "retrieved": [
+      "expert-quality-complaints",
+      "credits-expert-chats",
+      "refund-policy"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00032085,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "Скарга на експерта: не оцінювати експерта до перевірки логу чату; misconduct → Trust & Safety."
+    ],
+    "replies": {
+      "formal": "Шановна, дякуємо за повідомлення. Ми отримали вашу скаргу щодо грубості астролога та передчасного завершення сесії. Будь ласка, вкажіть дату і час сесії, кількість використаних кредитів та ім’я або ідентифікатор астролога, щоб ми могли передати інформацію до команди контролю якості експертів. Команда перегляне журнал чату протягом 2 робочих днів; у випадку підтвердження порушення, витрачені кредити будуть повернуті. Ми повідомимо вас про результат.",
+      "empathetic": "Ми розуміємо, що Ви відчули розчарування через грубість астролога та скорочення сесії, і це неприємно. Щоб розглянути вашу скаргу, будь ласка, повідомте дату і час сесії, кількість використаних кредитів та ім’я або ID астролога. Наша команда контролю якості експертів перевірить чат‑лог протягом 2 робочих днів і, якщо порушення буде підтверджено, поверне витрачені кредити. Ми обов’язково повідомимо вас про результат.",
+      "short": "Будь ласка, вкажіть дату і час сесії, кількість використаних кредитів та ім’я/ID астролога. Команда контролю якості експертів розгляне скаргу протягом 2 робочих днів і, якщо підтвердить порушення, поверне кредити. Ми повідомимо про результат."
+    },
+    "generated": true,
+    "gen_cost": 0.00107895,
+    "gen_latency": 3.957,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "uk",
+        "empathetic": "uk",
+        "short": "uk"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "expert-quality-complaints",
+        "quote": "When a customer complains about rudeness, generic answers or a session ended early, the Expert Quality team reviews the chat log within 2 business days.",
+        "valid": true
+      },
+      {
+        "article_id": "credits-expert-chats",
+        "quote": "If a session is interrupted by a technical problem, credits for the unused minutes are returned automatically within 24 hours.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": true,
+    "quality_ok": true
+  },
+  {
+    "id": 14,
+    "tags": [
+      "privacy"
+    ],
+    "text": "Is my birth data sold to advertisers or shared with anyone?",
+    "expected_category": "account_privacy",
+    "expected_priority": "P4",
+    "category": "account_privacy",
+    "priority": "P4",
+    "expected_articles": [
+      "data-privacy"
+    ],
+    "retrieved": [
+      "data-privacy",
+      "account-deletion-gdpr",
+      "birth-data-and-charts"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00022994999999999998,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": false,
+    "quality_ok": null
+  },
+  {
+    "id": 15,
+    "tags": [
+      "aggressive"
+    ],
+    "text": "your stupid app keeps freezing every 2 minutes, worst garbage I've ever paid for. fix it!!!",
+    "expected_category": "technical_issue",
+    "expected_priority": "P2",
+    "category": "technical_issue",
+    "priority": "P3",
+    "expected_articles": [
+      "app-crash-troubleshooting"
+    ],
+    "retrieved": [
+      "app-crash-troubleshooting",
+      "login-issues",
+      "refund-policy"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.00030555,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "База знань відповідає лише частково: перевір, що решта відповіді не вигадана."
+    ],
+    "replies": {
+      "formal": "Dear Customer, we acknowledge that the Nebula app freezes every two minutes. Please try the following steps: update the app to the latest version, restart your phone, verify your internet connection, and if the issue persists, reinstall the app (your account and purchases will remain intact). To investigate further, could you provide your device model, operating system version, the app version (Profile → Settings → About), when the problem began, and any error logs or screenshots? Our technical team will review the information and contact you with the next steps.",
+      "empathetic": "We understand how frustrating it is when the Nebula app freezes every two minutes, and we want to help you resolve this quickly. Please start by updating the app, restarting your phone, checking your internet connection, and reinstalling the app if needed—your account and purchases will stay safe. To diagnose the issue further, could you share your device model, OS version, app version (Profile → Settings → About), the time the problem started, and any error logs or screenshots? Our technical team will examine the details and follow up with you.",
+      "short": "Please update, restart, check internet, and reinstall the app. Provide device model, OS version, app version, when it started, and any logs or screenshots. Our technical team will review and respond."
+    },
+    "generated": true,
+    "gen_cost": 0.0007599,
+    "gen_latency": 2.244,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "partial",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "app-crash-troubleshooting",
+        "quote": "Basic steps: update Nebula to the latest version, restart the phone, check the internet connection, then reinstall the app.",
+        "valid": true
+      },
+      {
+        "article_id": "app-crash-troubleshooting",
+        "quote": "For a bug report, collect the device model, OS version, app version (Profile → Settings → About) and the steps that lead to the crash.",
+        "valid": true
+      }
+    ],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": false,
+    "quality_ok": true
+  },
+  {
+    "id": 16,
+    "tags": [
+      "sarcasm",
+      "money"
+    ],
+    "text": "Wow, great job charging me AGAIN after I cancelled last week. Truly amazing service 👏",
+    "expected_category": "billing_subscription",
+    "expected_priority": "P2",
+    "category": "billing_subscription",
+    "priority": "P2",
+    "expected_articles": [
+      "charged-after-cancel"
+    ],
+    "retrieved": [
+      "charged-after-cancel",
+      "cancel-subscription",
+      "refund-policy"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "ok",
+    "base_cost": 0.0002748,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": false,
+    "quality_ok": null
+  },
+  {
+    "id": 17,
+    "tags": [
+      "non_english",
+      "pl",
+      "outage"
+    ],
+    "text": "Aplikacja nie działa od rana u nikogo w mojej rodzinie, mamy 4 konta i u wszystkich biały ekran.",
+    "expected_category": "technical_issue",
+    "expected_priority": "P1",
+    "category": "technical_issue",
+    "priority": "P1",
+    "expected_articles": [
+      "app-crash-troubleshooting"
+    ],
+    "retrieved": [
+      "app-crash-troubleshooting",
+      "login-issues",
+      "birth-data-and-charts"
+    ],
+    "hit1": true,
+    "hit3": true,
+    "expected_level": "review",
+    "base_cost": 0.00034185,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: BadRequest Error code: 400 - {'error': {'message': \"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": true,
+    "quality_ok": null
+  },
+  {
+    "id": 18,
+    "tags": [
+      "out_of_kb"
+    ],
+    "text": "Can I order a personalized printed horoscope book as a gift for my mom's birthday?",
+    "expected_category": "product_question",
+    "expected_priority": "P4",
+    "category": "product_question",
+    "priority": "P4",
+    "expected_articles": [],
+    "retrieved": [
+      "push-notifications",
+      "premium-not-activated",
+      "refund-policy"
+    ],
+    "hit1": false,
+    "hit3": false,
+    "expected_level": "review",
+    "base_cost": 0.00042540000000000004,
+    "judge_model": "qwen/qwen3.8-27b",
+    "level": "review",
+    "reasons": [
+      "generation failed"
+    ],
+    "replies": null,
+    "generated": false,
+    "gen_cost": 0.0,
+    "gen_latency": 0.0,
+    "judge": null,
+    "checks": null,
+    "citations": [],
+    "gen_errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)",
+      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    ],
+    "level_ok": true,
+    "quality_ok": null
+  }
+]

@@ -74,7 +74,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 2,
@@ -146,7 +147,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 3,
@@ -218,7 +220,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 4,
@@ -293,7 +296,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 5,
@@ -371,7 +375,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 6,
@@ -448,7 +453,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 7,
@@ -567,7 +573,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 9,
@@ -643,7 +650,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 10,
@@ -714,7 +722,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 11,
@@ -783,7 +792,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 12,
@@ -867,7 +877,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 13,
@@ -949,7 +960,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": false,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 14,
@@ -1023,7 +1035,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 15,
@@ -1099,7 +1112,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 16,
@@ -1180,7 +1194,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 17,
@@ -1259,7 +1274,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   },
   {
     "id": 18,
@@ -1323,6 +1339,7 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "openai/gpt-oss-120b"
   }
 ]

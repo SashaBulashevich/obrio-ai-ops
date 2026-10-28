@@ -40,7 +40,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -74,7 +74,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 2,
@@ -112,7 +113,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -146,7 +147,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 3,
@@ -218,7 +220,8 @@
     ],
     "gen_errors": [],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 4,
@@ -257,7 +260,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -293,7 +296,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 5,
@@ -335,7 +339,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -371,7 +375,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 6,
@@ -448,7 +453,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 7,
@@ -529,7 +535,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -567,7 +573,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 9,
@@ -643,7 +650,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 10,
@@ -683,7 +691,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -714,7 +722,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 11,
@@ -783,7 +792,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 12,
@@ -831,7 +841,7 @@
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": "App crashes when opening chat and customer was charged for unused credits."
+      "issues": ""
     },
     "checks": {
       "invalid_citations": [],
@@ -867,7 +877,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 13,
@@ -909,12 +920,12 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": false,
-      "issues": "Rude astrologer ended the session early, causing loss of credits."
+      "issues": "The drafts are in English while the ticket is in Ukrainian."
     },
     "checks": {
       "invalid_citations": [],
@@ -949,7 +960,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": false
+    "quality_ok": false,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 14,
@@ -987,7 +999,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -1023,7 +1035,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 15,
@@ -1099,7 +1112,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 16,
@@ -1138,7 +1152,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -1180,7 +1194,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 17,
@@ -1222,7 +1237,7 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
+      "tone_distinct": 4,
       "grounded": true,
       "unauthorized_promise": false,
       "addresses_request": true,
@@ -1259,7 +1274,8 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": true,
+    "judge_model": "qwen/qwen3.8-27b"
   },
   {
     "id": 18,
@@ -1297,12 +1313,12 @@
       "formal_ok": true,
       "empathetic_ok": true,
       "short_ok": true,
-      "tone_distinct": 5,
-      "grounded": true,
+      "tone_distinct": 4,
+      "grounded": false,
       "unauthorized_promise": false,
       "addresses_request": true,
       "same_language_as_ticket": true,
-      "issues": ""
+      "issues": "The drafts invent product offerings (digital packages, gift subscriptions) and request shipping addresses for items that do not exist, which is not supported by the provided articles."
     },
     "checks": {
       "invalid_citations": [],
@@ -1323,6 +1339,7 @@
       "openai/gpt-oss-120b: RateLimitError"
     ],
     "level_ok": true,
-    "quality_ok": true
+    "quality_ok": false,
+    "judge_model": "qwen/qwen3.8-27b"
   }
 ]

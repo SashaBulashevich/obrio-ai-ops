@@ -80,6 +80,36 @@ def judge(ticket: str, hits, replies: dict) -> tuple[Verdict | None, float]:
     return (res.data if res.ok else None), res.cost_usd
 
 
+def quality_ok(row: dict) -> bool | None:
+    j = row["judge"]
+    return None if not row["generated"] else bool(
+        j and j["grounded"] and not j["unauthorized_promise"] and j["addresses_request"]
+        and j["formal_ok"] and j["empathetic_ok"] and j["short_ok"] and j["same_language_as_ticket"]
+        and row["checks"] and not row["checks"]["invalid_citations"]
+    )
+
+
+def rejudge(model: str, s1: dict, out_dir: Path) -> list[dict]:
+    """Переоцінити вже згенеровані відповіді поточним суддею — без повторної генерації.
+    Потрібно, щоб порівнювати версії промпту одним і тим самим суддею."""
+    path = out_dir / f"{model.replace('/', '__')}.json"
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    for row in rows:
+        if not row["generated"] or (row["judge"] and row.get("judge_model") == JUDGE_MODEL):
+            continue
+        st = s1[row["id"]]
+        queries = st["analysis"]["search_queries"] if st["analysis"] else [row["text"][:300]]
+        hits = retrieval.search(queries, k=3, boost_category=st["classification"]["category"])
+        verdict, _ = judge(row["text"], hits, row["replies"])
+        if verdict:
+            row.update(judge=verdict.model_dump(), judge_model=JUDGE_MODEL)
+            row["quality_ok"] = quality_ok(row)
+        path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+        q = {None: "—", True: "✅", False: "❌"}[row["quality_ok"]]
+        print(f"  #{row['id']:>2} rejudge {'ok' if verdict else 'FAILED'}  quality {q}  {verdict.issues if verdict else ''}")
+    return rows
+
+
 def evaluate_model(model: str, prompt: str, tickets: list[dict], s1: dict, out_dir: Path) -> list[dict]:
     """Результати по кожному тікету кешуються: повторний запуск (після rate limit або вимкнення світла)
     дозаповнює лише тікети, де генерація чи суддя не вдалися."""
@@ -130,12 +160,8 @@ def evaluate_model(model: str, prompt: str, tickets: list[dict], s1: dict, out_d
                        judge=verdict.model_dump() if verdict else None, checks=checks, citations=citations,
                        gen_errors=gen.errors)
         row["level_ok"] = row["level"] == t["expected_level"]
+        row["quality_ok"] = quality_ok(row)
         j = row["judge"]
-        row["quality_ok"] = None if not row["generated"] else bool(
-            j and j["grounded"] and not j["unauthorized_promise"] and j["addresses_request"]
-            and j["formal_ok"] and j["empathetic_ok"] and j["short_ok"] and j["same_language_as_ticket"]
-            and row["checks"] and not row["checks"]["invalid_citations"]
-        )
         rows.append(row)
         cache_path.write_text(json.dumps(rows + [r for i, r in done.items() if i not in {x["id"] for x in rows}],
                                          ensure_ascii=False, indent=2), encoding="utf-8")
@@ -164,10 +190,14 @@ def summarize(rows: list[dict]) -> dict:
         "citations_valid": pct(c["valid"] for c in cits),
         "regex_promise": sum(bool(r["checks"]["refund_promise"]) for r in gen if r["checks"]),
         "short_len_ok": pct(not r["checks"]["short_too_long"] for r in gen if r["checks"]),
-        "level_acc": pct(r["level_ok"] for r in rows),
+        # тікети, де генерація впала через rate limit, не рахуємо: рівень там "review" через збій, а не через логіку
+        "level_acc": pct(r["level_ok"] for r in rows if r["generated"] or r["level"] == "blocked"),
         "gen_latency": statistics.mean(r["gen_latency"] for r in gen) if gen else 0,
-        "cost_ticket": statistics.mean(r["base_cost"] + r["gen_cost"] for r in rows),
+        # як і level_acc — без тікетів, де генерація впала (інакше вартість занижена: $0 за генерацію)
+        "cost_ticket": statistics.mean(r["base_cost"] + r["gen_cost"] for r in rows if r["generated"] or r["level"] == "blocked"),
         "failed": sum(not r["generated"] and r["level"] != "blocked" for r in rows),
+        "judge": ", ".join(sorted({r["judge_model"].split("/")[-1] for r in gen if r.get("judge")})) or "—",
+        "generated": f"{len(gen)}/{sum(r['level'] != 'blocked' or r['generated'] for r in rows)}",
     }
 
 
@@ -186,18 +216,21 @@ def write_reports(out_dir: Path, prompt: str, per_model: dict[str, list[dict]]):
         f"priority accuracy: **{pct(r['priority'] == r['expected_priority'] for r in any_rows)}** ({n} тікетів)",
         f"- Retrieval hit@1: **{pct(r['hit1'] for r in any_rows)}**, hit@3: **{pct(r['hit3'] for r in any_rows)}**", "",
         "## Порівняння моделей генерації", "",
-        "| Модель | Quality pass | Grounded | Без неавторизованих обіцянок | 3 тони ок | Різниця тонів (1–5) | Мова | Цитати валідні | Human-judgment level acc | Latency генерації, с | $ / тікет (весь конвеєр) | $ / 10k |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| Модель | Суддя | Згенеровано | Quality pass | Grounded | Без неавторизованих обіцянок | 3 тони ок | Різниця тонів (1–5) | Мова | Цитати валідні | Human-judgment level acc | Latency генерації, с | $ / тікет (весь конвеєр) | $ / 10k |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for model, rows in per_model.items():
         s = summarize(rows)
         shared.append(
-            f"| {model} | {s['quality']} | {s['grounded']} | {s['no_promise']} | {s['tones_ok']} | {s['tone_distinct']} | "
+            f"| {model} | {s['judge']} | {s['generated']} | {s['quality']} | {s['grounded']} | {s['no_promise']} | {s['tones_ok']} | {s['tone_distinct']} | "
             f"{s['language']} | {s['citations_valid']} | {s['level_acc']} | {s['gen_latency']:.2f} | "
             f"${s['cost_ticket']:.5f} | ${s['cost_ticket'] * TICKETS_PER_MONTH:.2f} |"
         )
     shared += ["", "Quality pass = суддя: grounded, без неавторизованих обіцянок, відповідає на запит, усі 3 тони ок, "
-               f"мова клієнта; і всі цитати дослівно є в статтях. Суддя — {JUDGE_MODEL} (для цієї моделі це самооцінка, див. README)."]
+               "мова клієнта; і всі цитати дослівно є в статтях. Колонка «Суддя» — яка модель реально оцінювала відповіді; "
+               "якщо вона збігається з моделлю генерації, це самооцінка (див. README).",
+               "", "Згенеровано = тікети, для яких модель повернула відповідь (без заблокованих safety). "
+               "Решта — rate limits безкоштовного тарифу; якісні метрики рахуються лише на згенерованих."]
     (out_dir / "summary.md").write_text("\n".join(shared) + "\n", encoding="utf-8")
 
     for model, rows in per_model.items():
@@ -220,17 +253,27 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--prompt", default="generate_v1")
     parser.add_argument("--model", action="append")
+    parser.add_argument("--report-only", action="store_true", help="лише перебудувати звіти з наявних JSON, без API")
+    parser.add_argument("--rejudge", action="store_true", help="переоцінити наявні відповіді поточним суддею, без генерації")
     args = parser.parse_args()
 
     tickets = json.loads((HERE / "data" / "test_set.json").read_text(encoding="utf-8"))
-    print("=== stage 1: класифікація + аналіз ===")
-    s1 = stage1(tickets)
     out_dir = HERE / "results" / args.prompt
     out_dir.mkdir(parents=True, exist_ok=True)
     per_model = {}
-    for model in args.model or ALL_MODELS:
-        print(f"\n=== {model} / {args.prompt} ===")
-        per_model[model] = evaluate_model(model, args.prompt, tickets, s1, out_dir)
+    if not args.report_only:
+        print("=== stage 1: класифікація + аналіз ===")
+        s1 = stage1(tickets)
+    for model in [] if args.report_only else args.model or ALL_MODELS:
+        print(f"\n=== {model} / {args.prompt}{' (rejudge)' if args.rejudge else ''} ===")
+        per_model[model] = (rejudge(model, s1, out_dir) if args.rejudge
+                            else evaluate_model(model, args.prompt, tickets, s1, out_dir))
+    # у summary — усі моделі, вже прогнані з цим промптом, а не лише з цього запуску
+    for f in sorted(out_dir.glob("*.json")):
+        model = f.stem.replace("__", "/")
+        if model not in per_model and model in ALL_MODELS:
+            per_model[model] = json.loads(f.read_text(encoding="utf-8"))
+    per_model = {m: per_model[m] for m in ALL_MODELS if m in per_model}
     write_reports(out_dir, args.prompt, per_model)
     print(f"\nЗвіти: {out_dir}")
 
