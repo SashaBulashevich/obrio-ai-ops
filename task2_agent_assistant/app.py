@@ -81,6 +81,8 @@ if not r:
 hj = r["human_judgment"]
 if hj["level"] == "blocked":
     st.error("⛔ **AI-варіанти приховано. Відповідь пише людина.**\n\n" + "\n".join(f"- {x}" for x in hj["reasons"]))
+elif hj.get("off_topic"):
+    st.info("💬 **Звернення не по темі.**\n\n" + "\n".join(f"- {x}" for x in hj["reasons"]))
 elif hj["level"] == "review":
     st.warning("⚠️ **Потрібне рішення агента — не надсилай без перевірки.**\n\n" + "\n".join(f"- {x}" for x in hj["reasons"]))
 else:
@@ -100,7 +102,7 @@ with left:
     )
     if r["key_facts"]:
         st.markdown("**Ключові факти**\n" + "\n".join(f"- {x}" for x in r["key_facts"]))
-    if r["missing_info"]:
+    if r["missing_info"] and not hj.get("off_topic"):  # для «хочу пива» AI питає «адресу доставки»
         st.markdown("**Чого бракує (запитати в клієнта)**\n" + "\n".join(f"- {x}" for x in r["missing_info"]))
     if r["agent_notes"]:
         st.info(f"**Нотатка AI для агента:** {r['agent_notes']}")
@@ -128,7 +130,13 @@ with right:
 st.subheader("📚 Джерела з бази знань")
 if not r["articles"]:
     st.write("Релевантних статей не знайдено.")
-for a in r["articles"]:
+# BM25 завжди щось повертає; якщо модель каже, що статті не відповідають, — ховаємо їх, щоб не плутати агента
+no_answer = (r["checks"] or {}).get("kb_coverage") == "none" or hj.get("off_topic")
+if no_answer and r["articles"]:
+    st.caption("Відповіді в базі знань немає: пошук знайшов лише статті не по темі.")
+    with st.expander("Що знайшов пошук (лише для довідки)"):
+        st.markdown("\n".join(f"- {a['title']} · `{a['id']}` · BM25 score {a['score']}" for a in r["articles"]))
+for a in [] if no_answer else r["articles"]:
     quotes = [q for q in r["citations"] if q["article_id"] == a["id"]]
     with st.expander(f"{a['title']}  ·  `{a['id']}`  ·  BM25 score {a['score']}", expanded=bool(quotes)):
         for q in quotes:

@@ -103,7 +103,8 @@ def add_signature(replies: dict, language: str) -> dict:
     """Дописує підпис мовою клієнта, якщо модель його пропустила."""
     signature = SIGNATURES.get(language, SIGNATURES["en"])
     for tone, text in replies.items():
-        if "Nebula" not in text[-80:]:
+        # лише кінець тексту: «...у Nebula. Після цього ми допоможемо.» — це не підпис
+        if "Nebula" not in text[-30:]:
             replies[tone] = text.rstrip() + "\n\n" + signature
     return replies
 
@@ -112,7 +113,7 @@ def add_signature(replies: dict, language: str) -> dict:
 UK_ONLY = re.compile("[іїєґ]", re.IGNORECASE)
 RU_ONLY = re.compile("[ыэъё]", re.IGNORECASE)
 # часті слова без «особливих» літер, які існують лише в одній з мов
-UK_WORDS = re.compile(r"\b(що|як|це|мене|чому|коли|зараз|дякую|можна|треба|скасув\w*|видал\w*)\b", re.IGNORECASE)
+UK_WORDS = re.compile(r"\b(ти|ви|що|як|це|мене|чому|коли|зараз|дякую|можна|треба|скасув\w*|видал\w*)\b", re.IGNORECASE)
 RU_WORDS = re.compile(r"\b(что|как|меня|нет|почему|когда|сейчас|спасибо|пожалуйста|можно|нужно|деньги|отмен\w*|удал\w*)\b", re.IGNORECASE)
 
 
@@ -188,21 +189,28 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
         reasons.append("Видалення / експорт персональних даних: підтвердити, що запит від власника акаунта.")
     if classification["priority"] == "P1" and not reasons:
         reasons.append("Критичний пріоритет (P1): перевір, чи не потрібна ескалація, перш ніж відповідати.")
-    if classification.get("confidence", 1) < 0.6 or cat == "other":
+    no_kb = not hits or hits[0].score < MIN_RETRIEVAL_SCORE or bool(checks and checks.get("kb_coverage") == "none")
+    # «хочу пива», «asdfgh», «напиши вірш»: не тривога, а запит не по темі — одна спокійна причина
+    # або модель не знайшла жодної цитати: kb_coverage вона ставить непослідовно
+    off_topic = cat == "other" and (no_kb or bool(checks and checks["no_citations"]))
+    if off_topic:
+        reasons.append("Звернення не стосується Nebula або незрозуміле: достатньо ввічливо попросити уточнити запит. "
+                       "Перевір, що відповідь нічого не обіцяє (наприклад, «передамо команді»).")
+    elif classification.get("confidence", 1) < 0.6 or cat == "other":
         reasons.append("AI не впевнений, про що тікет: прочитай оригінал уважно.")
-    if not hits or hits[0].score < MIN_RETRIEVAL_SCORE or (checks and checks.get("kb_coverage") == "none"):
+    if no_kb and not off_topic:
         reasons.append("У базі знань немає відповіді на це питання: не покладайся на AI-варіанти, уточни в команді.")
     elif checks and checks.get("kb_coverage") == "partial":
         reasons.append("База знань відповідає лише частково: перевір, що решта відповіді не вигадана.")
     if checks:
-        if checks["invalid_citations"] or (checks["no_citations"] and checks.get("kb_coverage") != "none"):
+        if checks["invalid_citations"] or (checks["no_citations"] and checks.get("kb_coverage") != "none" and not off_topic):
             reasons.append("Цитата не підтверджена базою знань: перевір факти перед відправкою.")
         if checks["refund_promise"]:
             reasons.append(f"Відповідь обіцяє повернення коштів ({', '.join(checks['refund_promise'])}) — "
                            "до перевірки Billing це заборонено.")
         if checks["language_mismatch"]:
             reasons.append(f"Мова відповіді не збігається з мовою клієнта ({', '.join(checks['language_mismatch'])}).")
-    return {"level": "review" if reasons else "ok", "reasons": reasons}
+    return {"level": "review" if reasons else "ok", "reasons": reasons, "off_topic": off_topic}
 
 
 # ---------- конвеєр ----------
