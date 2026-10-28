@@ -5,6 +5,8 @@
 | **Task 1** | AI-класифікатор тікетів: категорія, пріоритет, наступний крок, команда | [task1_classifier/README.md](task1_classifier/README.md) · [еволюція промпту](task1_classifier/PROMPTS.md) |
 | **Task 2** | Internal AI-асистент support-агента: summary, 3 тони відповіді, цитати з бази знань | [task2_agent_assistant/README.md](task2_agent_assistant/README.md) |
 
+**▶ Живе демо Task 2:** https://nebula-support-copilot-test-task.streamlit.app/ (безкоштовний тариф Groq: ~200k токенів на добу на модель; якщо gpt-oss вичерпали ліміт, підхоплює запасна qwen3.8-27b. Якщо застосунок «спить», натисни «Yes, get this app back up» і зачекай ~30 с).
+
 Спільний код для обох задач — [common/](common/):
 - `llm_client.py` — timeout, retry з backoff, перевірка JSON-схеми, repair-запит, fallback між моделями;
 - `pricing.py` — ціни моделей і розрахунок вартості кожного виклику.
