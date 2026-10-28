@@ -33,6 +33,8 @@ cp .env.example .env   # і встав свій ключ з https://console.groq
 
 Ключ API зберігається лише в локальному `.env`. Файл внесено в `.gitignore`.
 
+**Без встановлення на свій комп'ютер:** на GitHub натисни **Code → Codespaces → Create codespace on main**. Налаштування з [.devcontainer/](.devcontainer/devcontainer.json) встановлять Python 3.12 і залежності та запустять Task 2. Ключ Groq додай так само: `cp .env.example .env` і встав ключ у `.env`.
+
 ## Швидка перевірка
 
 ```bash
