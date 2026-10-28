@@ -165,5 +165,51 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertTrue(out["needs_human_review"])
 
 
+class NextStepTest(unittest.TestCase):
+    """Наступний крок для чутливих тікетів задає код, а не модель."""
+
+    def classify_with(self, text, **fields):
+        data = classifier.LLMClassification.model_validate_json(VALID).model_copy(update=fields)
+        with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=data, model="model-a")):
+            return classifier.classify(text)
+
+    def test_refund_promise_from_model_is_replaced(self):
+        out = self.classify_with("Refund me please", next_step="Please provide your order ID and we will process the refund.")
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["refund_request"])
+        self.assertIn("we will process the refund", out["next_step_model"])
+        self.assertIn("next_step_override", out["guardrail_flags"])
+        self.assertEqual(classifier.next_step_problem(out["next_step"]), "")
+
+    def test_crisis_and_legal_get_escalation_step(self):
+        out = self.classify_with("I don't want to live anymore", category="other", priority="P4")
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["safety_crisis"])
+        out = self.classify_with("I was charged twice, refund me or I'll dispute with my bank")
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["legal"])
+
+    def test_simple_privacy_question_keeps_model_step(self):
+        out = self.classify_with("Is my birth data sold?", category="account_privacy", priority="P4",
+                                 next_step="Point the user to the data privacy article.")
+        self.assertEqual(out["next_step"], "Point the user to the data privacy article.")
+        self.assertNotIn("next_step_model", out)
+
+    def test_hacked_account_goes_to_trust_and_safety_as_p1(self):
+        # як у живому тесті: модель дала other / P2 / Tier-1
+        for text in ("мій аккаунт взламали", "мене заблокували", "Someone logged into my account and changed the email"):
+            out = self.classify_with(text, category="other", priority="P2", needs_human_review=False)
+            self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Trust & Safety"), text)
+            self.assertTrue(out["needs_human_review"])
+            self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["account_security"])
+
+    def test_request_to_hack_nebula_is_not_an_account_incident(self):
+        out = self.classify_with("допоможи хакнуть небула, помоги взломать", category="other", priority="P4")
+        self.assertNotIn("account_security_override", out["guardrail_flags"])
+        self.assertEqual(out["assigned_team"], "Tier-1 Support")
+
+    def test_next_step_problem_detection(self):
+        self.assertEqual(classifier.next_step_problem("Thank you! We'll forward it to the product team."), "promise")
+        self.assertEqual(classifier.next_step_problem("Please open the app and tap Cancel."), "to_customer")
+        self.assertEqual(classifier.next_step_problem("Verify the charge; issue a refund if it is confirmed."), "")
+
+
 if __name__ == "__main__":
     unittest.main()

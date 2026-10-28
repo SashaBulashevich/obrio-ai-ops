@@ -35,7 +35,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user’s current subscription status and confirm that saved readings are retained when upgrading to the yearly plan; provide instructions for the upgrade process."
   },
   {
     "id": 102,
@@ -73,7 +76,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "promise",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 103,
@@ -111,7 +117,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the chat connection logs and advise the user to try switching networks or reinstalling the app; if the issue persists, file a bug report with the engineering team."
   },
   {
     "id": 104,
@@ -149,7 +158,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 105,
@@ -188,7 +200,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the app’s notification settings or email preferences; if the feature isn’t available, let the user know that daily horoscopes are currently only delivered within the app."
   },
   {
     "id": 106,
@@ -227,7 +242,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "promise",
+    "next_problem": "",
+    "next_step_final": "Route to Privacy: verify that the request comes from the account owner's email before any deletion or export. Do not confirm the deletion in advance."
   },
   {
     "id": 107,
@@ -268,7 +286,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user’s payment history for duplicate charges and issue a refund if confirmed."
   },
   {
     "id": 108,
@@ -307,7 +328,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "to_customer",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 109,
@@ -345,7 +369,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "promise",
+    "next_problem": "promise",
+    "next_step_final": "Thank you for your feedback! We'll forward your suggestion to the product team."
   },
   {
     "id": 110,
@@ -386,7 +413,10 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the Nebula service status page and inform the user that we are aware of the outage; advise them to try again later and to clear app cache if possible."
   },
   {
     "id": 111,
@@ -427,7 +457,10 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 112,
@@ -467,7 +500,10 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the horoscope feed status and server logs for any errors, and verify the user’s device and app version to troubleshoot the loading issue."
   },
   {
     "id": 113,
@@ -508,7 +544,10 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Open the app settings, tap on \"Language\" or \"Langue\", and select \"Français\" from the list."
   },
   {
     "id": 114,
@@ -550,7 +589,10 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "to_customer",
+    "next_problem": "to_customer",
+    "next_step_final": "Please provide more details about your issue so we can assist you better."
   },
   {
     "id": 115,
@@ -592,7 +634,10 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user’s payment history, confirm subscription status, and contact the billing team to investigate the unauthorized charges."
   },
   {
     "id": 116,
@@ -635,6 +680,9 @@
           "openai/gpt-oss-20b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   }
 ]

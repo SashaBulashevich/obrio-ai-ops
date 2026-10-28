@@ -37,7 +37,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user's account eligibility to change from monthly to yearly, confirm that saved readings will be retained, and provide instructions for switching the plan in the app."
   },
   {
     "id": 102,
@@ -77,7 +80,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 103,
@@ -115,7 +121,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Ask the user to try clearing app cache, ensure the app is updated, check their internet connection, and gather logs to investigate the frequent disconnections in the expert chat."
   },
   {
     "id": 104,
@@ -153,7 +162,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 105,
@@ -192,7 +204,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Explain how to enable email delivery for the daily horoscope in the app settings or provide the relevant link/instructions."
   },
   {
     "id": 106,
@@ -231,7 +246,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Privacy: verify that the request comes from the account owner's email before any deletion or export. Do not confirm the deletion in advance."
   },
   {
     "id": 107,
@@ -272,7 +290,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the user's billing history for duplicate subscription charges this month and issue a refund for the extra payment if confirmed."
   },
   {
     "id": 108,
@@ -311,7 +332,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 109,
@@ -349,7 +373,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Log the suggestion and forward it to the product team for consideration of customizable notification timing."
   },
   {
     "id": 110,
@@ -387,7 +414,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the service status for a possible outage, confirm the 503 error, and escalate to the engineering team for resolution."
   },
   {
     "id": 111,
@@ -426,7 +456,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 112,
@@ -466,7 +499,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the horoscope service status and logs, and advise the user to retry or reinstall the app if needed."
   },
   {
     "id": 113,
@@ -505,7 +541,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Guide the user to the Settings menu and show how to select French as the app language."
   },
   {
     "id": 114,
@@ -545,7 +584,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Ask the user to provide a clear description of their issue."
   },
   {
     "id": 115,
@@ -589,7 +631,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the user's account for any active subscription or charges, verify that no subscription was intended, cancel any unauthorized subscription, and process a refund for the disputed charges."
   },
   {
     "id": 116,
@@ -631,6 +676,9 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   }
 ]

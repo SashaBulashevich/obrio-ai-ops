@@ -41,7 +41,7 @@ cp .env.example .env   # і встав свій ключ з https://console.groq
 ```bash
 python task1_classifier/classifier.py           # Task 1: інтерактивний режим — вводиш тікети, отримуєш рішення
 streamlit run task2_agent_assistant/app.py      # Task 2: веб-інтерфейс асистента (http://localhost:8501)
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 37 тестів без API
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 44 тести без API
 ```
 
 Детальніше, з прикладами тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити) · [Task 2 → Як запустити](task2_agent_assistant/README.md#як-запустити).

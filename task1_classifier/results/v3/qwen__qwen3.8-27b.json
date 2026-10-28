@@ -35,7 +35,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide instructions on how to cancel the subscription via App Store/Google Play or the in-app settings to prevent renewal."
   },
   {
     "id": 2,
@@ -74,7 +77,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the $29.99 transaction in the payment provider dashboard and manually activate the premium subscription for the user's account."
   },
   {
     "id": 3,
@@ -114,7 +120,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 4,
@@ -152,7 +161,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Request crash logs from the user and reproduce the issue on an iPhone 15 running iOS 18 to identify the specific error in the birth chart module."
   },
   {
     "id": 5,
@@ -190,7 +202,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check email delivery logs for the user's account and verify if the verification service is experiencing delays or failures; manually trigger a new code or reset the login state."
   },
   {
     "id": 6,
@@ -228,7 +243,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 7,
@@ -268,7 +286,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 8,
@@ -308,7 +329,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide a brief explanation of the compatibility report feature and confirm whether exact birth time is required for accuracy."
   },
   {
     "id": 9,
@@ -348,7 +372,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Log the feature request for dark mode in the product backlog."
   },
   {
     "id": 10,
@@ -388,7 +415,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Privacy: verify that the request comes from the account owner's email before any deletion or export. Do not confirm the deletion in advance."
   },
   {
     "id": 11,
@@ -429,7 +459,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 12,
@@ -469,7 +502,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check recent crash logs and device compatibility for the user's account to diagnose the freezing issue."
   },
   {
     "id": 13,
@@ -512,7 +548,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 14,
@@ -554,7 +593,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide instructions on how to edit birth time in the profile settings."
   },
   {
     "id": 15,
@@ -597,7 +639,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 16,
@@ -640,7 +685,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check server logs for the specific user ID to diagnose the 'server error' during login and verify the subscription status in the billing system."
   },
   {
     "id": 17,
@@ -681,7 +729,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 18,
@@ -722,7 +773,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide instructions on how to access the birth chart or profile section to view the rising sign."
   },
   {
     "id": 19,
@@ -766,7 +820,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 20,
@@ -808,7 +865,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check server status and recent deployment logs for a global outage causing white screens across multiple accounts."
   },
   {
     "id": 21,
@@ -849,7 +909,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 22,
@@ -893,7 +956,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 23,
@@ -935,7 +1001,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 24,
@@ -975,7 +1044,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Ask the user to provide more details about their issue or question."
   },
   {
     "id": 25,
@@ -1015,7 +1087,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Mark as spam and archive the ticket."
   },
   {
     "id": 26,
@@ -1055,7 +1130,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 27,
@@ -1095,7 +1173,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the subscription cancellation date and identify the specific unauthorized charge to process a reversal or credit."
   },
   {
     "id": 28,
@@ -1136,7 +1217,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user's notification permissions and device settings, and check server-side logs for push delivery failures to this account."
   },
   {
     "id": 29,
@@ -1176,7 +1260,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 30,
@@ -1216,7 +1303,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide the standard privacy policy response regarding data sharing and third-party access."
   },
   {
     "id": 31,
@@ -1261,7 +1351,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the credit transaction status and check server logs for errors preventing the expert chat from opening; if the feature is broken, offer a refund or restore access."
   },
   {
     "id": 32,
@@ -1303,6 +1396,9 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the promo code status in the backend and check if it has expired or reached its usage limit."
   }
 ]

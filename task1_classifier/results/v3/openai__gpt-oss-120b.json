@@ -35,7 +35,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Guide the user through the steps to cancel their subscription in the app or via the App Store/Google Play, and confirm the cancellation date to ensure it won’t renew next month."
   },
   {
     "id": 2,
@@ -76,7 +79,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the payment transaction, check the user's subscription status in the system, and activate premium access or issue a refund if activation fails."
   },
   {
     "id": 3,
@@ -116,7 +122,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 4,
@@ -154,7 +163,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Ask the user for a screenshot or crash log, verify the app version, and suggest reinstalling or updating the app while investigating the birth chart module crash."
   },
   {
     "id": 5,
@@ -192,7 +204,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user's email address, resend the verification code, and check for any email delivery issues; ensure the premium account is active after login."
   },
   {
     "id": 6,
@@ -230,7 +245,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 7,
@@ -268,7 +286,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 8,
@@ -306,7 +327,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Explain how the compatibility report is generated and whether an exact birth time for the partner is required."
   },
   {
     "id": 9,
@@ -346,7 +370,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Log the suggestion and forward it to the product team for consideration of a dark mode feature."
   },
   {
     "id": 10,
@@ -386,7 +413,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Privacy: verify that the request comes from the account owner's email before any deletion or export. Do not confirm the deletion in advance."
   },
   {
     "id": 11,
@@ -428,7 +458,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 12,
@@ -466,7 +499,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Request the user's device model, operating system version, app version, and steps to reproduce the freezing; then check logs and suggest reinstall or update."
   },
   {
     "id": 13,
@@ -509,7 +545,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 14,
@@ -549,7 +588,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Guide the user to edit their birth time: open the app, go to Profile > Edit Birth Details, update the time, and save the changes."
   },
   {
     "id": 15,
@@ -592,7 +634,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 16,
@@ -635,7 +680,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the user's account status, check server logs for login errors after the recent app update, and ensure the paid subscription is correctly applied."
   },
   {
     "id": 17,
@@ -676,7 +724,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 18,
@@ -717,7 +768,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Explain where in the app the user can find the rising sign (ascendant) feature, e.g., go to the Birth Chart section and tap 'Ascendant' or similar."
   },
   {
     "id": 19,
@@ -761,7 +815,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 20,
@@ -803,7 +860,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify if there is a known service outage, ask the user for device model, OS version, and app version, and suggest restarting or reinstalling the app while gathering logs."
   },
   {
     "id": 21,
@@ -844,7 +904,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 22,
@@ -886,7 +949,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 23,
@@ -928,7 +994,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 24,
@@ -968,7 +1037,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Ask the user for more details about their issue."
   },
   {
     "id": 25,
@@ -1008,7 +1080,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Mark the ticket as spam and close it."
   },
   {
     "id": 26,
@@ -1048,7 +1123,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 27,
@@ -1088,7 +1166,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the user's subscription status and payment history, verify the cancellation, and issue a refund or correct the charge as needed."
   },
   {
     "id": 28,
@@ -1129,7 +1210,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the device's notification settings, ensure push notifications are enabled for Nebula, and ask the user to try logging out and back in or reinstalling the app to reset the push token."
   },
   {
     "id": 29,
@@ -1169,7 +1253,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 30,
@@ -1211,7 +1298,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide the user with Nebula's privacy policy details, confirming whether birth data is shared with third parties or advertisers and explain data handling practices."
   },
   {
     "id": 31,
@@ -1257,7 +1347,10 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify the payment was processed, check why the expert chat is not opening, and either activate the chat access or issue a refund as appropriate."
   },
   {
     "id": 32,
@@ -1299,6 +1392,9 @@
           "openai/gpt-oss-120b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check the promo code entered, verify its validity and eligibility, and inform the user whether it can be applied or provide a correct code."
   }
 ]

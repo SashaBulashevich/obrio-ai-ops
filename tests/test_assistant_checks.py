@@ -106,6 +106,12 @@ class HumanJudgmentTest(unittest.TestCase):
     def test_no_relevant_article_requires_review(self):
         self.assertEqual(assistant.human_judgment(cls(), [], None)["level"], "review")
 
+    def test_hacked_account_has_security_reason_not_privacy(self):
+        hj = assistant.human_judgment(cls("account_privacy", "P1", flags=["account_security_override"]), self.hits, None)
+        self.assertEqual(hj["level"], "review")
+        self.assertTrue(any("Злам або блокування" in x for x in hj["reasons"]))
+        self.assertFalse(any("Видалення / експорт" in x for x in hj["reasons"]))
+
     def test_off_topic_gets_one_calm_reason(self):
         hj = assistant.human_judgment(cls("other", "P4"), [], None)
         self.assertEqual((hj["level"], hj["off_topic"], len(hj["reasons"])), ("review", True, 1))
@@ -171,6 +177,9 @@ class LanguageAndSignatureTest(unittest.TestCase):
         self.assertEqual(out["formal"], "Text.\n\nNebula Support Team")
         self.assertTrue(out["short"].endswith("З повагою, команда підтримки Nebula"))
         self.assertTrue(assistant.add_signature({"short": "x"}, "cs")["short"].endswith("Nebula Support Team"))
+        # буквальний «\n» від моделі стає справжнім переносом (знайдено ручним тестом «пайпал»)
+        out = assistant.add_signature({"short": "Уточніть, будь ласка.\\n\\nКоманда підтримки Nebula"}, "uk")
+        self.assertEqual(out["short"], "Уточніть, будь ласка.\n\nКоманда підтримки Nebula")
         # «Nebula» в останньому реченні — ще не підпис
         out = assistant.add_signature({"short": "Уточніть запит щодо Nebula. Після цього ми допоможемо."}, "uk")
         self.assertTrue(out["short"].endswith("команда підтримки Nebula"))

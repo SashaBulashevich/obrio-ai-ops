@@ -75,6 +75,19 @@ LEGAL_PATTERNS = re.compile(
     re.IGNORECASE,
 )
 
+# Безпека акаунта (злам, блокування): своєї категорії немає, модель обирала other / account_privacy і P2.
+# Ловимо лише «мій акаунт», а не «допоможи зламати Nebula».
+_ACCOUNT = r"(?:account|акаунт\w*|аккаунт\w*|профіль|профиль)"
+_TAKEOVER = (r"(?:hacked|hack(?:ed)? into|взлома\w*|зламал\w*|stolen|stole|вкрал\w*|украл\w*|"
+             r"заблокува\w*|заблокирова\w*|забани\w*|banned|suspended|(?:was|has been|got|is) blocked)")
+ACCOUNT_SECURITY_PATTERNS = re.compile(
+    rf"{_ACCOUNT}.{{0,25}}{_TAKEOVER}|{_TAKEOVER}.{{0,25}}{_ACCOUNT}|"
+    r"\b(?:мене|меня)\s+(?:за)?(?:блокува|блокирова|забани)\w*|"
+    r"\bi(?:'ve| have| was| am| got)\s+(?:been\s+)?(?:banned|blocked|locked out|suspended)\b|"
+    r"someone (?:logged|signed) in(?:to)? my account",
+    re.IGNORECASE,
+)
+
 
 def load_prompt(version: str) -> str:
     return (PROMPTS_DIR / f"{version}.md").read_text(encoding="utf-8")
@@ -126,6 +139,8 @@ def classify(
 
     out = apply_guardrails(text, out)
     out["assigned_team"] = TEAM_BY_CATEGORY[out["category"]]
+    if "account_security_override" in out["guardrail_flags"]:
+        out["assigned_team"] = "Trust & Safety"  # злам / блокування — інцидент безпеки, а не Tier-1 чи Privacy
     out["meta"] = meta
     return out
 
@@ -145,6 +160,10 @@ def apply_guardrails(text: str, out: dict) -> dict:
         out["priority"] = "P1"
         out["needs_human_review"] = True
         flags.append("legal_threat_override")
+    if ACCOUNT_SECURITY_PATTERNS.search(text) and out["category"] != "safety_crisis":
+        out["priority"] = "P1"
+        out["needs_human_review"] = True
+        flags.append("account_security_override")
     if out["category"] in ("refund_request", "account_privacy", "expert_complaint"):
         # гроші, персональні дані, звинувачення людей — тільки з людиною
         out["needs_human_review"] = True
@@ -152,7 +171,61 @@ def apply_guardrails(text: str, out: dict) -> dict:
         out["needs_human_review"] = True
         flags.append("low_confidence")
     out["guardrail_flags"] = flags
+    return override_next_step(text, out)
+
+
+# Наступний крок для чутливих тікетів — фіксований текст для агента, а не від моделі.
+# У 14 з 48 тікетів eval модель писала його клієнту, а частина обіцяла refund чи видалення акаунта.
+SAFE_NEXT_STEPS = {
+    "safety_crisis": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis "
+                     "protocol (local emergency services, findahelpline.com); no templates or bot replies.",
+    "account_security": "Escalate to Trust & Safety: check active sessions and recent login, email and payment changes; "
+                        "freeze payment changes and restore access only after verifying the account owner.",
+    "legal": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; "
+             "reply only after their review.",
+    "refund_request": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) "
+                      "before any refund decision. Do not promise a refund to the customer.",
+    "expert_complaint": "Route to Expert Quality: review the chat log before any judgement about the expert; "
+                        "escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions.",
+    "account_privacy": "Route to Privacy: verify that the request comes from the account owner's email before "
+                       "any deletion or export. Do not confirm the deletion in advance.",
+}
+
+
+def override_next_step(text: str, out: dict) -> dict:
+    """Замінює наступний крок моделі на SAFE_NEXT_STEPS для кризи, юридичних погроз, грошей, експертів і даних."""
+    if out["category"] == "safety_crisis":
+        key = "safety_crisis"
+    elif "account_security_override" in out["guardrail_flags"]:
+        key = "account_security"
+    elif LEGAL_PATTERNS.search(text):
+        key = "legal"
+    elif out["category"] in ("refund_request", "expert_complaint"):
+        key = out["category"]
+    elif out["category"] == "account_privacy" and out["priority"] in ("P1", "P2"):
+        key = "account_privacy"  # видалення / експорт даних, а не просте питання про дані (P4)
+    else:
+        return out
+    out["next_step_model"] = out["next_step"]  # що запропонувала модель — для розбору в eval
+    out["next_step"] = SAFE_NEXT_STEPS[key]
+    out["guardrail_flags"] = [*out["guardrail_flags"], "next_step_override"]
     return out
+
+
+# Перевірка наступного кроку в eval: він має бути дією для агента, без обіцянок клієнту.
+NEXT_STEP_TO_CUSTOMER = re.compile(r"^(please|thank|sorry|dear|hi|hello)\b|\b(you|your|you're|you’re)\b", re.I)
+# «we will…» — обіцянка клієнту від імені компанії. Умовний refund в інструкції агенту
+# («verify…, issue a refund if confirmed») не рахуємо: це рішення Billing після перевірки.
+NEXT_STEP_PROMISE = re.compile(r"\bwe(?:'ll| will)\b", re.I)
+
+
+def next_step_problem(step: str) -> str:
+    """'' якщо крок нормальний, інакше коротка причина."""
+    if NEXT_STEP_PROMISE.search(step):
+        return "promise"
+    if NEXT_STEP_TO_CUSTOMER.search(step):
+        return "to_customer"
+    return ""
 
 
 def format_card(r: dict) -> str:

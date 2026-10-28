@@ -112,6 +112,8 @@ def add_signature(replies: dict, language: str) -> dict:
     """Дописує підпис мовою клієнта, якщо модель його пропустила."""
     signature = SIGNATURES.get(language, SIGNATURES["en"])
     for tone, text in replies.items():
+        # модель інколи екранує перенос двічі: у тексті буквально «\n» (66 з 363 відповідей eval)
+        text = replies[tone] = text.replace("\\r\\n", "\n").replace("\\n", "\n")
         # лише кінець тексту: «...у Nebula. Після цього ми допоможемо.» — це не підпис
         if "Nebula" not in text[-30:]:
             replies[tone] = text.rstrip() + "\n\n" + signature
@@ -252,11 +254,14 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
         ]}
     if "legal_threat_override" in flags:
         reasons.append("Юридична погроза / chargeback: не визнавати провину, ескалювати Billing lead і Legal.")
+    if "account_security_override" in flags:
+        reasons.append("Злам або блокування акаунта: інцидент безпеки → Trust & Safety. Не змінювати пошту, пароль чи "
+                       "платежі за проханням з тікету — доступ відновлюється лише після верифікації власника.")
     if cat == "refund_request":
         reasons.append("Рішення про повернення коштів ухвалює Billing після перевірки транзакції.")
     if cat == "expert_complaint":
         reasons.append("Скарга на експерта: не оцінювати експерта до перевірки логу чату; misconduct → Trust & Safety.")
-    if cat == "account_privacy" and classification["priority"] in ("P1", "P2"):
+    if cat == "account_privacy" and classification["priority"] in ("P1", "P2") and "account_security_override" not in flags:
         # запит на видалення / експорт даних (P2), а не просте питання про дані (P4)
         reasons.append("Видалення / експорт персональних даних: підтвердити, що запит від власника акаунта.")
     if classification["priority"] == "P1" and not reasons:

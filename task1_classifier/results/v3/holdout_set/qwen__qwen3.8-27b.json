@@ -37,7 +37,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Confirm that switching plans is possible and assure the user that their saved readings will be retained."
   },
   {
     "id": 102,
@@ -77,7 +80,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   },
   {
     "id": 103,
@@ -115,7 +121,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check server logs for connection stability issues during expert chat sessions and verify if the user is on a stable network or if there are known outages."
   },
   {
     "id": 104,
@@ -153,7 +162,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Expert Quality: review the chat log before any judgement about the expert; escalate fraud or harassment to Trust & Safety. Do not promise refunds or sanctions."
   },
   {
     "id": 105,
@@ -192,7 +204,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check if email horoscope delivery is a supported feature; if yes, guide the user to the notification settings; if no, inform the user that this feature is currently unavailable."
   },
   {
     "id": 106,
@@ -231,7 +246,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Privacy: verify that the request comes from the account owner's email before any deletion or export. Do not confirm the deletion in advance."
   },
   {
     "id": 107,
@@ -270,7 +288,10 @@
         "attempts": 1,
         "errors": []
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Verify transaction history for duplicate charges and initiate a refund for the duplicate amount."
   },
   {
     "id": 108,
@@ -311,7 +332,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Trust & Safety on-call now. A human writes the reply using the crisis protocol (local emergency services, findahelpline.com); no templates or bot replies."
   },
   {
     "id": 109,
@@ -351,7 +375,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Log the feature request for customizable notification timing in the product backlog."
   },
   {
     "id": 110,
@@ -391,7 +418,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check server status and logs for 503 errors to confirm a widespread outage and notify the engineering team."
   },
   {
     "id": 111,
@@ -432,7 +462,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; reply only after their review."
   },
   {
     "id": 112,
@@ -472,7 +505,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Check server logs for daily horoscope API errors and verify if the content is available for the user's zodiac sign."
   },
   {
     "id": 113,
@@ -513,7 +549,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Provide instructions on how to change the app language to French in the settings."
   },
   {
     "id": 114,
@@ -553,7 +592,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Close ticket as spam or request clarification from the user."
   },
   {
     "id": 115,
@@ -595,7 +637,10 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Immediately verify the user's account and payment history to confirm if a subscription was active or if charges were unauthorized, and prepare a dispute resolution or refund."
   },
   {
     "id": 116,
@@ -637,6 +682,9 @@
           "qwen/qwen3.8-27b: RateLimitError"
         ]
       }
-    }
+    },
+    "next_problem_model": "",
+    "next_problem": "",
+    "next_step_final": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) before any refund decision. Do not promise a refund to the customer."
   }
 ]
