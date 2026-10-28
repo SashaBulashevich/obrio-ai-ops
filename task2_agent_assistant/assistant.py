@@ -36,7 +36,7 @@ import retrieval  # noqa: E402
 DetectorFactory.seed = 0  # langdetect детермінований
 
 PROMPTS_DIR = HERE / "prompts"
-ANALYZE_PROMPT = "analyze_v1"
+ANALYZE_PROMPT = "analyze_v2"  # v2 = v1 + поле about_nebula
 GENERATE_PROMPT = "generate_v2"  # v1 лишається для порівняння, див. PROMPTS.md
 ANALYZE_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
 GENERATE_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
@@ -53,6 +53,7 @@ class Analysis(BaseModel):
     search_queries: list[str] = Field(min_length=1, max_length=3)
     key_facts: list[str] = Field(default_factory=list)
     missing_info: list[str] = Field(default_factory=list)
+    about_nebula: bool = True  # з analyze_v2; false → шаблонна відповідь без генерації
 
 
 class Replies(BaseModel):
@@ -107,6 +108,49 @@ def add_signature(replies: dict, language: str) -> dict:
         if "Nebula" not in text[-30:]:
             replies[tone] = text.rstrip() + "\n\n" + signature
     return replies
+
+
+# Звернення не про Nebula («столиця Англії», «хочу пива»): готовий текст замість генерації.
+# Модель на таких тікетах обіцяла «відділ підтримки перевірить і зв'яжеться» — шаблон нічого не обіцяє.
+OFF_TOPIC_REPLIES = {
+    "uk": {
+        "formal": "Добрий день! Дякуємо за ваше повідомлення. Служба підтримки Nebula допомагає з питаннями щодо застосунку: підписки, оплати, акаунта, гороскопів і консультацій з астрологами. Якщо у вас є таке питання, опишіть його, будь ласка, детальніше, і ми з радістю допоможемо.",
+        "empathetic": "Дякуємо, що написали нам! На жаль, із цим запитом ми допомогти не зможемо: ми підтримуємо лише користувачів застосунку Nebula. Якщо у вас є питання щодо підписки, акаунта, гороскопів чи консультацій, просто напишіть, ми на зв'язку.",
+        "short": "Ми допомагаємо лише з питаннями щодо застосунку Nebula. Опишіть, будь ласка, що саме вам потрібно.",
+    },
+    "ru": {
+        "formal": "Здравствуйте! Спасибо за ваше сообщение. Служба поддержки Nebula помогает с вопросами о приложении: подписка, оплата, аккаунт, гороскопы и консультации с астрологами. Если у вас есть такой вопрос, пожалуйста, опишите его подробнее, и мы с радостью поможем.",
+        "empathetic": "Спасибо, что написали нам! К сожалению, с этим запросом мы помочь не сможем: мы поддерживаем только пользователей приложения Nebula. Если у вас есть вопрос о подписке, аккаунте, гороскопах или консультациях, просто напишите, мы на связи.",
+        "short": "Мы помогаем только с вопросами о приложении Nebula. Пожалуйста, уточните, что именно вам нужно.",
+    },
+    "en": {
+        "formal": "Hello, and thank you for your message. Nebula Support helps with questions about the Nebula app: subscriptions, payments, your account, horoscopes and consultations with astrologers. If you have a question like this, please describe it in more detail and we will be glad to help.",
+        "empathetic": "Thank you for reaching out! Unfortunately, we can't help with this request: we support Nebula app users only. If you have a question about your subscription, account, horoscopes or consultations, just write to us, we're here for you.",
+        "short": "We can only help with questions about the Nebula app. Please tell us what you need.",
+    },
+    "es": {
+        "formal": "Hola, gracias por su mensaje. El soporte de Nebula ayuda con preguntas sobre la aplicación: suscripciones, pagos, su cuenta, horóscopos y consultas con astrólogos. Si tiene una pregunta de este tipo, descríbala con más detalle y con gusto le ayudaremos.",
+        "empathetic": "¡Gracias por escribirnos! Lamentablemente, no podemos ayudar con esta solicitud: solo damos soporte a los usuarios de la aplicación Nebula. Si tiene alguna pregunta sobre su suscripción, cuenta, horóscopos o consultas, escríbanos, estamos aquí para ayudarle.",
+        "short": "Solo podemos ayudar con preguntas sobre la aplicación Nebula. Indíquenos qué necesita.",
+    },
+    "de": {
+        "formal": "Guten Tag, vielen Dank für Ihre Nachricht. Der Nebula-Support hilft bei Fragen zur App: Abonnements, Zahlungen, Ihr Konto, Horoskope und Beratungen mit Astrologen. Wenn Sie eine solche Frage haben, beschreiben Sie sie bitte etwas genauer, wir helfen Ihnen gern.",
+        "empathetic": "Danke, dass Sie uns geschrieben haben! Leider können wir bei dieser Anfrage nicht helfen: Wir unterstützen nur Nutzer der Nebula-App. Wenn Sie eine Frage zu Ihrem Abonnement, Konto, Horoskopen oder Beratungen haben, schreiben Sie uns einfach, wir sind für Sie da.",
+        "short": "Wir können nur bei Fragen zur Nebula-App helfen. Bitte teilen Sie uns mit, was Sie benötigen.",
+    },
+    "pl": {
+        "formal": "Dzień dobry, dziękujemy za wiadomość. Wsparcie Nebula pomaga w sprawach dotyczących aplikacji: subskrypcji, płatności, konta, horoskopów i konsultacji z astrologami. Jeśli ma Pan/Pani takie pytanie, prosimy opisać je dokładniej, chętnie pomożemy.",
+        "empathetic": "Dziękujemy, że do nas piszesz! Niestety nie możemy pomóc w tej sprawie: wspieramy wyłącznie użytkowników aplikacji Nebula. Jeśli masz pytanie o subskrypcję, konto, horoskopy lub konsultacje, po prostu napisz, jesteśmy tu dla Ciebie.",
+        "short": "Pomagamy tylko w sprawach dotyczących aplikacji Nebula. Napisz, proszę, czego potrzebujesz.",
+    },
+}
+# навіть якщо модель скаже «не про Nebula», ці тікети йдуть звичайним шляхом
+SENSITIVE_CATEGORIES = {"safety_crisis", "refund_request", "expert_complaint", "account_privacy"}
+
+
+def off_topic_replies(language: str) -> dict:
+    lang = language if language in OFF_TOPIC_REPLIES else "en"
+    return add_signature(dict(OFF_TOPIC_REPLIES[lang]), lang)
 
 
 # uk/ru визначаємо кодом, а не моделлю: наприклад елементарний приклад тестової невалідної поведінки від користувача «хочу пива» однаково пишеться обома мовами
@@ -227,8 +271,8 @@ def _meta(res) -> dict:
             "cached_tokens": res.cached_tokens, "attempts": res.attempts, "errors": res.errors}
 
 
-def analyze(text: str, models: list[str] | None = None):
-    messages = [{"role": "system", "content": load_prompt(ANALYZE_PROMPT)},
+def analyze(text: str, models: list[str] | None = None, prompt: str = ANALYZE_PROMPT):
+    messages = [{"role": "system", "content": load_prompt(prompt)},
                 {"role": "user", "content": f"<ticket>\n{text}\n</ticket>"}]
     return call_json(messages, Analysis, models or ANALYZE_MODELS, max_tokens=1500)
 
@@ -296,8 +340,17 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
     }
 
     judgment = human_judgment(classification, hits, None)
+    sensitive = (classification["category"] in SENSITIVE_CATEGORIES or classification.get("guardrail_flags")
+                 or classification["priority"] == "P1")
     if judgment["level"] == "blocked":
         out["human_judgment"] = judgment
+    elif not analysis.about_nebula and not sensitive:
+        lang = analysis.customer_language
+        reasons = ["Звернення не стосується Nebula: замість AI-генерації — готова відповідь із проханням уточнити запит."]
+        if lang not in OFF_TOPIC_REPLIES:
+            reasons.append(f"Шаблону мовою «{lang}» немає — відповідь англійською.")
+        out.update(replies=off_topic_replies(lang), missing_info=[])
+        out["human_judgment"] = {"level": "ok", "reasons": reasons, "off_topic": True}
     else:
         gen_res, _ = generate(text, analysis, classification, hits, generate_models, generate_prompt)
         out["meta"]["generate"] = _meta(gen_res)

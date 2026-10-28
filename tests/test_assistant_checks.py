@@ -7,6 +7,8 @@
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "task2_agent_assistant"))
@@ -115,6 +117,42 @@ class HumanJudgmentTest(unittest.TestCase):
     def test_refund_promise_in_draft_requires_review(self):
         checks, _ = assistant.run_checks(gen(short="We will refund you."), self.hits, "en")
         self.assertEqual(assistant.human_judgment(cls("billing_subscription", "P3"), self.hits, checks)["level"], "review")
+
+
+class OffTopicFlowTest(unittest.TestCase):
+    """assist() з підміненими викликами LLM: звернення не про Nebula → шаблон без генерації."""
+
+    def run_assist(self, text, category, priority="P4", about_nebula=False, lang="uk"):
+        meta = dict(model="fake", api_latency_s=0, cost_usd=0, prompt_tokens=0, completion_tokens=0,
+                    cached_tokens=0, attempts=1, errors=[])
+        cls_ = {**cls(category, priority), "language": lang, "meta": meta}
+        an = SimpleNamespace(ok=True, data=assistant.Analysis(summary="s", customer_language=lang, search_queries=[text],
+                                                              about_nebula=about_nebula), **meta)
+        failed = SimpleNamespace(ok=False, data=None, **meta)
+        with patch.object(assistant, "classify", return_value=cls_), patch.object(assistant, "analyze", return_value=an), \
+                patch.object(assistant, "generate", return_value=(failed, None)) as gen_mock:
+            return assistant.assist(text), gen_mock
+
+    def test_off_topic_uses_template_without_generation(self):
+        r, gen_mock = self.run_assist("столиця англії", "product_question")
+        gen_mock.assert_not_called()
+        self.assertEqual((r["human_judgment"]["level"], r["human_judgment"]["off_topic"]), ("ok", True))
+        self.assertTrue(r["replies"]["short"].endswith("команда підтримки Nebula"))
+
+    def test_unknown_language_falls_back_to_english(self):
+        r, _ = self.run_assist("quelle est la capitale de la France", "other", lang="fr")
+        self.assertTrue(r["replies"]["short"].endswith("Nebula Support Team"))
+        self.assertEqual(len(r["human_judgment"]["reasons"]), 2)
+
+    def test_crisis_is_blocked_even_if_model_says_off_topic(self):
+        # реальний випадок: на тікеті #7 analyze_v2 повернув about_nebula = false
+        r, _ = self.run_assist("Nothing matters anymore.", "safety_crisis", "P1", lang="en")
+        self.assertEqual(r["human_judgment"]["level"], "blocked")
+        self.assertIsNone(r["replies"])
+
+    def test_refund_goes_normal_path_even_if_model_says_off_topic(self):
+        _, gen_mock = self.run_assist("Поверніть гроші", "refund_request", "P2")
+        gen_mock.assert_called_once()
 
 
 class LanguageAndSignatureTest(unittest.TestCase):

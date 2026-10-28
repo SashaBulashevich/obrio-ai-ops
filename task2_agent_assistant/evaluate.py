@@ -33,6 +33,7 @@ ALL_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.8-27b"]
 # Суддя — модель іншої родини, ніж основний кандидат (gpt-oss): менше упередження "сам себе хвалить".
 # Додатково: окрема квота rate limits (free tier Groq: 8k токенів/хв і 200k/добу на модель).
 JUDGE_MODEL = "qwen/qwen3.8-27b"
+EVAL_ANALYZE_PROMPT = "analyze_v1"
 STAGE1_CACHE = HERE / "results" / "_stage1_cache.json"
 TICKETS_PER_MONTH = 10_000
 
@@ -57,13 +58,15 @@ def stage1(tickets: list[dict]) -> dict:
     """Класифікація + аналіз не залежать від моделі генерації — рахуємо один раз і кешуємо на диск.
     Інвалідація: видалити _stage1_cache.json (або змінити промпт аналізу / класифікатора)."""
     cache = json.loads(STAGE1_CACHE.read_text(encoding="utf-8")) if STAGE1_CACHE.exists() else {}
-    key_version = f"{assistant.ANALYZE_PROMPT}|task1-v3"
+    # аналіз зафіксовано на v1: на ньому зроблено всі прогони; v2 лише додає about_nebula,
+    # а всі 18 тікетів — про Nebula (перевірено окремо, див. README розділ 5)
+    key_version = f"{EVAL_ANALYZE_PROMPT}|task1-v3"
     for t in tickets:
         key = f"{key_version}|{t['text']}"
         if key in cache:
             continue
         cls = assistant.classify(t["text"])
-        an = assistant.analyze(t["text"])
+        an = assistant.analyze(t["text"], prompt=EVAL_ANALYZE_PROMPT)
         cache[key] = {"classification": cls, "analysis": an.data.model_dump() if an.ok else None,
                       "analyze_meta": assistant._meta(an)}
         print(f"  stage1 #{t['id']}: {cls['category']}/{cls['priority']}")
