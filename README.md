@@ -1,47 +1,138 @@
 # OBRIO · AI Ops — тестове завдання (Nebula)
 
-| Завдання | Що це | Документація |
-|---|---|---|
-| **Task 1** | AI-класифікатор тікетів: категорія, пріоритет, наступний крок, команда | [task1_classifier/README.md](task1_classifier/README.md) · [еволюція промпту](task1_classifier/PROMPTS.md) |
-| **Task 2** | Internal AI-асистент support-агента: summary, 3 тони відповіді, цитати з бази знань | [task2_agent_assistant/README.md](task2_agent_assistant/README.md) |
+## Коротко
 
-**▶ Живе демо Task 2:** https://nebula-support-copilot-test-task.streamlit.app/ (безкоштовний тариф Groq: ~200k токенів на добу на модель; якщо gpt-oss вичерпали ліміт, підхоплює запасна qwen3.8-27b. Якщо застосунок «спить», натисни «Yes, get this app back up» і зачекай ~30 с).
+- **Task 1 — AI-класифікатор тікетів.** Приймає текст звернення будь-якою мовою і повертає категорію, пріоритет, рекомендований наступний крок і команду, якій передати тікет. Точність (категорія **і** пріоритет разом) — **96%** на 48 тікетах. Вартість — **≈ $1.58** на 10 000 тікетів. Небезпечні випадки (кризовий стан, юридичні погрози, злам акаунта, гроші, персональні дані) гарантує код, а не модель.
+- **Task 2 — AI-асистент support-агента.** Агент вставляє тікет і отримує summary, 3 варіанти відповіді мовою клієнта (формальний / емпатійний / короткий) і цитати з бази знань. Якість відповідей — **94%**, правильна стаття в топ-3 — **94%**. Вартість — **≈ $14** на 10 000 тікетів. Там, де рішення має ухвалити людина, інтерфейс блокує копіювання або взагалі ховає AI-варіанти.
+- **▶ Живе демо Task 2:** https://nebula-support-copilot-test-task.streamlit.app/ — нічого не треба встановлювати.
+- **Моделі:** open-weight gpt-oss-20b, gpt-oss-120b і qwen3.8-27b через Groq, на безкоштовному тарифі.
 
-Спільний код для обох задач — [common/](common/):
-- `llm_client.py` — timeout, retry з backoff, перевірка JSON-схеми, repair-запит, fallback між моделями;
-- `pricing.py` — ціни моделей і розрахунок вартості кожного виклику.
+| Завдання | Документація |
+|---|---|
+| **Task 1** — класифікатор | [task1_classifier/README.md](task1_classifier/README.md) · [еволюція промпту v1 → v3](task1_classifier/PROMPTS.md) |
+| **Task 2** — асистент агента | [task2_agent_assistant/README.md](task2_agent_assistant/README.md) · [еволюція промпту генерації v1 → v2](task2_agent_assistant/PROMPTS.md) |
+
+<!-- AI_WORK: тут буде розділ «Як я працював з AI» — його пише автор -->
+
+## Як перевірити за 5 хвилин
+
+**Без встановлення — живе демо Task 2.** Відкрий https://nebula-support-copilot-test-task.streamlit.app/ → ліва панель → «Приклади для демо» → натисни приклад → «Проаналізувати»:
+
+| Приклад | Що має з'явитися |
+|---|---|
+| Скасування підписки (німецькою) | ✅ зелений банер, відповідь німецькою, копіювання доступне одразу |
+| Подвійне списання (українською) | ⚠️ жовтий банер «рішення про повернення ухвалює Billing», копіювання заблоковане до галочки «Я перевірив(ла)» |
+| Кризовий стан | ⛔ червоний банер, AI-варіантів немає — відповідь пише людина |
+| Не про Nebula (французькою) | 💬 синій банер, готова відповідь французькою без AI-генерації |
+
+Якщо застосунок «спить», натисни «Yes, get this app back up» і зачекай ~30 с. Демо працює на безкоштовному тарифі Groq (~200 тис. токенів на добу на модель); коли основні моделі вичерпають ліміт, відповідає запасна qwen3.8-27b.
+
+**Результати без запуску:** таблиці input → expected → actual → pass/fail — [Task 1, розділ 3](task1_classifier/README.md#3-evaluation) і [Task 2, розділ 6](task2_agent_assistant/README.md#6-evaluation).
+
+**Локально** (після встановлення нижче):
+
+```bash
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 44 тести, без ключа і без API, ~1 с
+python task1_classifier/classifier.py                                            # Task 1: вводиш тікети, отримуєш картку з рішенням
+streamlit run task2_agent_assistant/app.py                                       # Task 2: інтерфейс на http://localhost:8501
+```
+
+## Встановлення покроково
+
+Працює на Windows, macOS і Linux. Розроблено на Python 3.12, потрібен Python 3.10 або новіший.
+
+**Крок 1. Python.** Перевір версію: `python --version`. Якщо Python немає — встанови з [python.org](https://www.python.org/downloads/); на Windows у першому вікні інсталятора постав галочку «Add python.exe to PATH».
+
+**Крок 2. Завантаж проєкт.**
+
+```bash
+git clone https://github.com/SashaBulashevich/obrio-ai-ops.git
+cd obrio-ai-ops
+```
+
+Без git: на GitHub натисни **Code → Download ZIP**, розпакуй і відкрий термінал у папці `obrio-ai-ops`.
+
+**Крок 3. Створи віртуальне середовище** — окрему папку `venv` для бібліотек проєкту, щоб не змішувати їх із системними.
+
+```bash
+python -m venv venv
+```
+
+Активуй його:
+
+| Система | Команда |
+|---|---|
+| Windows, PowerShell | `venv\Scripts\Activate.ps1` |
+| Windows, cmd | `venv\Scripts\activate` |
+| macOS / Linux | `source venv/bin/activate` |
+
+Після активації на початку рядка терміналу з'явиться `(venv)`. Якщо PowerShell не дозволяє запустити скрипт активації, можна не активувати, а писати повний шлях: `.\venv\Scripts\python.exe` замість `python` у всіх командах нижче.
+
+**Крок 4. Встанови бібліотеки** (~1–2 хв):
+
+```bash
+pip install -r requirements.txt
+```
+
+**Крок 5. Ключ Groq** — безкоштовний, без картки.
+1. Зайди на https://console.groq.com/keys і увійди або зареєструйся.
+2. Натисни **Create API Key**, назви його будь-як і скопіюй ключ (він починається з `gsk_`).
+3. Створи файл з налаштуваннями: `cp .env.example .env` (у Windows cmd — `copy .env.example .env`).
+4. Відкрий `.env` у будь-якому редакторі й заміни `your_groq_api_key_here` на свій ключ.
+
+Ключ зберігається лише в локальному `.env`: цей файл внесено в `.gitignore`, тож у git він не потрапить.
+
+**Крок 6. Перевір, що все працює.**
+
+```bash
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v
+```
+
+Внизу має бути `Ran 44 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
+
+```bash
+python task1_classifier/classifier.py "How do I cancel my subscription?"
+```
+
+Має з'явитися JSON з `"category": "billing_subscription"` і `"priority": "P3"`. Якщо замість цього помилка про ключ — перевір файл `.env` (крок 5).
+
+**Крок 7. Запусти.**
+- Task 1: `python task1_classifier/classifier.py` — інтерактивний режим, приклади тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити).
+- Task 2: `streamlit run task2_agent_assistant/app.py` — браузер відкриється на http://localhost:8501. Подробиці: [Task 2 → Як запустити](task2_agent_assistant/README.md#як-запустити).
+
+## Структура репозиторію
+
+```
+obrio-ai-ops/
+├── task1_classifier/        Task 1 — класифікатор
+│   ├── classifier.py        класифікація, guardrails, інтерактивний режим
+│   ├── evaluate.py          прогін тестових наборів, таблиці pass/fail, порівняння моделей
+│   ├── prompts/             промпти v1, v2, v3
+│   ├── data/                тестовий набір (32 тікети) і відкладений (16)
+│   └── results/             усі прогони: таблиці .md і сирі відповіді .json
+├── task2_agent_assistant/   Task 2 — асистент агента
+│   ├── app.py               веб-інтерфейс (Streamlit)
+│   ├── assistant.py         конвеєр: аналіз → пошук → генерація → перевірки → рівень human judgment
+│   ├── retrieval.py         пошук статей (BM25) і перевірка цитат
+│   ├── kb/                  база знань: 17 статей
+│   ├── prompts/             промпти аналізу, генерації і LLM-судді
+│   ├── evaluate.py          оцінка якості відповідей
+│   ├── compare_prompts.py   порівняння промптів v1 і v2 кодом, без API
+│   ├── data/                тестовий набір (18 тікетів)
+│   └── results/             результати оцінки
+├── common/                  спільний код обох задач
+│   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі
+│   └── pricing.py           ціни моделей і вартість кожного виклику
+├── tests/                   44 тести без API
+├── requirements.txt         бібліотеки
+└── .env.example             шаблон файлу з ключем Groq
+```
 
 ## Стек
 
 - **Python 3.12**
 - **Groq API** — моделі `openai/gpt-oss-20b`, `openai/gpt-oss-120b`, `qwen/qwen3.8-27b`. Одна точка доступу до моделей двох різних розробників, дуже низька latency, автоматичний prompt caching.
-- **pydantic** — валідація структурованого виходу моделі.
+- **pydantic** — перевірка, що відповідь моделі має правильну структуру.
 - **Streamlit** — веб-інтерфейс асистента (Task 2).
 - **rank-bm25** — пошук статей у базі знань (Task 2).
 - **langdetect** — перевірка, що відповідь написана мовою клієнта (Task 2).
-
-## Встановлення (Windows / macOS / Linux)
-
-```bash
-git clone https://github.com/SashaBulashevich/obrio-ai-ops.git
-cd obrio-ai-ops
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# macOS / Linux:
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # і встав свій ключ з https://console.groq.com/keys
-```
-
-Ключ API зберігається лише в локальному `.env`. Файл внесено в `.gitignore`.
-
-## Швидка перевірка
-
-```bash
-python task1_classifier/classifier.py           # Task 1: інтерактивний режим — вводиш тікети, отримуєш рішення
-streamlit run task2_agent_assistant/app.py      # Task 2: веб-інтерфейс асистента (http://localhost:8501)
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 44 тести без API
-```
-
-Детальніше, з прикладами тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити) · [Task 2 → Як запустити](task2_agent_assistant/README.md#як-запустити).
