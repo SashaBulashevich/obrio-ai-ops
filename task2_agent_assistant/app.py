@@ -80,6 +80,10 @@ if run:
 r = st.session_state.get("result")
 if not r:
     st.stop()
+# текст змінили (вручну або кнопкою прикладу) — старий результат стосується іншого тікету, не показуємо його
+if r["ticket"] != ticket.strip():
+    st.caption("Текст змінено — натисни «Проаналізувати», щоб отримати відповідь на нього.")
+    st.stop()
 
 # ---------- human judgment banner ----------
 hj = r["human_judgment"]
