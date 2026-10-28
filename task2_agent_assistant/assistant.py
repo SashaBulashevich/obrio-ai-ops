@@ -88,6 +88,45 @@ REFUND_PROMISE = re.compile(
 )
 EMOJI = re.compile("[\U0001F300-\U0001FAFF☀-➿]")
 
+# Підпис дописує код: моделі часто пропускають його в короткому варіанті (є лише у 2 з 10)
+SIGNATURES = {
+    "uk": "З повагою, команда підтримки Nebula",
+    "ru": "С уважением, команда поддержки Nebula",
+    "en": "Best regards, Nebula Support Team",
+    "es": "Atentamente, el equipo de soporte de Nebula",
+    "de": "Mit freundlichen Grüßen, Ihr Nebula Support-Team",
+    "pl": "Z poważaniem, zespół wsparcia Nebula",
+}
+
+
+def add_signature(replies: dict, language: str) -> dict:
+    """Дописує підпис мовою клієнта, якщо модель його пропустила."""
+    signature = SIGNATURES.get(language, SIGNATURES["en"])
+    for tone, text in replies.items():
+        if "Nebula" not in text[-80:]:
+            replies[tone] = text.rstrip() + "\n\n" + signature
+    return replies
+
+
+# uk/ru визначаємо кодом, а не моделлю: наприклад елементарний приклад тестової невалідної поведінки від користувача «хочу пива» однаково пишеться обома мовами
+UK_ONLY = re.compile("[іїєґ]", re.IGNORECASE)
+RU_ONLY = re.compile("[ыэъё]", re.IGNORECASE)
+# часті слова без «особливих» літер, які існують лише в одній з мов
+UK_WORDS = re.compile(r"\b(що|як|це|мене|чому|коли|зараз|дякую|можна|треба|скасув\w*|видал\w*)\b", re.IGNORECASE)
+RU_WORDS = re.compile(r"\b(что|как|меня|нет|почему|когда|сейчас|спасибо|пожалуйста|можно|нужно|деньги|отмен\w*|удал\w*)\b", re.IGNORECASE)
+
+
+def fix_uk_ru(text: str, language: str) -> tuple[str, bool]:
+    """Повертає (мова, чи неоднозначна). Спершу літери, потім слова; інакше — українська."""
+    if language not in ("uk", "ru"):
+        return language, False
+    for uk, ru in ((UK_ONLY, RU_ONLY), (UK_WORDS, RU_WORDS)):
+        if uk.search(text) and not ru.search(text):
+            return "uk", False
+        if ru.search(text) and not uk.search(text):
+            return "ru", False
+    return "uk", True
+
 
 def load_prompt(name: str) -> str:
     return (PROMPTS_DIR / f"{name}.md").read_text(encoding="utf-8")
@@ -232,6 +271,7 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
         # аналіз не вдався: шукаємо прямо за текстом тікету, summary немає
         analysis = Analysis(summary="(AI-аналіз недоступний)", customer_language=classification.get("language", "en"),
                             search_queries=[text[:300]])
+    analysis.customer_language, lang_ambiguous = fix_uk_ru(text, analysis.customer_language)
 
     hits = retrieval.search(analysis.search_queries, k=3, boost_category=classification["category"])
     out = {
@@ -255,13 +295,18 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
         out["meta"]["generate"] = _meta(gen_res)
         if gen_res.ok:
             checks, citations = run_checks(gen_res.data, hits, analysis.customer_language)
-            out.update(replies=gen_res.data.replies.model_dump(), citations=citations,
+            out.update(replies=add_signature(gen_res.data.replies.model_dump(), analysis.customer_language), citations=citations,
                        agent_notes=gen_res.data.agent_notes, checks=checks)
             out["human_judgment"] = human_judgment(classification, hits, checks)
         else:
             out["human_judgment"] = {"level": "review", "reasons": [
                 "AI не зміг згенерувати відповіді (збій API). Напиши відповідь вручну, статті з бази знань нижче."]}
 
+    if lang_ambiguous and out["human_judgment"]["level"] != "blocked":
+        out["human_judgment"]["level"] = "review"
+        out["human_judgment"]["reasons"].append(
+            "Мова неоднозначна (uk/ru): відповідь українською. Перевір, якою мовою пише клієнт.")
+            
     steps = [m for m in out["meta"].values() if isinstance(m, dict)]
     out["meta"]["total_cost_usd"] = sum(m.get("cost_usd", 0) for m in steps)
     out["meta"]["total_latency_s"] = round(time.perf_counter() - started, 3)
