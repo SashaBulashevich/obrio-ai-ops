@@ -16,16 +16,15 @@ import assistant  # noqa: E402
 st.set_page_config(page_title="Nebula Support Copilot", page_icon="✨", layout="wide")
 
 SAMPLES = {
-    "— обери приклад або встав свій тікет —": "",
-    "Подвійне списання (uk)": "Добрий день, з мене списали гроші двічі за підписку цього місяця. Поверніть, будь ласка, один платіж.",
-    "Скасування підписки (en)": "Hi, how do I cancel my subscription? I don't want it to renew next month.",
-    "Агресивний тон + баг (en)": "your stupid app keeps freezing every 2 minutes, worst garbage I've ever paid for. fix it!!!",
-    "Змішані теми (en)": "The app crashes whenever I open the chat, and I was charged for 30 minutes of credits I couldn't use. I want that money back.",
-    "Експерт просить PayPal (en)": "An expert told me my aura is blocked and asked me to send $150 via PayPal directly to her for a cleansing ritual. Is this allowed?",
-    "Погроза chargeback (en)": "I was charged twice, refund me or I'll dispute with my bank.",
-    "Кризовий стан (en)": "Nothing matters anymore. My reading said things won't get better. I don't see the point in going on.",
-    "Асцендент (es)": "¿Cómo puedo ver mi signo ascendente en la app? No lo encuentro.",
-    "Видалення даних (ru)": "Удалите мой аккаунт и все мои данные. Больше не хочу пользоваться приложением.",
+    "Подвійне списання": "Добрий день, з мене списали гроші двічі за підписку цього місяця. Поверніть, будь ласка, один платіж.",
+    "Скасування підписки": "Hi, how do I cancel my subscription? I don't want it to renew next month.",
+    "Агресивний тон + баг": "your stupid app keeps freezing every 2 minutes, worst garbage I've ever paid for. fix it!!!",
+    "Змішані теми": "The app crashes whenever I open the chat, and I was charged for 30 minutes of credits I couldn't use. I want that money back.",
+    "Експерт просить PayPal": "An expert told me my aura is blocked and asked me to send $150 via PayPal directly to her for a cleansing ritual. Is this allowed?",
+    "Погроза chargeback": "I was charged twice, refund me or I'll dispute with my bank.",
+    "Кризовий стан": "Nothing matters anymore. My reading said things won't get better. I don't see the point in going on.",
+    "Асцендент": "¿Cómo puedo ver mi signo ascendente en la app? No lo encuentro.",
+    "Видалення даних": "Удалите мой аккаунт и все мои данные. Больше не хочу пользоваться приложением.",
 }
 TONES = {"formal": "🎩 Формальний", "empathetic": "💛 Емпатійний", "short": "⚡ Короткий"}
 PRIORITY_COLOR = {"P1": "red", "P2": "orange", "P3": "blue", "P4": "gray"}
@@ -40,6 +39,10 @@ def cached_assist(ticket: str, model: str, prompt: str) -> dict:
     return assistant.assist(ticket, generate_models=models, generate_prompt=prompt)
 
 
+def use_sample(name: str):
+    st.session_state["ticket"] = SAMPLES[name]
+
+
 # ---------- sidebar ----------
 with st.sidebar:
     st.header("Налаштування")
@@ -47,16 +50,21 @@ with st.sidebar:
     prompt_version = st.selectbox("Версія промпту", sorted(
         p.stem for p in assistant.PROMPTS_DIR.glob("generate_v*.md"))[::-1])
     st.divider()
+    # готові тікети лише для демо: основний сценарій — агент вставляє реальне звернення
+    with st.expander("Приклади для демо"):
+        for name in SAMPLES:
+            st.button(name, on_click=use_sample, args=(name,), use_container_width=True)
+    st.divider()
     st.caption("Прототип для тестового AI Ops (OBRIO). База знань симульована — "
                "17 статей у `task2_agent_assistant/kb/`.")
 
 # ---------- input ----------
 st.title("✨ Nebula Support Copilot")
-st.caption("Встав текст тікету — отримаєш summary, 3 варіанти відповіді й джерела з бази знань. "
-           "Остаточне рішення завжди за агентом.")
+st.caption("Встав звернення клієнта будь-якою мовою — асистент сам визначить мову й відповість нею. "
+           "Отримаєш summary, 3 варіанти відповіді й джерела з бази знань. Остаточне рішення завжди за агентом.")
 
-sample = st.selectbox("Приклади", list(SAMPLES), label_visibility="collapsed")
-ticket = st.text_area("Текст тікету", value=SAMPLES[sample], height=130, placeholder="Встав сюди звернення клієнта…")
+ticket = st.text_area("Звернення клієнта", key="ticket", height=130,
+                      placeholder="Наприклад: Добрий день, з мене двічі списали гроші за підписку…")
 run = st.button("Проаналізувати", type="primary", disabled=not ticket.strip())
 
 if run:
