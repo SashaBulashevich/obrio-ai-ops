@@ -612,26 +612,51 @@
     "judge_model": "qwen/qwen3.8-27b",
     "level": "review",
     "reasons": [
-      "generation failed"
+      "База знань відповідає лише частково: перевір, що решта відповіді не вигадана."
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
-    "citations": [],
-    "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
+    "replies": {
+      "formal": "Добрый день. Мы получили ваше сообщение о том, что push‑уведомления с гороскопом не приходят уже неделю, хотя они включены в настройках приложения. Пожалуйста, проверьте, разрешены ли уведомления для Nebula в настройках телефона и отключён ли режим «Не беспокоить», а также не блокирует ли режим экономии батареи фоновые уведомления. Чтобы уточнить причину, нам нужны тип устройства, версия операционной системы, версия приложения Nebula и информация, работают ли уведомления других приложений. После получения этих данных наша техническая команда проведёт проверку и свяжется с вами. С уважением, команда поддержки Nebula",
+      "empathetic": "Мы понимаем, как неприятно, что уже неделю вы не получаете push‑уведомления с ежедневным гороскопом, несмотря на включённые настройки. Пожалуйста, проверьте, разрешены ли уведомления для Nebula в системных настройках телефона и отключён ли режим «Не беспокоить», а также не ограничивает ли режим экономии батареи фоновые сообщения. Чтобы мы могли точнее определить причину, пришлите, пожалуйста, тип вашего устройства, версию операционной системы, версию приложения Nebula и сообщите, работают ли уведомления других приложений. После получения этой информации наша техническая команда изучит ситуацию и свяжется с вами. С уважением, команда поддержки Nebula",
+      "short": "Проверьте, включены ли push‑уведомления для Nebula в настройках телефона и отключён ли режим «Не беспокоить». Убедитесь, что приложение не ограничено режимом экономии батареи. Сообщите тип устройства, версию ОС и Nebula, а также работает ли у вас система уведомлений для других приложений."
+    },
+    "generated": true,
+    "gen_cost": 0.00158565,
+    "gen_latency": 5.502,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "partial",
+      "detected_languages": {
+        "formal": "ru",
+        "empathetic": "ru",
+        "short": "ru"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "push-notifications",
+        "quote": "Ask the customer to check that notifications are allowed for Nebula in the phone settings and that Focus / Do Not Disturb mode is off.",
+        "valid": true
+      }
     ],
+    "gen_errors": [],
     "level_ok": false,
-    "quality_ok": null
+    "quality_ok": true
   },
   {
     "id": 10,
@@ -737,28 +762,56 @@
     "expected_level": "ok",
     "base_cost": 0.00033465,
     "judge_model": "qwen/qwen3.8-27b",
-    "level": "review",
-    "reasons": [
-      "generation failed"
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Hello, thank you for contacting us about the promo code you received from our Instagram advertisement. Please note that promo codes can only be applied on the web checkout and are valid for new subscribers only. To investigate why the code is being rejected, could you provide the exact promo code, a screenshot of the error message, as well as the device type, operating system, and the version of the Nebula app you are using? Our billing team will review the information and respond to you as soon as possible. Best regards, Nebula Support Team",
+      "empathetic": "I understand you’re frustrated that the promo code from our Instagram ad isn’t working for you. Promo codes are redeemable only through the web checkout and are intended for new subscribers. To help us determine why your code is being rejected, please share the exact promo code, a screenshot of the error you see, and let us know which device you are using, its operating system, and the current version of the Nebula app. Once we have these details, our billing team will investigate the issue and get back to you with a resolution. Thank you for your patience. Nebula Support Team",
+      "short": "Promo codes can only be redeemed on the web checkout. Please provide the exact promo code, a screenshot of the error, and let us know your device type, operating system, and app version. Our billing team will review and get back to you."
+    },
+    "generated": true,
+    "gen_cost": 0.00143625,
+    "gen_latency": 5.009,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "promo-codes",
+        "quote": "Promo codes can be applied only on the web checkout, not inside the App Store or Google Play purchase flow.",
+        "valid": true
+      },
+      {
+        "article_id": "promo-codes",
+        "quote": "If a valid code is rejected, ask the customer for the exact code and a screenshot of the error, and forward them to Billing.",
+        "valid": true
+      }
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
-    "citations": [],
-    "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
-    ],
-    "level_ok": false,
-    "quality_ok": null
+    "gen_errors": [],
+    "level_ok": true,
+    "quality_ok": true
   },
   {
     "id": 12,
@@ -788,26 +841,59 @@
     "judge_model": "qwen/qwen3.8-27b",
     "level": "review",
     "reasons": [
-      "generation failed"
+      "Рішення про повернення коштів ухвалює Billing після перевірки транзакції.",
+      "База знань відповідає лише частково: перевір, що решта відповіді не вигадана."
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
-    "citations": [],
+    "replies": {
+      "formal": "Dear Customer,\n\nWe understand that the app crashes when you open a chat and that you were charged for 30 minutes of credits that could not be used. Credits for an interrupted session are returned automatically within 24 hours; if they have not been returned, we can review the session log and restore the credits manually. Please provide your device type (iOS or Android), app version, the date and time of the crash, and the transaction ID or receipt associated with the charge. Our payments team will review the request and respond within up to three business days.\n\nSincerely,\nNebula Support Team",
+      "empathetic": "Dear Customer,\n\nI’m sorry you’re experiencing crashes when opening a chat and that you were billed for minutes you could not use. Credits for a session interrupted by a technical problem are normally returned automatically within 24 hours; if they have not appeared, we can examine the session log and restore the unused credits manually. To investigate the crash, please share your device type (iOS or Android), the app version, the date and time of the incident, and the transaction ID or receipt for the charge. Once we have this information, our payments team will review your request and get back to you within three business days.\n\nKind regards,\nNebula Support Team",
+      "short": "Credits for an interrupted chat are returned automatically within 24 hours; if not, we will check the session log and restore them. Please provide your device type, app version, crash date/time, and transaction ID. Our payments team will review and respond within three business days."
+    },
+    "generated": true,
+    "gen_cost": 0.0014638499999999998,
+    "gen_latency": 4.559,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "partial",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "credits-expert-chats",
+        "quote": "If a session is interrupted by a technical problem, credits for the unused minutes are returned automatically within 24 hours.",
+        "valid": true
+      },
+      {
+        "article_id": "app-crash-troubleshooting",
+        "quote": "Basic steps: update Nebula to the latest version, restart the phone, check the internet connection, then reinstall the app.",
+        "valid": true
+      }
+    ],
     "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
+      "openai/gpt-oss-120b: BadRequest Error code: 400 - {'error': {'message': \"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for"
     ],
     "level_ok": true,
-    "quality_ok": null
+    "quality_ok": true
   },
   {
     "id": 13,
@@ -912,28 +998,54 @@
     "expected_level": "ok",
     "base_cost": 0.00022994999999999998,
     "judge_model": "qwen/qwen3.8-27b",
-    "level": "review",
-    "reasons": [
-      "generation failed"
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Dear Customer, thank you for your inquiry regarding the handling of your birth data. Nebula uses birth date, time and place solely to generate horoscopes and related reports and does not sell personal data to advertisers. Your data is shared only with service providers necessary for operating the app, such as hosting, payments and analytics, under data‑processing agreements. Could you please specify which birth data (date, time, place) you are referring to? Once we have this information, we can provide any further details you may need.",
+      "empathetic": "We understand your concern about the privacy of your birth data and thank you for contacting us. Nebula uses your birth date, time and place only to create horoscopes, birth charts and compatibility reports, and we do not sell personal data to advertisers. The information is shared solely with essential service providers—such as hosting, payment processing and analytics—under strict data‑processing agreements. Could you let us know which specific birth data (date, time, or place) you are referring to? After we receive this clarification, we will be able to address any additional questions you may have.",
+      "short": "Nebula does not sell your birth data to advertisers; it is shared only with essential service providers under data‑processing agreements. We use birth date, time and place solely for horoscopes and reports. Please specify which birth data you are referring to."
+    },
+    "generated": true,
+    "gen_cost": 0.0014858999999999999,
+    "gen_latency": 5.055,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 3,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": "The drafts unnecessarily ask the customer to specify which birth data they are referring to, despite the ticket clearly asking about birth data in general."
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "data-privacy",
+        "quote": "Nebula does not sell personal data to advertisers. Data is shared only with service providers needed to run the app (hosting, payments, analytics) under data processing agreements.",
+        "valid": true
+      }
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
-    "citations": [],
     "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "level_ok": false,
-    "quality_ok": null
+    "level_ok": true,
+    "quality_ok": true
   },
   {
     "id": 15,
@@ -1042,28 +1154,58 @@
     "expected_level": "ok",
     "base_cost": 0.0002748,
     "judge_model": "qwen/qwen3.8-27b",
-    "level": "review",
-    "reasons": [
-      "generation failed"
+    "level": "ok",
+    "reasons": [],
+    "replies": {
+      "formal": "Dear Customer,\n\nWe understand you have been charged after cancelling your Nebula subscription. This can happen if the cancellation occurred less than 24 hours before the renewal date or if only the app was removed while the subscription remained active. Please provide the date you cancelled, the subscription plan and amount charged, the device you use, your account email, and any screenshot of the charge or cancellation confirmation. Our billing team will review the information and, if appropriate, coordinate a refund with the relevant store (Apple or Google). We will update you within the standard review period.\n\nSincerely,\nNebula Support Team",
+      "empathetic": "We’re sorry you’re upset about being charged again after you cancelled your subscription. The most common reason is a cancellation made less than 24 hours before the renewal date, or deleting the app without cancelling the subscription. To investigate, could you share the cancellation date, your subscription plan and the amount charged, the device you use, your account email, and any screenshot of the charge or cancellation confirmation? Our billing team will review these details and, if needed, work with Apple or Google on a refund. We will keep you informed of the outcome.\n\nNebula Support Team",
+      "short": "We see you were charged after cancelling. Please send the cancellation date, plan, amount, device, account email and a screenshot of the charge. Our billing team will review and respond within up to 3 business days."
+    },
+    "generated": true,
+    "gen_cost": 0.0008345999999999999,
+    "gen_latency": 3.717,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "charged-after-cancel",
+        "quote": "The most common reason is that the subscription was cancelled less than 24 hours before the renewal date, or that only the app was deleted while the subscription stayed active.",
+        "valid": true
+      },
+      {
+        "article_id": "refund-policy",
+        "quote": "Every refund request is reviewed by the Billing team. The standard review time is up to 3 business days.",
+        "valid": true
+      }
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
-    "citations": [],
     "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "level_ok": false,
-    "quality_ok": null
+    "level_ok": true,
+    "quality_ok": true
   },
   {
     "id": 17,
@@ -1092,27 +1234,53 @@
     "judge_model": "qwen/qwen3.8-27b",
     "level": "review",
     "reasons": [
-      "generation failed"
+      "Критичний пріоритет (P1): перевір, чи не потрібна ескалація, перш ніж відповідати."
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
-    "citations": [],
+    "replies": {
+      "formal": "Szanowni Państwo, przyjmujemy zgłoszenie o białym ekranie w aplikacji Nebula na czterech kontach. Prosimy wykonać podstawowe kroki: zaktualizować aplikację do najnowszej wersji, ponownie uruchomić telefon, sprawdzić połączenie internetowe oraz, w razie potrzeby, odinstalować i ponownie zainstalować aplikację. Jednocześnie potrzebujemy dodatkowych informacji: model i typ urządzenia, wersję systemu operacyjnego, wersję aplikacji Nebula, status połączenia internetowego oraz ewentualne próby aktualizacji lub ponownej instalacji. Po otrzymaniu danych nasz zespół techniczny zweryfikuje sytuację i skontaktuje się z Państwem. Z poważaniem, Zespół Nebula Support",
+      "empathetic": "Rozumiemy, że biały ekran w aplikacji od rana wywołuje frustrację i utrudnia korzystanie z Nebula. Prosimy spróbować następujących działań: zaktualizować aplikację do najnowszej wersji, ponownie uruchomić telefon, sprawdzić połączenie internetowe oraz, jeśli to nie pomoże, odinstalować i ponownie zainstalować aplikację – nie usunie to konta ani zakupów. Aby móc dokładniej zbadać problem, potrzebujemy kilku szczegółów: model i typ urządzenia, wersję systemu operacyjnego, wersję aplikacji, stan połączenia internetowego oraz informacje o ewentualnych ostatnich aktualizacjach lub próbach reinstalacji. Po otrzymaniu tych danych nasz zespół techniczny przeanalizuje sytuację i skontaktuje się z Państwem. Z wyrazami szacunku, Zespół Nebula Support",
+      "short": "Proszę zaktualizować aplikację, ponownie uruchomić telefon, sprawdzić internet i ewentualnie odinstalować oraz zainstalować aplikację ponownie. Potrzebujemy modelu urządzenia, wersji systemu, wersji aplikacji i statusu połączenia internetowego. Po otrzymaniu danych nasz zespół techniczny zweryfikuje problem i odezwie się do Państwa."
+    },
+    "generated": true,
+    "gen_cost": 0.0008407499999999999,
+    "gen_latency": 2.849,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": "The drafts fail to recognize the multi-account nature of the issue as a potential outage, which the article explicitly advises checking before individual troubleshooting."
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": false,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "full",
+      "detected_languages": {
+        "formal": "pl",
+        "empathetic": "pl",
+        "short": "pl"
+      }
+    },
+    "citations": [
+      {
+        "article_id": "app-crash-troubleshooting",
+        "quote": "Basic steps: update Nebula to the latest version, restart the phone, check the internet connection, then reinstall the app.",
+        "valid": true
+      }
+    ],
     "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: BadRequest Error code: 400 - {'error': {'message': \"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
     "level_ok": true,
-    "quality_ok": null
+    "quality_ok": true
   },
   {
     "id": 18,
@@ -1137,25 +1305,46 @@
     "judge_model": "qwen/qwen3.8-27b",
     "level": "review",
     "reasons": [
-      "generation failed"
+      "У базі знань немає відповіді на це питання: не покладайся на AI-варіанти, уточни в команді."
     ],
-    "replies": null,
-    "generated": false,
-    "gen_cost": 0.0,
-    "gen_latency": 0.0,
-    "judge": null,
-    "checks": null,
+    "replies": {
+      "formal": "Dear Customer, thank you for your inquiry about ordering a personalized printed horoscope book as a gift. At this time we do not have a published process for such orders, so we need a few details to investigate: your mother’s birth date, the desired personalization details, and the shipping address. Once we have this information, our product team will review the request and get back to you with the available options. We appreciate your patience.",
+      "empathetic": "We understand you’d love to give your mother a special personalized printed horoscope book for her birthday. Currently we do not have a standard ordering procedure for printed books, so could you please share your mother’s birth date, the personalization details you’d like included, and the shipping address? With that information our product team can review the request and let you know what options are available. Thank you for your patience while we look into this.",
+      "short": "We currently don’t have a standard ordering process for personalized printed horoscope books. Please provide your mother’s birth date, the personalization details you’d like, and the shipping address. Our product team will review and reply."
+    },
+    "generated": true,
+    "gen_cost": 0.0008510999999999999,
+    "gen_latency": 3.708,
+    "judge": {
+      "formal_ok": true,
+      "empathetic_ok": true,
+      "short_ok": true,
+      "tone_distinct": 4,
+      "grounded": true,
+      "unauthorized_promise": false,
+      "addresses_request": true,
+      "same_language_as_ticket": true,
+      "issues": ""
+    },
+    "checks": {
+      "invalid_citations": [],
+      "no_citations": true,
+      "refund_promise": [],
+      "language_mismatch": [],
+      "short_too_long": false,
+      "formal_has_emoji": false,
+      "kb_coverage": "none",
+      "detected_languages": {
+        "formal": "en",
+        "empathetic": "en",
+        "short": "en"
+      }
+    },
     "citations": [],
     "gen_errors": [
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)",
-      "openai/gpt-oss-120b: RateLimitError (TPD)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
     "level_ok": true,
-    "quality_ok": null
+    "quality_ok": true
   }
 ]
