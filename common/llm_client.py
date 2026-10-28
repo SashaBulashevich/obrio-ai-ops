@@ -27,6 +27,7 @@ REQUEST_TIMEOUT_S = 20
 MAX_RETRIES = 3          # на одну модель, для rate limit / timeout / 5xx
 BACKOFF_BASE_S = 1.5     # 1.5s, 3s, 6s ...
 RETRY_AFTER_CAP_S = 30.0 # довше не чекаємо в інтерактивному режимі; batch-скрипти можуть підняти
+DAILY_LIMITS = ("TPD", "RPD")  # токени / запити на добу
 
 
 @dataclass
@@ -107,8 +108,11 @@ def call_json(
                     **(extra if model.startswith("openai/gpt-oss") else {}),
                 )
             except (groq.RateLimitError, groq.APITimeoutError, groq.APIConnectionError, groq.InternalServerError) as e:
-                result.errors.append(f"{model}: {type(e).__name__}")
-                if retries < MAX_RETRIES:
+                # для 429 у повідомленні видно, який ліміт спрацював: TPM (за хвилину) чи TPD (за добу)
+                kind = _limit_kind(e) if isinstance(e, groq.RateLimitError) else ""
+                result.errors.append(f"{model}: {type(e).__name__}{f' ({kind})' if kind else ''}")
+                # добовий ліміт за секунди не скинеться — retry марний, одразу наступна модель
+                if retries < MAX_RETRIES and kind not in DAILY_LIMITS:
                     time.sleep(_retry_delay(e, retries))
                     retries += 1
                     continue
@@ -164,6 +168,14 @@ def _retry_delay(err: Exception, attempt: int) -> float:
             except ValueError:
                 pass
     return BACKOFF_BASE_S * (2 ** attempt)
+
+
+def _limit_kind(err: Exception) -> str:
+    text = str(err)
+    for kind in ("TPD", "TPM", "RPD", "RPM"):
+        if f"({kind})" in text:
+            return kind
+    return "unknown"
 
 
 def _short(err: Exception) -> str:

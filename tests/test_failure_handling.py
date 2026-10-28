@@ -33,9 +33,10 @@ def ok(content: str):
     return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=content))], usage=usage)
 
 
-def rate_limit(retry_after: str | None = None):
+def rate_limit(retry_after: str | None = None, kind: str = "TPM"):
     headers = {"retry-after": retry_after} if retry_after else {}
-    return groq.RateLimitError("rate limited", response=httpx.Response(429, headers=headers, request=REQUEST), body=None)
+    message = f"Rate limit reached on tokens per {'day' if kind == 'TPD' else 'minute'} ({kind})"
+    return groq.RateLimitError(message, response=httpx.Response(429, headers=headers, request=REQUEST), body=None)
 
 
 def timeout():
@@ -113,6 +114,15 @@ class FailureHandlingTest(unittest.TestCase):
         res, _, sleep = run([rate_limit(), rate_limit(), ok(VALID)])
         self.assertTrue(res.ok)
         self.assertEqual([c.args[0] for c in sleep.call_args_list], [1.5, 3.0])
+
+    def test_daily_limit_skips_retries_and_falls_back(self):
+        # TPD за секунди не скинеться: без пауз і повторів одразу наступна модель
+        res, fake, sleep = run([rate_limit(retry_after="360", kind="TPD"), ok(VALID)])
+        self.assertTrue(res.ok)
+        self.assertEqual(res.model, "model-b")
+        self.assertEqual(fake.calls.count("model-a"), 1)
+        sleep.assert_not_called()
+        self.assertIn("(TPD)", res.errors[0])
 
     def test_timeout_exhausts_retries_then_fallback_model(self):
         script = [timeout()] * (llm_client.MAX_RETRIES + 1) + [ok(VALID)]

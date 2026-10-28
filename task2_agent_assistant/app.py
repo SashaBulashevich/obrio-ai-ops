@@ -35,7 +35,9 @@ PRIORITY_COLOR = {"P1": "red", "P2": "orange", "P3": "blue", "P4": "gray"}
 def cached_assist(ticket: str, model: str, prompt: str) -> dict:
     # Кеш на рівні сесії сервера: повторний клік / перемикання вкладок не платить за API.
     # Ключ = текст + модель + версія промпту, тож зміна будь-чого інвалідує кеш.
-    return assistant.assist(ticket, generate_models=[model], generate_prompt=prompt)
+    # обрана модель — перша, решта gpt-oss — fallback (у кожної моделі окремі rate limits)
+    models = [model] + [m for m in assistant.GENERATE_MODELS if m != model]
+    return assistant.assist(ticket, generate_models=models, generate_prompt=prompt)
 
 
 # ---------- sidebar ----------

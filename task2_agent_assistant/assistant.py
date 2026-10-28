@@ -37,7 +37,7 @@ DetectorFactory.seed = 0  # langdetect детермінований
 
 PROMPTS_DIR = HERE / "prompts"
 ANALYZE_PROMPT = "analyze_v1"
-GENERATE_PROMPT = "generate_v1"
+GENERATE_PROMPT = "generate_v2"  # v1 лишається для порівняння, див. PROMPTS.md
 ANALYZE_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
 GENERATE_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
 
