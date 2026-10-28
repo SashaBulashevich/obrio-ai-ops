@@ -16,6 +16,9 @@
 - **Python 3.12**
 - **Groq API** — моделі `openai/gpt-oss-20b`, `openai/gpt-oss-120b`, `qwen/qwen3.8-27b`. Одна точка доступу до моделей двох різних розробників, дуже низька latency, автоматичний prompt caching.
 - **pydantic** — валідація структурованого виходу моделі.
+- **Streamlit** — веб-інтерфейс асистента (Task 2).
+- **rank-bm25** — пошук статей у базі знань (Task 2).
+- **langdetect** — перевірка, що відповідь написана мовою клієнта (Task 2).
 
 ## Встановлення (Windows / macOS / Linux)
 
@@ -36,8 +39,9 @@ cp .env.example .env   # і встав свій ключ з https://console.groq
 ## Швидка перевірка
 
 ```bash
-python task1_classifier/classifier.py      # інтерактивний режим: вводиш тікети, отримуєш рішення
-python -m unittest tests.test_failure_handling -v
+python task1_classifier/classifier.py           # Task 1: інтерактивний режим — вводиш тікети, отримуєш рішення
+streamlit run task2_agent_assistant/app.py      # Task 2: веб-інтерфейс асистента (http://localhost:8501)
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 37 тестів без API
 ```
 
-Детальніше, з прикладами тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити).
+Детальніше, з прикладами тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити) · [Task 2 → Як запустити](task2_agent_assistant/README.md#як-запустити).
