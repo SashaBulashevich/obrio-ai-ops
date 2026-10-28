@@ -15,16 +15,20 @@ import assistant  # noqa: E402
 
 st.set_page_config(page_title="Nebula Support Copilot", page_icon="✨", layout="wide")
 
+# різні мови Європи: асистент сам визначає мову й відповідає нею.
+# Chargeback і криза — англійською: їхні regex-guardrails покривають лише en/uk/ru, а демо має бути надійним.
 SAMPLES = {
     "Подвійне списання": "Добрий день, з мене списали гроші двічі за підписку цього місяця. Поверніть, будь ласка, один платіж.",
-    "Скасування підписки": "Hi, how do I cancel my subscription? I don't want it to renew next month.",
-    "Агресивний тон + баг": "your stupid app keeps freezing every 2 minutes, worst garbage I've ever paid for. fix it!!!",
-    "Змішані теми": "The app crashes whenever I open the chat, and I was charged for 30 minutes of credits I couldn't use. I want that money back.",
-    "Експерт просить PayPal": "An expert told me my aura is blocked and asked me to send $150 via PayPal directly to her for a cleansing ritual. Is this allowed?",
+    "Скасування підписки": "Hallo, wie kann ich mein Abo kündigen? Ich möchte nicht, dass es nächsten Monat verlängert wird.",
+    "Агресивний тон + баг": "wasza głupia aplikacja zawiesza się co 2 minuty, najgorszy szajs, za jaki kiedykolwiek zapłaciłem. naprawcie to!!!",
+    "Змішані теми": "L'application plante dès que j'ouvre le chat, et on m'a débité 30 minutes de crédits que je n'ai pas pu utiliser. Je veux être remboursé.",
+    "Експерт просить PayPal": "Un'esperta mi ha detto che la mia aura è bloccata e mi ha chiesto di inviarle 150 $ via PayPal direttamente per un rituale di purificazione. È consentito?",
+    "Асцендент": "¿Cómo puedo ver mi signo ascendente en la app? No lo encuentro.",
+    "Не приходять сповіщення": "Há uma semana que não recebo as notificações do horóscopo diário. Já verifiquei as definições do telemóvel.",
+    "Видалення даних": "Verwijder mijn account en al mijn gegevens. Ik wil de app niet meer gebruiken.",
     "Погроза chargeback": "I was charged twice, refund me or I'll dispute with my bank.",
     "Кризовий стан": "Nothing matters anymore. My reading said things won't get better. I don't see the point in going on.",
-    "Асцендент": "¿Cómo puedo ver mi signo ascendente en la app? No lo encuentro.",
-    "Видалення даних": "Удалите мой аккаунт и все мои данные. Больше не хочу пользоваться приложением.",
+    "Не про Nebula": "Quelle est la capitale de l'Angleterre ?",
 }
 TONES = {"formal": "🎩 Формальний", "empathetic": "💛 Емпатійний", "short": "⚡ Короткий"}
 PRIORITY_COLOR = {"P1": "red", "P2": "orange", "P3": "blue", "P4": "gray"}

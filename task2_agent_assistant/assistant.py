@@ -38,8 +38,12 @@ DetectorFactory.seed = 0  # langdetect детермінований
 PROMPTS_DIR = HERE / "prompts"
 ANALYZE_PROMPT = "analyze_v2"  # v2 = v1 + поле about_nebula
 GENERATE_PROMPT = "generate_v2"  # v1 лишається для порівняння, див. PROMPTS.md
-ANALYZE_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
-GENERATE_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]
+# qwen — останній запасний: у 5–10 разів дорожчий і preview, але має окремий добовий ліміт Groq,
+# тож демо не падає, коли gpt-oss вичерпали 200k токенів/добу
+FALLBACK_MODEL = "qwen/qwen3.8-27b"
+CLASSIFY_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", FALLBACK_MODEL]
+ANALYZE_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", FALLBACK_MODEL]
+GENERATE_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", FALLBACK_MODEL]
 
 MIN_RETRIEVAL_SCORE = 2.0   # нижче — вважаємо, що релевантної статті немає
 SHORT_MAX_WORDS = 60
@@ -97,6 +101,10 @@ SIGNATURES = {
     "es": "Atentamente, el equipo de soporte de Nebula",
     "de": "Mit freundlichen Grüßen, Ihr Nebula Support-Team",
     "pl": "Z poważaniem, zespół wsparcia Nebula",
+    "fr": "Cordialement, l'équipe d'assistance Nebula",
+    "it": "Cordiali saluti, il team di supporto Nebula",
+    "pt": "Com os melhores cumprimentos, a equipa de apoio da Nebula",
+    "nl": "Met vriendelijke groet, het Nebula-supportteam",
 }
 
 
@@ -142,6 +150,26 @@ OFF_TOPIC_REPLIES = {
         "formal": "Dzień dobry, dziękujemy za wiadomość. Wsparcie Nebula pomaga w sprawach dotyczących aplikacji: subskrypcji, płatności, konta, horoskopów i konsultacji z astrologami. Jeśli ma Pan/Pani takie pytanie, prosimy opisać je dokładniej, chętnie pomożemy.",
         "empathetic": "Dziękujemy, że do nas piszesz! Niestety nie możemy pomóc w tej sprawie: wspieramy wyłącznie użytkowników aplikacji Nebula. Jeśli masz pytanie o subskrypcję, konto, horoskopy lub konsultacje, po prostu napisz, jesteśmy tu dla Ciebie.",
         "short": "Pomagamy tylko w sprawach dotyczących aplikacji Nebula. Napisz, proszę, czego potrzebujesz.",
+    },
+    "fr": {
+        "formal": "Bonjour, merci pour votre message. L'assistance Nebula répond aux questions concernant l'application : abonnements, paiements, votre compte, horoscopes et consultations avec des astrologues. Si vous avez une question de ce type, merci de la décrire plus en détail et nous vous aiderons volontiers.",
+        "empathetic": "Merci de nous avoir écrit ! Malheureusement, nous ne pouvons pas vous aider pour cette demande : nous accompagnons uniquement les utilisateurs de l'application Nebula. Si vous avez une question sur votre abonnement, votre compte, vos horoscopes ou vos consultations, écrivez-nous simplement, nous sommes là pour vous.",
+        "short": "Nous ne pouvons vous aider que pour des questions sur l'application Nebula. Dites-nous ce dont vous avez besoin.",
+    },
+    "it": {
+        "formal": "Buongiorno, grazie per il suo messaggio. Il supporto Nebula risponde a domande sull'app: abbonamenti, pagamenti, account, oroscopi e consulenze con gli astrologi. Se ha una domanda di questo tipo, la descriva più nel dettaglio e saremo lieti di aiutarla.",
+        "empathetic": "Grazie per averci scritto! Purtroppo non possiamo aiutarti con questa richiesta: assistiamo solo gli utenti dell'app Nebula. Se hai una domanda su abbonamento, account, oroscopi o consulenze, scrivici pure, siamo qui per te.",
+        "short": "Possiamo aiutarti solo con domande sull'app Nebula. Dicci di cosa hai bisogno.",
+    },
+    "pt": {
+        "formal": "Olá, obrigado pela sua mensagem. O apoio da Nebula ajuda com questões sobre a aplicação: subscrições, pagamentos, a sua conta, horóscopos e consultas com astrólogos. Se tiver uma questão deste tipo, descreva-a com mais detalhe e teremos todo o gosto em ajudar.",
+        "empathetic": "Obrigado por nos escrever! Infelizmente, não conseguimos ajudar com este pedido: apoiamos apenas os utilizadores da aplicação Nebula. Se tiver alguma questão sobre a sua subscrição, conta, horóscopos ou consultas, basta escrever-nos, estamos aqui para ajudar.",
+        "short": "Só conseguimos ajudar com questões sobre a aplicação Nebula. Diga-nos do que precisa.",
+    },
+    "nl": {
+        "formal": "Goedendag, bedankt voor uw bericht. De Nebula-support helpt bij vragen over de app: abonnementen, betalingen, uw account, horoscopen en consulten met astrologen. Als u zo'n vraag heeft, beschrijf die dan iets uitgebreider en we helpen u graag.",
+        "empathetic": "Bedankt dat je ons hebt geschreven! Helaas kunnen we je met dit verzoek niet helpen: we ondersteunen alleen gebruikers van de Nebula-app. Heb je een vraag over je abonnement, account, horoscopen of consulten, stuur ons dan gewoon een bericht, we staan voor je klaar.",
+        "short": "We kunnen alleen helpen met vragen over de Nebula-app. Laat ons weten wat je nodig hebt.",
     },
 }
 # навіть якщо модель скаже «не про Nebula», ці тікети йдуть звичайним шляхом
@@ -313,7 +341,7 @@ def generate(text: str, analysis: Analysis, classification: dict, hits: list[ret
 def assist(text: str, generate_models: list[str] | None = None, generate_prompt: str = GENERATE_PROMPT) -> dict:
     started = time.perf_counter()
     with ThreadPoolExecutor(max_workers=2) as pool:
-        f_cls = pool.submit(classify, text)
+        f_cls = pool.submit(classify, text, models=CLASSIFY_MODELS)
         f_an = pool.submit(analyze, text)
         classification, an_res = f_cls.result(), f_an.result()
 
@@ -360,8 +388,10 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
                        agent_notes=gen_res.data.agent_notes, checks=checks)
             out["human_judgment"] = human_judgment(classification, hits, checks)
         else:
+            daily = any("(TPD)" in e or "(RPD)" in e for e in gen_res.errors)
+            why = "добовий ліміт безкоштовного тарифу Groq вичерпано на всіх моделях" if daily else "збій API"
             out["human_judgment"] = {"level": "review", "reasons": [
-                "AI не зміг згенерувати відповіді (збій API). Напиши відповідь вручну, статті з бази знань нижче."]}
+                f"AI не зміг згенерувати відповіді ({why}). Напиши відповідь вручну, статті з бази знань нижче."]}
 
     if lang_ambiguous and out["human_judgment"]["level"] != "blocked":
         out["human_judgment"]["level"] = "review"

@@ -140,7 +140,7 @@ class OffTopicFlowTest(unittest.TestCase):
         self.assertTrue(r["replies"]["short"].endswith("команда підтримки Nebula"))
 
     def test_unknown_language_falls_back_to_english(self):
-        r, _ = self.run_assist("quelle est la capitale de la France", "other", lang="fr")
+        r, _ = self.run_assist("jaké je hlavní město Francie", "other", lang="cs")
         self.assertTrue(r["replies"]["short"].endswith("Nebula Support Team"))
         self.assertEqual(len(r["human_judgment"]["reasons"]), 2)
 
@@ -170,7 +170,7 @@ class LanguageAndSignatureTest(unittest.TestCase):
         out = assistant.add_signature({"formal": "Text.\n\nNebula Support Team", "short": "Коротко."}, "uk")
         self.assertEqual(out["formal"], "Text.\n\nNebula Support Team")
         self.assertTrue(out["short"].endswith("З повагою, команда підтримки Nebula"))
-        self.assertTrue(assistant.add_signature({"short": "x"}, "fr")["short"].endswith("Nebula Support Team"))
+        self.assertTrue(assistant.add_signature({"short": "x"}, "cs")["short"].endswith("Nebula Support Team"))
         # «Nebula» в останньому реченні — ще не підпис
         out = assistant.add_signature({"short": "Уточніть запит щодо Nebula. Після цього ми допоможемо."}, "uk")
         self.assertTrue(out["short"].endswith("команда підтримки Nebula"))
