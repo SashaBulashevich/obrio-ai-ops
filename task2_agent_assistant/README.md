@@ -6,7 +6,7 @@
 - **Вхід** — тікет будь-якою мовою. **Вихід** — summary, 3 варіанти відповіді мовою клієнта, цитати зі статей бази знань (17 статей) і рівень перевірки: ✅ можна надсилати / ⚠️ перевір / ⛔ відповідає людина.
 - **Якість:** **94%** відповідей проходять перевірку (LLM-суддя + перевірки кодом) на gpt-oss-120b; правильна стаття в топ-3 пошуку — **94%**.
 - **Вартість:** **≈ $14** на 10 000 тікетів; звернення не про Nebula — утричі дешевше (готовий шаблон без генерації).
-- **Людина вирішує сама в 12 сценаріях** (refund, юридичні погрози, скарги на експертів, злам акаунта…): копіювання заблоковане до галочки «Я перевірив(ла)», а для кризового стану AI-варіанти приховані повністю.
+- **Людина вирішує сама в 13 сценаріях** (refund, юридичні погрози, скарги на експертів, злам акаунта, соціальна інженерія…): копіювання заблоковане до галочки «Я перевірив(ла)», а для кризового стану AI-варіанти приховані повністю.
 - **▶ Живе демо:** https://nebula-support-copilot-test-task.streamlit.app/ — готові тікети різними мовами в лівій панелі, «Приклади для демо».
 
 - [Як запустити](#як-запустити)
@@ -32,7 +32,7 @@
 
 **Без встановлення:** відкрий https://nebula-support-copilot-test-task.streamlit.app/ (безкоштовний тариф Groq: ~200k токенів на добу на модель; якщо gpt-oss вичерпали ліміт, підхоплює запасна qwen3.8-27b. Якщо застосунок «спить», натисни «Yes, get this app back up» і зачекай ~30 с).
 
-**Локально:** встанови проєкт за [головним README](../README.md#встановлення-windows--macos--linux). Потім з кореня репозиторію:
+**Локально:** встанови проєкт за [головним README](../README.md#встановлення-покроково). Потім з кореня репозиторію:
 
 ```bash
 streamlit run task2_agent_assistant/app.py
@@ -104,7 +104,7 @@ python -m unittest tests.test_assistant_checks -v                   # 30 тес�
        safety_crisis? ── так ──► ⛔ blocked: генерація НЕ запускається
                            │ ні
    не про Nebula? ── так ──► 💬 готовий текст мовою клієнта, генерація НЕ запускається
-   (about_nebula=false, не чутлива категорія)
+   (about_nebula=false, або other + confidence < 0.6, або social_engineering; не чутлива категорія)
                            │ ні
                            ▼
               ┌──────────────────────────┐
@@ -132,7 +132,7 @@ python -m unittest tests.test_assistant_checks -v                   # 30 тес�
 | [results/](results/) | результати прогонів |
 | [../tests/test_assistant_checks.py](../tests/test_assistant_checks.py) | тести детермінованої частини |
 
-**Повторне використання Task 1.** Класифікатор з Task 1 тут не дублюється, а викликається як модуль. Це дає категорію для бусту пошуку, пріоритет і guardrails (криза, юридичні погрози, злам акаунта), на яких побудовані рівні human judgment. Одна логіка «що небезпечно» — для маршрутизації і для асистента.
+**Повторне використання Task 1.** Класифікатор з Task 1 тут не дублюється, а викликається як модуль. Це дає категорію для бусту пошуку, пріоритет і guardrails (криза, юридичні погрози, злам акаунта, соціальна інженерія), на яких побудовані рівні human judgment. Одна логіка «що небезпечно» — для маршрутизації і для асистента.
 
 ## 2. Retrieval: чому саме так
 
@@ -235,7 +235,7 @@ python -m unittest tests.test_assistant_checks -v                   # 30 тес�
 
 **Рішення: окреме питання «це про Nebula?» + шаблон замість генерації.**
 1. Промпт аналізу [`analyze_v2`](prompts/analyze_v2.md) = v1 + поле **`about_nebula`** («false лише якщо очевидно не про Nebula; якщо сумніваєшся — true»). Окремого виклику немає — це той самий запит аналізу.
-2. Якщо `about_nebula = false`, **генерація не запускається**: агент отримує готові три варіанти мовою клієнта (uk, ru, en, es, de, pl, fr, it, pt, nl; інші → англійська з попередженням) — [`OFF_TOPIC_REPLIES`](assistant.py). Шаблон нічого не обіцяє і не залежить від настрою моделі. Бонус: такий тікет коштує ~$0.0004 замість ~$0.0014.
+2. Якщо `about_nebula = false` (а також якщо класифікатор дав `other` з confidence < 0.6 або прапорець `social_engineering` — див. нижче і сценарій 13), **генерація не запускається**: агент отримує готові три варіанти мовою клієнта (uk, ru, en, es, de, pl, fr, it, pt, nl; інші → англійська з попередженням) — [`OFF_TOPIC_REPLIES`](assistant.py). Шаблон нічого не обіцяє і не залежить від настрою моделі. Бонус: такий тікет коштує ~$0.0004 замість ~$0.0014.
 3. **Чутливі тікети завжди йдуть звичайним шляхом**, хоч би що сказала модель: криза, refund, скарга на експерта, персональні дані, юридичні погрози, P1.
 
 **Перевірка `analyze_v2`:** 18 тікетів evaluation + 8 «дивних».
@@ -326,7 +326,32 @@ python -m unittest tests.test_assistant_checks -v                   # 30 тес�
 
 > **Як набиралось покриття.** За перший день v2 встиг згенерувати лише 9–10 тікетів з 17: решта впала на **добовому ліміті токенів** безкоштовного тарифу Groq (див. розділ 8). Кеш результатів дозволив наступного дня дозаповнити лише пропуски, не перераховуючи готове (`python -m task2_agent_assistant.evaluate --prompt generate_v2 --model openai/gpt-oss-120b`). Тепер обидві моделі v2 мають **17/17**. Для gpt-oss-20b у v1 — 10/17: цю версію я не дозаповнював, бо вона потрібна лише для порівняння промптів. Тікет #7 (кризовий стан) не генерується за дизайном. Вибірка все одно невелика: 1 тікет ≈ 6 відсоткових пунктів.
 
-Повна таблиця input → expected → actual → pass/fail по кожному тікету: [results/generate_v2/openai__gpt-oss-120b.md](results/generate_v2/openai__gpt-oss-120b.md) (і такі самі файли для інших моделей і версій).
+**Таблиця input → expected → actual → pass/fail** (gpt-oss-120b, `generate_v2`; ✅/❌ — збіг з розміткою):
+
+| # | Input | Expected cat / pri / level | Actual cat / pri / level | Стаття в топ-3 | Level | Quality |
+|---|---|---|---|---|---|---|
+| 1 | Добрий день, з мене списали гроші двічі за підписку цього… | refund_request / P2 / review | refund_request / P2 / review | ✅ | ✅ | ✅ |
+| 2 | Hi, how do I cancel my subscription? I don't want it to r… | billing_subscription / P3 / ok | billing_subscription / P3 / ok | ✅ | ✅ | ✅ |
+| 3 | I can't log in. The verification code email never arrives… | technical_issue / P2 / ok | technical_issue / P2 / ok | ✅ | ✅ | ✅ |
+| 4 | ¿Cómo puedo ver mi signo ascendente en la app? No lo encu… | product_question / P4 / ok | product_question / P4 / ok | ✅ | ✅ | ✅ |
+| 5 | Удалите мой аккаунт и все мои данные. Больше не хочу поль… | account_privacy / P2 / review | account_privacy / P2 / review | ✅ | ✅ | ✅ |
+| 6 | An expert told me my aura is blocked and asked me to send… | expert_complaint / P1 / review | expert_complaint / P1 / review | ✅ | ✅ | ✅ |
+| 7 | Nothing matters anymore. My reading said things won't get… | safety_crisis / P1 / blocked | safety_crisis / P1 / blocked | ✅ | ✅ | — (заблоковано) |
+| 8 | I was charged twice, refund me or I'll dispute with my bank. | refund_request / P1 / review | refund_request / P1 / review | ✅ | ✅ | ✅ |
+| 9 | privet, uzhe nedelyu ne prihodyat push uvedomleniya s gor… | technical_issue / P3 / ok | technical_issue / P3 / review | ✅ | ❌ | ✅ |
+| 10 | Ich habe gestern für Premium bezahlt, aber die App zeigt… | billing_subscription / P2 / ok | billing_subscription / P2 / ok | ✅ | ✅ | ❌ |
+| 11 | I have a promo code from your Instagram ad but the app sa… | billing_subscription / P3 / ok | billing_subscription / P3 / ok | ✅ | ✅ | ✅ |
+| 12 | The app crashes whenever I open the chat, and I was charg… | refund_request / P2 / review | refund_request / P2 / review | ✅ | ✅ | ✅ |
+| 13 | Астролог у чаті був дуже грубий і закінчив сесію на 10 хв… | expert_complaint / P3 / review | expert_complaint / P3 / review | ✅ | ✅ | ✅ |
+| 14 | Is my birth data sold to advertisers or shared with anyone? | account_privacy / P4 / ok | account_privacy / P4 / ok | ✅ | ✅ | ✅ |
+| 15 | your stupid app keeps freezing every 2 minutes, worst gar… | technical_issue / P2 / ok | **technical_issue / P3 / review** | ✅ | ❌ | ✅ |
+| 16 | Wow, great job charging me AGAIN after I cancelled last w… | billing_subscription / P2 / ok | billing_subscription / P2 / ok | ✅ | ✅ | ✅ |
+| 17 | Aplikacja nie działa od rana u nikogo w mojej rodzinie, m… | technical_issue / P1 / review | technical_issue / P1 / review | ✅ | ✅ | ✅ |
+| 18 | Can I order a personalized printed horoscope book as a gi… | product_question / P4 / review | product_question / P4 / review | ❌ | ✅ | ✅ |
+
+**Разом:** категорія 18/18 (100%), пріоритет 17/18 (94%), стаття в топ-3 17/18 (94%), рівень 16/18 (89%), quality 16/17 (94%; #7 не генерується за дизайном). Помилки розібрано нижче.
+
+Повна таблиця з усіма полями (статті, проблема за суддею) по кожному тікету: [results/generate_v2/openai__gpt-oss-120b.md](results/generate_v2/openai__gpt-oss-120b.md) (і такі самі файли для інших моделей і версій).
 
 ### Аналіз помилок
 
@@ -393,7 +418,7 @@ python -m unittest tests.test_assistant_checks -v                   # 30 тес�
 | **Перенос рядка екранований двічі** (у тексті буквально `\n\n`) | знайдено ручним тестом («пайпал»): так виглядали 66 з 363 відповідей eval (18%), а ні LLM-суддя, ні перевірки цього не бачили. Код перед показом замінює буквальний `\n` на справжній перенос (`add_signature()`) |
 | **Rate limits безкоштовного тарифу** | безкоштовний тариф: **8 000 токенів/хв і 200 000 токенів/добу на модель**. За всі прогони eval: 85 викликів генерації, **282 відповіді 429** (135 добових TPD, 12 хвилинних TPM, 135 — до того, як я почав логувати тип ліміту) і **3 реальні випадки невалідного JSON** (Groq 400 `json_validate_failed` → repair-запит). Жоден тікет не загубився і скрипт не впав: тікет позначався «generation failed» → ⚠️ review, а повторний запуск дозаповнював лише пропуски з кешу. Висновок із прогонів, втілений у коді: **при добовому ліміті (TPD/RPD) retry марний** — клієнт одразу переходить до наступної моделі, а не чекає 7 разів по хвилині (unit-тест `test_daily_limit_skips_retries_and_falls_back`). У production — платний тариф і алерт на частку fallback'ів |
 
-Тести детермінованої частини (пошук, перевірка цитат, regex обіцянок 4 мовами, рівні human judgment): [tests/test_assistant_checks.py](../tests/test_assistant_checks.py) — 30 тестів (зокрема мова uk/ru, підпис, звернення не про Nebula з підміненими викликами LLM), + 24 тести failure handling LLM-клієнта і класифікатора ([tests/test_failure_handling.py](../tests/test_failure_handling.py)), зокрема добовий ліміт без марних retry.
+Тести детермінованої частини (пошук, перевірка цитат, regex обіцянок 5 мовами, рівні human judgment): [tests/test_assistant_checks.py](../tests/test_assistant_checks.py) — 30 тестів (зокрема мова uk/ru, підпис, звернення не про Nebula з підміненими викликами LLM), + 24 тести failure handling LLM-клієнта і класифікатора ([tests/test_failure_handling.py](../tests/test_failure_handling.py)), зокрема добовий ліміт без марних retry.
 
 ## 9. Cost
 
