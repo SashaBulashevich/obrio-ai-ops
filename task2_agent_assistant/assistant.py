@@ -268,7 +268,8 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
         reasons.append("Рішення про повернення коштів ухвалює Billing після перевірки транзакції.")
     if cat == "expert_complaint":
         reasons.append("Скарга на експерта: не оцінювати експерта до перевірки логу чату; misconduct → Trust & Safety.")
-    if cat == "account_privacy" and classification["priority"] in ("P1", "P2") and "account_security_override" not in flags:
+    if (cat == "account_privacy" and classification["priority"] in ("P1", "P2")
+            and not {"account_security_override", "social_engineering"} & set(flags)):
         # запит на видалення / експорт даних (P2), а не просте питання про дані (P4)
         reasons.append("Видалення / експорт персональних даних: підтвердити, що запит від власника акаунта.")
     if classification["priority"] == "P1" and not reasons:
