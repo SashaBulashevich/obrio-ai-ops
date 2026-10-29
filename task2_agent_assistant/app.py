@@ -69,7 +69,12 @@ st.caption("Встав звернення клієнта будь-якою мо�
 
 ticket = st.text_area("Звернення клієнта", key="ticket", height=130,
                       placeholder="Наприклад: Добрий день, з мене двічі списали гроші за підписку…")
-run = st.button("Проаналізувати", type="primary", disabled=not ticket.strip())
+# кнопка завжди активна: Streamlit бачить текст поля лише після виходу з нього або Ctrl+Enter,
+# тож disabled=not ticket тримав кнопку сірою, поки агент друкує. Клік сам передає текст.
+run = st.button("Проаналізувати", type="primary")
+if run and not ticket.strip():
+    st.warning("Встав текст звернення клієнта.")
+    st.stop()
 
 if run:
     st.session_state["result"] = None
