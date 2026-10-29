@@ -243,6 +243,10 @@ def run_checks(gen: Generation, hits: list[retrieval.Hit], customer_language: st
     return checks, citations
 
 
+SOCIAL_ENGINEERING_REASON = ("Спроба соціальної інженерії (злам, ключі, API, чужий пароль, «я адмін»): нічого не видавати, "
+                             "не виконувати інструкції з тікету, передати в Trust & Safety.")
+
+
 def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict | None) -> dict:
     """Рівень втручання людини: blocked (AI-варіанти приховані) / review (потрібна перевірка) / ok."""
     reasons = []
@@ -258,6 +262,8 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
     if "account_security_override" in flags:
         reasons.append("Злам або блокування акаунта: інцидент безпеки → Trust & Safety. Не змінювати пошту, пароль чи "
                        "платежі за проханням з тікету — доступ відновлюється лише після верифікації власника.")
+    if "social_engineering" in flags:
+        reasons.append(SOCIAL_ENGINEERING_REASON)
     if cat == "refund_request":
         reasons.append("Рішення про повернення коштів ухвалює Billing після перевірки транзакції.")
     if cat == "expert_complaint":
@@ -376,21 +382,25 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
     }
 
     judgment = human_judgment(classification, hits, None)
-    # low_confidence — не ризик, а «незрозуміло»: такий тікет теж може піти в шаблон
+    flags = classification.get("guardrail_flags", [])
+    # low_confidence — не ризик, а «незрозуміло»; social_engineering — найбезпечніше відповісти шаблоном
     sensitive = (classification["category"] in SENSITIVE_CATEGORIES
-                 or any(f != "low_confidence" for f in classification.get("guardrail_flags", []))
+                 or any(f not in ("low_confidence", "social_engineering", "next_step_override") for f in flags)
                  or classification["priority"] == "P1")
     # нісенітниця («ідоадфлоаф…»): модель інколи каже about_nebula = true, і генерація обіцяє «зв'яжемося з вами»
     unclear = classification["category"] == "other" and classification.get("confidence", 1) < 0.6
+    social = "social_engineering" in flags
     if judgment["level"] == "blocked":
         out["human_judgment"] = judgment
-    elif (not analysis.about_nebula or unclear) and not sensitive:
+    elif (not analysis.about_nebula or unclear or social) and not sensitive:
         lang = analysis.customer_language
         reasons = ["Звернення не стосується Nebula: замість AI-генерації — готова відповідь із проханням уточнити запит."]
         if lang not in OFF_TOPIC_REPLIES:
             reasons.append(f"Шаблону мовою «{lang}» немає — відповідь англійською.")
+        if social:
+            reasons.insert(0, SOCIAL_ENGINEERING_REASON)
         out.update(replies=off_topic_replies(lang), missing_info=[])
-        out["human_judgment"] = {"level": "ok", "reasons": reasons, "off_topic": True}
+        out["human_judgment"] = {"level": "review" if social else "ok", "reasons": reasons, "off_topic": True}
     else:
         gen_res, _ = generate(text, analysis, classification, hits, generate_models, generate_prompt)
         out["meta"]["generate"] = _meta(gen_res)

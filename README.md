@@ -1,6 +1,6 @@
 # OBRIO · AI Ops — тестове завдання (Nebula)
 
-[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 51 тест проганяється автоматично на кожен push
+[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 53 тести проганяються автоматично на кожен push
 
 ## Коротко
 
@@ -64,7 +64,7 @@ python task1_classifier/classifier.py
 **Локально** (після встановлення нижче):
 
 ```bash
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 51 тест, без ключа і без API, ~1 с
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 53 тести, без ключа і без API, ~1 с
 python task1_classifier/classifier.py                                            # Task 1: вводиш тікети, отримуєш картку з рішенням
 streamlit run task2_agent_assistant/app.py                                       # Task 2: інтерфейс на http://localhost:8501
 ```
@@ -120,7 +120,7 @@ pip install -r requirements.txt
 python -m unittest tests.test_failure_handling tests.test_assistant_checks -v
 ```
 
-Внизу має бути `Ran 51 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
+Внизу має бути `Ran 53 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
 
 ```bash
 python task1_classifier/classifier.py "How do I cancel my subscription?"
@@ -155,7 +155,7 @@ obrio-ai-ops/
 ├── common/                  спільний код обох задач
 │   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі
 │   └── pricing.py           ціни моделей і вартість кожного виклику
-├── tests/                   51 тест без API
+├── tests/                   53 тести без API
 ├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
 └── .env.example             шаблон файлу з ключем Groq

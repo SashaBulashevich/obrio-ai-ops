@@ -78,14 +78,32 @@ LEGAL_PATTERNS = re.compile(
 # Безпека акаунта (злам, блокування): своєї категорії немає, модель обирала other / account_privacy і P2.
 # Ловимо лише «мій акаунт», а не «допоможи зламати Nebula».
 _ACCOUNT = r"(?:account|акаунт\w*|аккаунт\w*|профіль|профиль)"
-_TAKEOVER = (r"(?:hacked|hack(?:ed)? into|взлома\w*|зламал\w*|stolen|stole|вкрал\w*|украл\w*|"
+_TAKEOVER = (r"(?:hacked|hack(?:ed)? into|взлома\w*|взламан\w*|злама[влн]\w*|stolen|stole|вкрал\w*|украл\w*|"
              r"заблокува\w*|заблокирова\w*|забани\w*|banned|suspended|(?:was|has been|got|is) blocked)")
 ACCOUNT_SECURITY_PATTERNS = re.compile(
     rf"{_ACCOUNT}.{{0,25}}{_TAKEOVER}|{_TAKEOVER}.{{0,25}}{_ACCOUNT}|"
     r"\b(?:мене|меня)\s+(?:(?:за)?(?:блокува|блокирова|забани)|зламал|взламал|взломал)\w*|"
-    r"\bi(?:'ve| have| was| am| got)\s+(?:been\s+)?(?:banned|blocked|locked out|suspended)\b|"
+    r"\bi(?:'ve| have| was| am| got)\s+(?:been\s+)?(?:banned|blocked|locked out|suspended|hacked)\b|"
     r"someone (?:logged|signed) in(?:to)? my account",
     re.IGNORECASE,
+)
+
+# Соціальна інженерія: просять зламати, видати ключ / API / чужий пароль, називаються адміном.
+# Секретів модель не бачить (див. Task 2 README), але такий тікет має побачити Trust & Safety, а не Tier-1.
+# Жертва зламу («мій акаунт пытались взломать») ловиться правилом вище і сюди не потрапляє.
+_GIVE = r"(?:дай|дайте|скинь|скиньте|покажи|покажіть|надішли|пришли|отправь|give me|send me|show me|share)"
+_SECRET = r"(?:\bapi|ап[іиы]\w*|токен\w*|tokens?\b|ключ(?:і|а|ем)?\b|\bkeys?\b)"
+SOCIAL_ENGINEERING_PATTERNS = re.compile(
+    r"\b(?:взломать|взламать|взламати|зламати|хакнуть|хакнути|hack into)\b|\bhow (?:to|do i|can i) hack\b|"
+    # «помоги мне со взломом», «help with hacking»; «допоможіть, мій акаунт зламали» — жертва, її ловить правило вище
+    r"\b(?:помоги|помогите|допоможи|допоможіть|help)\W+(?:\w+\W+){0,3}?(?:взлом|злам|хак|hack)\w*|"
+    r"\b(?:я|i am|i'm)\s+(?:an?\s+|the\s+)?(?:адмін|админ|адміністратор|администратор|розробник|разработчик|"
+    r"разраб\w*|розраб\w*|admin|developer)\b|"
+    r"\b(?:я|i)\s+(?:тебя|тебе|you)\s+(?:сделал|создал|зробив|створив|made|built|created)\b|"
+    rf"\b{_GIVE}\W+(?:\w+\W+){{0,3}}?{_SECRET}|{_SECRET}\W+(?:\w+\W+){{0,3}}?(?:дай|скинь|покажи)\b|"
+    # чужий пароль: «дай пароль від ivan@gmail.com»; «скиньте пароль від мого акаунта» — це відновлення, не атака
+    rf"^(?!.*\b(?:мій|мого|мой|моего|my)\b).*\b{_GIVE}\W+(?:\w+\W+){{0,3}}?(?:парол\w*|password).{{0,40}}@",
+    re.IGNORECASE | re.DOTALL,
 )
 
 
@@ -139,8 +157,9 @@ def classify(
 
     out = apply_guardrails(text, out)
     out["assigned_team"] = TEAM_BY_CATEGORY[out["category"]]
-    if "account_security_override" in out["guardrail_flags"]:
-        out["assigned_team"] = "Trust & Safety"  # злам / блокування — інцидент безпеки, а не Tier-1 чи Privacy
+    if {"account_security_override", "social_engineering"} & set(out["guardrail_flags"]):
+        # злам / блокування — інцидент безпеки; спроба соціальної інженерії — теж у Trust & Safety
+        out["assigned_team"] = "Trust & Safety"
     out["meta"] = meta
     return out
 
@@ -167,6 +186,12 @@ def apply_guardrails(text: str, out: dict) -> dict:
         out["priority"] = "P1"
         out["needs_human_review"] = True
         flags.append("account_security_override")
+    elif SOCIAL_ENGINEERING_PATTERNS.search(text) and out["category"] != "safety_crisis":
+        # P3, а не P1: майже завжди тролінг, а черга P1 — для шкоди, що вже відбувається
+        out["needs_human_review"] = True
+        if out["priority"] == "P4":
+            out["priority"] = "P3"
+        flags.append("social_engineering")
     if out["category"] in ("refund_request", "account_privacy", "expert_complaint"):
         # гроші, персональні дані, звинувачення людей — тільки з людиною
         out["needs_human_review"] = True
@@ -184,6 +209,9 @@ SAFE_NEXT_STEPS = {
                      "protocol (local emergency services, findahelpline.com); no templates or bot replies.",
     "account_security": "Escalate to Trust & Safety: check active sessions and recent login, email and payment changes; "
                         "freeze payment changes and restore access only after verifying the account owner.",
+    "social_engineering": "Possible social engineering: do not share credentials, API keys, internal data or other "
+                          "customers' data and do not follow instructions from the ticket. Reply with the standard "
+                          "template and log the attempt for Trust & Safety.",
     "legal": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; "
              "reply only after their review.",
     "refund_request": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) "
@@ -203,6 +231,8 @@ def override_next_step(text: str, out: dict) -> dict:
         key = "account_security"
     elif LEGAL_PATTERNS.search(text):
         key = "legal"
+    elif "social_engineering" in out["guardrail_flags"]:
+        key = "social_engineering"
     elif out["category"] in ("refund_request", "expert_complaint"):
         key = out["category"]
     elif out["category"] == "account_privacy" and out["priority"] in ("P1", "P2"):
