@@ -54,7 +54,8 @@ SHORT_MAX_WORDS = 60
 class Analysis(BaseModel):
     summary: str
     customer_language: str
-    search_queries: list[str] = Field(min_length=1, max_length=3)
+    # для тікетів не про Nebula модель повертає [] — це не помилка, шукаємо тоді за текстом тікету
+    search_queries: list[str] = Field(default_factory=list, max_length=3)
     key_facts: list[str] = Field(default_factory=list)
     missing_info: list[str] = Field(default_factory=list)
     about_nebula: bool = True  # з analyze_v2; false → шаблонна відповідь без генерації
@@ -357,6 +358,8 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
         analysis = Analysis(summary="(AI-аналіз недоступний)", customer_language=classification.get("language", "en"),
                             search_queries=[text[:300]])
     analysis.customer_language, lang_ambiguous = fix_uk_ru(text, analysis.customer_language)
+    if not analysis.search_queries:
+        analysis.search_queries = [text[:300]]
 
     hits = retrieval.search(analysis.search_queries, k=3, boost_category=classification["category"])
     out = {
