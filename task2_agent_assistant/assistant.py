@@ -376,11 +376,15 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
     }
 
     judgment = human_judgment(classification, hits, None)
-    sensitive = (classification["category"] in SENSITIVE_CATEGORIES or classification.get("guardrail_flags")
+    # low_confidence — не ризик, а «незрозуміло»: такий тікет теж може піти в шаблон
+    sensitive = (classification["category"] in SENSITIVE_CATEGORIES
+                 or any(f != "low_confidence" for f in classification.get("guardrail_flags", []))
                  or classification["priority"] == "P1")
+    # нісенітниця («ідоадфлоаф…»): модель інколи каже about_nebula = true, і генерація обіцяє «зв'яжемося з вами»
+    unclear = classification["category"] == "other" and classification.get("confidence", 1) < 0.6
     if judgment["level"] == "blocked":
         out["human_judgment"] = judgment
-    elif not analysis.about_nebula and not sensitive:
+    elif (not analysis.about_nebula or unclear) and not sensitive:
         lang = analysis.customer_language
         reasons = ["Звернення не стосується Nebula: замість AI-генерації — готова відповідь із проханням уточнити запит."]
         if lang not in OFF_TOPIC_REPLIES:

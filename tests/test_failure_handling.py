@@ -219,7 +219,8 @@ class NextStepTest(unittest.TestCase):
 
     def test_hacked_account_goes_to_trust_and_safety_as_p1(self):
         # як у живому тесті: модель дала other / P2 / Tier-1
-        for text in ("мій аккаунт взламали", "мене заблокували", "Someone logged into my account and changed the email"):
+        for text in ("мій аккаунт взламали", "мене заблокували", "мене взламали", "меня взломали",
+                     "Someone logged into my account and changed the email"):
             out = self.classify_with(text, category="other", priority="P2", needs_human_review=False)
             self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Trust & Safety"), text)
             self.assertTrue(out["needs_human_review"])

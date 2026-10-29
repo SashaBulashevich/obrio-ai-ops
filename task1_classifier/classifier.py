@@ -82,7 +82,7 @@ _TAKEOVER = (r"(?:hacked|hack(?:ed)? into|взлома\w*|зламал\w*|stolen
              r"заблокува\w*|заблокирова\w*|забани\w*|banned|suspended|(?:was|has been|got|is) blocked)")
 ACCOUNT_SECURITY_PATTERNS = re.compile(
     rf"{_ACCOUNT}.{{0,25}}{_TAKEOVER}|{_TAKEOVER}.{{0,25}}{_ACCOUNT}|"
-    r"\b(?:мене|меня)\s+(?:за)?(?:блокува|блокирова|забани)\w*|"
+    r"\b(?:мене|меня)\s+(?:(?:за)?(?:блокува|блокирова|забани)|зламал|взламал|взломал)\w*|"
     r"\bi(?:'ve| have| was| am| got)\s+(?:been\s+)?(?:banned|blocked|locked out|suspended)\b|"
     r"someone (?:logged|signed) in(?:to)? my account",
     re.IGNORECASE,

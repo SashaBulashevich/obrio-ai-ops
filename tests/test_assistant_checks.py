@@ -132,10 +132,11 @@ class HumanJudgmentTest(unittest.TestCase):
 class OffTopicFlowTest(unittest.TestCase):
     """assist() з підміненими викликами LLM: звернення не про Nebula → шаблон без генерації."""
 
-    def run_assist(self, text, category, priority="P4", about_nebula=False, lang="uk", queries=None):
+    def run_assist(self, text, category, priority="P4", about_nebula=False, lang="uk", queries=None,
+                   confidence=0.9, flags=None):
         meta = dict(model="fake", api_latency_s=0, cost_usd=0, prompt_tokens=0, completion_tokens=0,
                     cached_tokens=0, attempts=1, errors=[])
-        cls_ = {**cls(category, priority), "language": lang, "meta": meta}
+        cls_ = {**cls(category, priority, flags or (), confidence), "language": lang, "meta": meta}
         an = SimpleNamespace(ok=True, data=assistant.Analysis(summary="s", customer_language=lang, search_queries=[text] if queries is None else queries,
                                                               about_nebula=about_nebula), **meta)
         failed = SimpleNamespace(ok=False, data=None, **meta)
@@ -157,6 +158,18 @@ class OffTopicFlowTest(unittest.TestCase):
         gen_mock.assert_not_called()
         self.assertEqual(r["search_queries"], ["апи"])
         self.assertTrue(r["human_judgment"]["off_topic"])
+
+    def test_gibberish_gets_template_even_if_model_says_about_nebula(self):
+        # реальний випадок: «ідоадфлоафждоафджіоав» → other, confidence 0.2, але about_nebula = true
+        r, gen_mock = self.run_assist("ідоадфлоафждоафджіоав", "other", about_nebula=True, confidence=0.2,
+                                      flags=["low_confidence"])
+        gen_mock.assert_not_called()
+        self.assertTrue(r["human_judgment"]["off_topic"])
+
+    def test_confident_other_still_generates(self):
+        # «небула»: other, confidence 0.8, про Nebula → звичайна генерація
+        _, gen_mock = self.run_assist("небула", "other", about_nebula=True, confidence=0.8)
+        gen_mock.assert_called_once()
 
     def test_unknown_language_falls_back_to_english(self):
         r, _ = self.run_assist("jaké je hlavní město Francie", "other", lang="cs")
