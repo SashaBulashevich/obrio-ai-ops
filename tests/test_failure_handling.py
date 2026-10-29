@@ -4,6 +4,7 @@
     python -m unittest tests.test_failure_handling -v
 """
 
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -158,11 +159,35 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertEqual(out["priority"], "P1")
         self.assertIn("legal_threat_override", out["guardrail_flags"])
 
+    def test_legal_threat_is_flagged_even_if_model_already_gave_p1(self):
+        # знайдено на фінальному прогоні: модель сама дала P1 → позначки не було → Task 2 не показував «не визнавати провину»
+        data = classifier.LLMClassification.model_validate_json(VALID).model_copy(update={"priority": "P1"})
+        with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=data, model="model-a")):
+            out = classifier.classify("I was charged twice, refund me or I'll dispute with my bank")
+        self.assertIn("legal_threat", out["guardrail_flags"])
+        self.assertNotIn("legal_threat_override", out["guardrail_flags"])  # пріоритет код не піднімав
+
     def test_legal_guardrail_works_even_when_llm_down(self):
         with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=None, model=None)):
             out = classifier.classify("Мій юрист вже готує позов")
         self.assertEqual(out["priority"], "P1")
         self.assertTrue(out["needs_human_review"])
+
+
+class ApiKeyTest(unittest.TestCase):
+    """Без ключа або з неправильним — зрозуміле повідомлення, а не traceback і не «тиха» ручна черга."""
+
+    def test_missing_or_placeholder_key(self):
+        for value in ("", "your_groq_api_key_here"):
+            with patch.object(llm_client, "_client", None), patch.dict(os.environ, {"GROQ_API_KEY": value}):
+                with self.assertRaises(llm_client.APIKeyError) as e:
+                    llm_client.get_client()
+            self.assertIn(".env", str(e.exception))
+
+    def test_invalid_key_stops_instead_of_falling_back(self):
+        invalid = groq.AuthenticationError("Invalid API Key", response=httpx.Response(401, request=REQUEST), body=None)
+        with self.assertRaises(llm_client.APIKeyError):
+            run([invalid, ok(VALID)])
 
 
 class NextStepTest(unittest.TestCase):

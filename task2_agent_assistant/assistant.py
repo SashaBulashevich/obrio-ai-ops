@@ -29,7 +29,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "task1_classifier"))
 sys.path.insert(0, str(HERE))
 
-from common.llm_client import call_json  # noqa: E402
+from common.llm_client import APIKeyError, call_json  # noqa: E402
 from classifier import classify  # noqa: E402
 import retrieval  # noqa: E402
 
@@ -252,7 +252,7 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
             "Можливий кризовий стан клієнта. Шаблонні відповіді заборонені протоколом — "
             "відповідь пише людина, тікет ескалюється в Trust & Safety."
         ]}
-    if "legal_threat_override" in flags:
+    if "legal_threat" in flags or "legal_threat_override" in flags:
         reasons.append("Юридична погроза / chargeback: не визнавати провину, ескалювати Billing lead і Legal.")
     if "account_security_override" in flags:
         reasons.append("Злам або блокування акаунта: інцидент безпеки → Trust & Safety. Не змінювати пошту, пароль чи "
@@ -411,4 +411,7 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    print(json.dumps(assist(sys.argv[1]), ensure_ascii=False, indent=2))
+    try:
+        print(json.dumps(assist(sys.argv[1]), ensure_ascii=False, indent=2))
+    except APIKeyError as e:
+        sys.exit(str(e))

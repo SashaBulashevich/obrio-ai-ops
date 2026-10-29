@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from common.llm_client import call_json  # noqa: E402
+from common.llm_client import APIKeyError, call_json  # noqa: E402
 
 PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
 
@@ -155,11 +155,14 @@ def apply_guardrails(text: str, out: dict) -> dict:
     if out["category"] == "safety_crisis":
         out["priority"] = "P1"
         out["needs_human_review"] = True
-    if LEGAL_PATTERNS.search(text) and out["priority"] != "P1":
-        # Модель пропускала погрозу chargeback, якщо вона після refund-запиту
-        out["priority"] = "P1"
+    if LEGAL_PATTERNS.search(text):
+        # позначка завжди, навіть якщо модель сама дала P1: Task 2 показує агенту «не визнавати провину»
         out["needs_human_review"] = True
-        flags.append("legal_threat_override")
+        flags.append("legal_threat")
+        if out["priority"] != "P1":
+            # Модель пропускала погрозу chargeback, якщо вона після refund-запиту
+            out["priority"] = "P1"
+            flags.append("legal_threat_override")
     if ACCOUNT_SECURITY_PATTERNS.search(text) and out["category"] != "safety_crisis":
         out["priority"] = "P1"
         out["needs_human_review"] = True
@@ -275,10 +278,13 @@ def main():
     parser.add_argument("--prompt", default=DEFAULT_PROMPT)
     parser.add_argument("--model", action="append", help="модель (можна кілька разів — буде fallback-ланцюжок)")
     args = parser.parse_args()
-    if args.text is None:
-        interactive(args.prompt, args.model)
-        return
-    result = classify(args.text, args.prompt, args.model)
+    try:
+        if args.text is None:
+            interactive(args.prompt, args.model)
+            return
+        result = classify(args.text, args.prompt, args.model)
+    except APIKeyError as e:
+        sys.exit(str(e))  # зрозуміле повідомлення замість traceback
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

@@ -74,7 +74,11 @@ run = st.button("Проаналізувати", type="primary", disabled=not tic
 if run:
     st.session_state["result"] = None
     with st.spinner("Аналізую тікет, шукаю в базі знань, готую відповіді…"):
-        st.session_state["result"] = cached_assist(ticket.strip(), model, prompt_version)
+        try:
+            st.session_state["result"] = cached_assist(ticket.strip(), model, prompt_version)
+        except assistant.APIKeyError as e:
+            st.error(f"🔑 {e}")
+            st.stop()
     st.session_state["confirmed"] = False
 
 r = st.session_state.get("result")

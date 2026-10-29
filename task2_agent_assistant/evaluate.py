@@ -27,7 +27,7 @@ sys.path.insert(0, str(HERE))
 import assistant  # noqa: E402
 import retrieval  # noqa: E402
 from common import llm_client  # noqa: E402
-from common.llm_client import call_json  # noqa: E402
+from common.llm_client import APIKeyError, call_json  # noqa: E402
 
 ALL_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.8-27b"]
 # Суддя — модель іншої родини, ніж основний кандидат (gpt-oss): менше упередження "сам себе хвалить".
@@ -283,4 +283,7 @@ def main():
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    main()
+    try:
+        main()
+    except APIKeyError as e:
+        sys.exit(str(e))

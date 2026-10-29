@@ -106,6 +106,10 @@ class HumanJudgmentTest(unittest.TestCase):
     def test_no_relevant_article_requires_review(self):
         self.assertEqual(assistant.human_judgment(cls(), [], None)["level"], "review")
 
+    def test_legal_reason_shown_when_model_already_gave_p1(self):
+        hj = assistant.human_judgment(cls("billing_subscription", "P1", ["legal_threat"]), self.hits, None)
+        self.assertTrue(any("Юридична погроза" in x for x in hj["reasons"]))
+
     def test_hacked_account_has_security_reason_not_privacy(self):
         hj = assistant.human_judgment(cls("account_privacy", "P1", flags=["account_security_override"]), self.hits, None)
         self.assertEqual(hj["level"], "review")

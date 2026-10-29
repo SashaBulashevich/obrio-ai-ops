@@ -1,5 +1,7 @@
 # OBRIO · AI Ops — тестове завдання (Nebula)
 
+[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 48 тестів проганяються автоматично на кожен push
+
 ## Коротко
 
 - **Task 1 — AI-класифікатор тікетів.** Приймає текст звернення будь-якою мовою і повертає категорію, пріоритет, рекомендований наступний крок і команду, якій передати тікет. Точність (категорія **і** пріоритет разом) — **96%** на 48 тікетах. Вартість — **≈ $1.58** на 10 000 тікетів. Небезпечні випадки (кризовий стан, юридичні погрози, злам акаунта, гроші, персональні дані) гарантує код, а не модель.
@@ -43,7 +45,7 @@
 **Локально** (після встановлення нижче):
 
 ```bash
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 44 тести, без ключа і без API, ~1 с
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 48 тестів, без ключа і без API, ~1 с
 python task1_classifier/classifier.py                                            # Task 1: вводиш тікети, отримуєш картку з рішенням
 streamlit run task2_agent_assistant/app.py                                       # Task 2: інтерфейс на http://localhost:8501
 ```
@@ -99,13 +101,13 @@ pip install -r requirements.txt
 python -m unittest tests.test_failure_handling tests.test_assistant_checks -v
 ```
 
-Внизу має бути `Ran 44 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
+Внизу має бути `Ran 48 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
 
 ```bash
 python task1_classifier/classifier.py "How do I cancel my subscription?"
 ```
 
-Має з'явитися JSON з `"category": "billing_subscription"` і `"priority": "P3"`. Якщо замість цього помилка про ключ — перевір файл `.env` (крок 5).
+Має з'явитися JSON з `"category": "billing_subscription"` і `"priority": "P3"`. Якщо ключа немає або він неправильний, програма так і напише: «Немає ключа Groq…» або «Groq відхилив ключ…» — тоді перевір файл `.env` (крок 5).
 
 **Крок 7. Запусти.**
 - Task 1: `python task1_classifier/classifier.py` — інтерактивний режим, приклади тікетів: [Task 1 → Як запустити](task1_classifier/README.md#як-запустити).
@@ -134,7 +136,8 @@ obrio-ai-ops/
 ├── common/                  спільний код обох задач
 │   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі
 │   └── pricing.py           ціни моделей і вартість кожного виклику
-├── tests/                   44 тести без API
+├── tests/                   48 тестів без API
+├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
 └── .env.example             шаблон файлу з ключем Groq
 ```

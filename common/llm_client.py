@@ -49,13 +49,22 @@ class LLMResult:
 
 
 _client = None
+PLACEHOLDER_KEY = "your_groq_api_key_here"  # з .env.example
+
+
+class APIKeyError(RuntimeError):
+    """Немає або неправильний ключ Groq. Інші моделі не допоможуть — ключ спільний, тож зупиняємось."""
 
 
 def get_client() -> groq.Groq:
     global _client
     if _client is None:
+        key = os.environ.get("GROQ_API_KEY", "").strip()
+        if not key or key == PLACEHOLDER_KEY:
+            raise APIKeyError("Немає ключа Groq: створи файл .env з рядком GROQ_API_KEY=… "
+                              "(безкоштовний ключ: https://console.groq.com/keys; README, крок 5).")
         # max_retries=0: повтори робимо самі, щоб контролювати й логувати їх
-        _client = groq.Groq(api_key=os.environ["GROQ_API_KEY"], timeout=REQUEST_TIMEOUT_S, max_retries=0)
+        _client = groq.Groq(api_key=key, timeout=REQUEST_TIMEOUT_S, max_retries=0)
     return _client
 
 
@@ -117,6 +126,9 @@ def call_json(
                     retries += 1
                     continue
                 break  # ця модель недоступна -> наступна в ланцюжку
+            except groq.AuthenticationError as e:
+                raise APIKeyError("Groq відхилив ключ (401 Invalid API Key): перевір GROQ_API_KEY у файлі .env "
+                                  "(README, крок 5).") from e
             except groq.BadRequestError as e:
                 # Groq повертає 400 json_validate_failed, якщо модель видала не-JSON
                 result.errors.append(f"{model}: BadRequest {_short(e)}")

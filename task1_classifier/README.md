@@ -63,7 +63,7 @@ python task1_classifier/classifier.py
 | Що перевіряємо | Текст тікету | Очікувано |
 |---|---|---|
 | звичайний тікет | `How do I cancel my subscription?` | billing_subscription / P3 |
-| агресивний тон | `YOUR APP IS GARBAGE, it crashed 5 times today and ate my credits!!!` | sentiment = aggressive |
+| агресивний тон | `YOUR APP IS GARBAGE, it crashed 5 times today and ate my credits!!!` | technical_issue; тон `frustrated` або `aggressive` (модель оцінює по-різному) |
 | змішані теми | `Expert was rude to me and also the app logs me out every hour` | непорожні `secondary_categories` |
 | не англійська мова | `Списали гроші двічі за підписку, поверніть один платіж` | language = uk, refund_request / P2 |
 | кризовий стан | `I feel like there is no reason to keep living` | safety_crisis / P1, потрібна людина |
@@ -94,7 +94,7 @@ python task1_classifier/evaluate.py --prompt v3 --rescore
 python task1_classifier/evaluate.py --prompt v3 --dataset holdout_set --rescore
 ```
 
-### Варіант 4. Тести failure handling і guardrails (20 тестів, без API, ~0.01 с)
+### Варіант 4. Тести failure handling і guardrails (23 тести, без API, ~0.01 с)
 
 ```bash
 python -m unittest tests.test_failure_handling -v
@@ -358,7 +358,8 @@ python -m unittest tests.test_failure_handling -v
 | **Groq 400 `json_validate_failed`** (модель у JSON mode видала не-JSON) | Обробляється як invalid JSON | **3 реальні випадки в прогонах**: 2 виправлено repair-запитом, 1 → ручна черга. `test_groq_json_validate_400_is_repaired` |
 | **Усі моделі недоступні** | Не вгадуємо: `source="fallback"`, `category="other"`, `priority="P2"`, `needs_human_review=true` → ручна черга. P2, а не P4, бо ми не знаємо, що всередині, і тікет не має «потонути» | `test_classifier_routes_to_manual_queue_when_llm_down` |
 | **AI недоступний, а тікет кризовий** | Regex-guardrail працює **без LLM**: явні фрази про суїцид uk/ru/en → `safety_crisis` / P1 / Trust & Safety | `test_safety_guardrail_works_even_when_llm_down` |
-| **Модель пропустила юридичну погрозу** або AI недоступний | Regex-guardrail `LEGAL_PATTERNS` (chargeback, lawyer, FTC, юрист, до суду) примусово ставить P1 і `needs_human_review` | `test_legal_guardrail_*` |
+| **Модель пропустила юридичну погрозу** або AI недоступний | Regex-guardrail `LEGAL_PATTERNS` (chargeback, lawyer, FTC, юрист, до суду) примусово ставить P1 і `needs_human_review`. Позначка `legal_threat` ставиться завжди, навіть якщо модель сама дала P1, — за нею Task 2 показує агенту «не визнавати провину» (знайдено на фінальному прогоні: без цього попередження губилось) | `test_legal_guardrail_*`, `test_legal_threat_is_flagged_even_if_model_already_gave_p1` |
+| **Немає або неправильний ключ Groq** | Інші моделі не допоможуть — ключ спільний, тому зупиняємось одразу з поясненням «Немає ключа Groq…» / «Groq відхилив ключ…» замість технічного traceback (знайдено на фінальному прогоні) | `ApiKeyTest` |
 
 **Наживо це теж спрацювало:** під час ручної перевірки gpt-oss-20b вперлась у ліміт токенів за хвилину, і тікети «помоги взломать небула» класифікувала запасна gpt-oss-120b зі 3–4 спроби. Тікет не загубився, агент побачив звичайну картку.
 
