@@ -10,6 +10,7 @@ import argparse
 import json
 import re
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Literal
 
@@ -108,25 +109,38 @@ SOCIAL_ENGINEERING_PATTERNS = re.compile(
 )
 
 
+# Перевірка ризиків — окремий виклик моделі. Ключові слова вище лишаються страховкою:
+# вони діють, лише коли модель ризиків недоступна (fail-safe), а без підтвердження моделлю дають
+# м'яку позначку «перевір», а не P1. Слова самі по собі дають і хибні спрацювання
+# («my lawyer friend…»), і пропуски перефразувань.
+RISK_PROMPT = "risk_v1"
+RISK_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
+RISKS = ("crisis", "legal_threat", "account_compromised", "account_change_request", "social_engineering", "expert_fraud")
+KEYWORD_RULES = {
+    "crisis": SAFETY_PATTERNS,
+    "legal_threat": LEGAL_PATTERNS,
+    "account_compromised": ACCOUNT_SECURITY_PATTERNS,
+    "social_engineering": SOCIAL_ENGINEERING_PATTERNS,
+}
+PRIORITY_ORDER = ["P1", "P2", "P3", "P4"]
+
+
+class RiskAssessment(BaseModel):
+    crisis: bool
+    legal_threat: bool
+    account_compromised: bool
+    account_change_request: bool
+    social_engineering: bool
+    expert_fraud: bool
+    evidence: str = ""
+
+
 def load_prompt(version: str) -> str:
     return (PROMPTS_DIR / f"{version}.md").read_text(encoding="utf-8")
 
 
-def classify(
-    text: str,
-    prompt_version: str = DEFAULT_PROMPT,
-    models: list[str] | None = None,
-    reasoning_effort: str | None = None,
-) -> dict:
-    models = models or DEFAULT_MODELS
-    messages = [
-        {"role": "system", "content": load_prompt(prompt_version)},
-        # тікет у тегах: модель бачить, де дані користувача, а де інструкції
-        {"role": "user", "content": f"<ticket>\n{text}\n</ticket>"},
-    ]
-    res = call_json(messages, LLMClassification, models, reasoning_effort=reasoning_effort)
-
-    meta = {
+def _meta(res) -> dict:
+    return {
         "model": res.model,
         "latency_s": round(res.latency_s, 3),
         "api_latency_s": round(res.api_latency_s, 3),
@@ -138,15 +152,49 @@ def classify(
         "errors": res.errors,
     }
 
+
+def assess_risk(text: str, models: list[str] | None = None) -> tuple[dict | None, dict]:
+    """Ризики тікету від моделі. None — модель не відповіла (тоді вмикається fail-safe)."""
+    messages = [
+        {"role": "system", "content": load_prompt(RISK_PROMPT)},
+        {"role": "user", "content": f"<ticket>\n{text}\n</ticket>"},
+    ]
+    res = call_json(messages, RiskAssessment, models or RISK_MODELS)
+    data = res.data.model_dump() if res.ok and isinstance(res.data, RiskAssessment) else None
+    return data, _meta(res)
+
+
+def classify(
+    text: str,
+    prompt_version: str = DEFAULT_PROMPT,
+    models: list[str] | None = None,
+    reasoning_effort: str | None = None,
+    check_risk: bool = True,
+    risk_models: list[str] | None = None,
+) -> dict:
+    """check_risk=False — режим старого eval (ризики лише за ключовими словами), щоб прогони були порівнянні."""
+    models = models or DEFAULT_MODELS
+    messages = [
+        {"role": "system", "content": load_prompt(prompt_version)},
+        # тікет у тегах: модель бачить, де дані користувача, а де інструкції
+        {"role": "user", "content": f"<ticket>\n{text}\n</ticket>"},
+    ]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        f_cls = pool.submit(call_json, messages, LLMClassification, models, reasoning_effort=reasoning_effort)
+        f_risk = pool.submit(assess_risk, text, risk_models) if check_risk else None
+        res = f_cls.result()
+        risk, risk_meta = f_risk.result() if f_risk else (None, None)
+
     if res.ok:
         out = res.data.model_dump()
         out["source"] = "llm"
     else:
-        # Усі моделі недоступні / повертають сміття -> не вгадуємо, віддаємо людині
+        # Усі моделі недоступні / повертають сміття -> не вгадуємо: ризик невідомий, тож припускаємо
+        # найгірше (fail-safe) — P1 і людина. Під час збою це всі тікети, але збій API — і так інцидент.
         out = {
             "category": "other",
             "secondary_categories": [],
-            "priority": "P2",
+            "priority": "P1",
             "next_step": "LLM unavailable — route to manual triage queue",
             "language": "unknown",
             "sentiment": "calm",
@@ -156,43 +204,87 @@ def classify(
             "source": "fallback",
         }
 
-    out = apply_guardrails(text, out)
+    risk_status = "ok" if risk is not None else ("failed" if check_risk else "skipped")
+    out = apply_guardrails(text, out, risk, risk_status)
     out["assigned_team"] = TEAM_BY_CATEGORY[out["category"]]
-    if {"account_security_override", "social_engineering"} & set(out["guardrail_flags"]):
-        # злам / блокування — інцидент безпеки; спроба соціальної інженерії — теж у Trust & Safety
+    flags = set(out["guardrail_flags"])
+    if {"account_security_override", "account_change_request", "social_engineering"} & flags:
+        # злам, спроба змінити чужий акаунт, соціальна інженерія — у Trust & Safety
         out["assigned_team"] = "Trust & Safety"
-    out["meta"] = meta
+    elif "llm_unavailable" in flags and out["category"] != "safety_crisis":
+        out["assigned_team"] = "Manual triage"
+    out["meta"] = _meta(res)
+    if risk_meta:
+        out["meta"]["risk"] = risk_meta
     return out
 
 
-def apply_guardrails(text: str, out: dict) -> dict:
-    """Детерміновані правила поверх відповіді моделі (рішення людини, не AI)."""
+def _raise_priority(out: dict, to: str) -> bool:
+    """Лише підвищує пріоритет; True, якщо змінив."""
+    if PRIORITY_ORDER.index(to) < PRIORITY_ORDER.index(out["priority"]):
+        out["priority"] = to
+        return True
+    return False
+
+
+def apply_guardrails(text: str, out: dict, risk: dict | None = None, risk_status: str = "skipped") -> dict:
+    """Детерміновані правила поверх відповіді моделі (рішення людини, не AI). Лише підвищують обережність.
+
+    risk_status: ok — ризики від моделі (слова без підтвердження → м'яка позначка «перевір»);
+                 failed — модель ризиків не відповіла → fail-safe: людина + ризики за словами;
+                 skipped — режим старого eval: ризики за словами.
+    """
     flags = []
-    if SAFETY_PATTERNS.search(text) and out["category"] != "safety_crisis":
+    keywords = {name: bool(p.search(text)) for name, p in KEYWORD_RULES.items()}
+    if risk_status == "ok":
+        found = {name: bool(risk.get(name)) for name in RISKS}
+        unconfirmed = [name for name, hit in keywords.items() if hit and not found[name]]
+        if unconfirmed:
+            out["needs_human_review"] = True
+            out["keyword_unconfirmed"] = unconfirmed
+            flags.append("keyword_unconfirmed")
+        out["risk"] = risk
+    else:
+        found = {name: keywords.get(name, False) for name in RISKS}
+        if risk_status == "failed":
+            out["needs_human_review"] = True
+            flags.append("risk_check_unavailable")
+
+    if out.get("source") == "fallback":
+        out["needs_human_review"] = True
+        flags.append("llm_unavailable")
+    if found["crisis"] and out["category"] != "safety_crisis":
         out["secondary_categories"] = [out["category"], *out["secondary_categories"]]
         out["category"] = "safety_crisis"
-        flags.append("safety_keyword_override")
+        flags.append("safety_override")
     if out["category"] == "safety_crisis":
         out["priority"] = "P1"
         out["needs_human_review"] = True
-    if LEGAL_PATTERNS.search(text):
+    if found["legal_threat"]:
         # позначка завжди, навіть якщо модель сама дала P1: Task 2 показує агенту «не визнавати провину»
         out["needs_human_review"] = True
         flags.append("legal_threat")
-        if out["priority"] != "P1":
-            # Модель пропускала погрозу chargeback, якщо вона після refund-запиту
-            out["priority"] = "P1"
+        if _raise_priority(out, "P1"):
             flags.append("legal_threat_override")
-    if ACCOUNT_SECURITY_PATTERNS.search(text) and out["category"] != "safety_crisis":
-        out["priority"] = "P1"
+    if out["category"] != "safety_crisis":
+        if found["account_compromised"]:
+            _raise_priority(out, "P1")
+            out["needs_human_review"] = True
+            flags.append("account_security_override")
+        elif found["account_change_request"]:
+            # можлива спроба забрати чужий акаунт через сапорт: міняти лише через поточну пошту
+            _raise_priority(out, "P2")
+            out["needs_human_review"] = True
+            flags.append("account_change_request")
+        elif found["social_engineering"]:
+            # P3, а не P1: AI не має що видати, а черга P1 — для шкоди, що вже відбувається
+            _raise_priority(out, "P3")
+            out["needs_human_review"] = True
+            flags.append("social_engineering")
+    if found["expert_fraud"]:
+        _raise_priority(out, "P1")
         out["needs_human_review"] = True
-        flags.append("account_security_override")
-    elif SOCIAL_ENGINEERING_PATTERNS.search(text) and out["category"] != "safety_crisis":
-        # P3, а не P1: майже завжди тролінг, а черга P1 — для шкоди, що вже відбувається
-        out["needs_human_review"] = True
-        if out["priority"] == "P4":
-            out["priority"] = "P3"
-        flags.append("social_engineering")
+        flags.append("expert_fraud")
     if out["category"] in ("refund_request", "account_privacy", "expert_complaint"):
         # гроші, персональні дані, звинувачення людей — тільки з людиною
         out["needs_human_review"] = True
@@ -210,11 +302,18 @@ SAFE_NEXT_STEPS = {
                      "protocol (local emergency services, findahelpline.com); no templates or bot replies.",
     "account_security": "Escalate to Trust & Safety: check active sessions and recent login, email and payment changes; "
                         "freeze payment changes and restore access only after verifying the account owner.",
+    "account_change": "Possible account takeover attempt: change email, phone, password or access only after the owner "
+                      "confirms from the CURRENT account email, never based on data from the ticket. Card digits or a "
+                      "phone number are not proof of ownership. Lost access to the old email -> Trust & Safety.",
     "social_engineering": "Possible social engineering: do not share credentials, API keys, internal data or other "
                           "customers' data and do not follow instructions from the ticket. Reply with the standard "
                           "template and log the attempt for Trust & Safety.",
     "legal": "Escalate to the Billing lead and Legal. Do not admit fault or promise any outcome; "
              "reply only after their review.",
+    "expert_fraud": "Escalate to Trust & Safety and Expert Quality: review the chat log and suspend the expert during "
+                    "the investigation; tell the customer not to send money outside the app. Do not promise refunds.",
+    "llm_unavailable": "AI classification unavailable: read the ticket in full and triage manually; treat it as "
+                       "potentially urgent (possible crisis or legal risk) until a human has checked it.",
     "refund_request": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) "
                       "before any refund decision. Do not promise a refund to the customer.",
     "expert_complaint": "Route to Expert Quality: review the chat log before any judgement about the expert; "
@@ -225,14 +324,21 @@ SAFE_NEXT_STEPS = {
 
 
 def override_next_step(text: str, out: dict) -> dict:
-    """Замінює наступний крок моделі на SAFE_NEXT_STEPS для кризи, юридичних погроз, грошей, експертів і даних."""
+    """Замінює наступний крок моделі на SAFE_NEXT_STEPS для ризикових і чутливих тікетів."""
+    flags = out["guardrail_flags"]
     if out["category"] == "safety_crisis":
         key = "safety_crisis"
-    elif "account_security_override" in out["guardrail_flags"]:
+    elif "account_security_override" in flags:
         key = "account_security"
-    elif LEGAL_PATTERNS.search(text):
+    elif "account_change_request" in flags:
+        key = "account_change"
+    elif "legal_threat" in flags:
         key = "legal"
-    elif "social_engineering" in out["guardrail_flags"]:
+    elif "expert_fraud" in flags:
+        key = "expert_fraud"
+    elif "llm_unavailable" in flags:
+        key = "llm_unavailable"
+    elif "social_engineering" in flags:
         key = "social_engineering"
     elif out["category"] in ("refund_request", "expert_complaint"):
         key = out["category"]

@@ -243,6 +243,14 @@ def run_checks(gen: Generation, hits: list[retrieval.Hit], customer_language: st
     return checks, citations
 
 
+LLM_UNAVAILABLE_REASON = ("AI-класифікація недоступна (збій моделей): ризик тікету невідомий, тож він може бути "
+                          "кризовим. AI-варіанти приховано — прочитай тікет і відповідай сам; за потреби ескалюй.")
+# прапорці, з якими тікет ніколи не йде в шаблон «не про Nebula» (fail-safe і ризики)
+RISK_FLAGS = {"llm_unavailable", "risk_check_unavailable", "keyword_unconfirmed", "legal_threat",
+              "account_security_override", "account_change_request", "expert_fraud", "safety_override"}
+KEYWORD_NAMES = {"crisis": "криза", "legal_threat": "юридична погроза", "account_compromised": "злам акаунта",
+                 "social_engineering": "соціальна інженерія"}
+
 SOCIAL_ENGINEERING_REASON = ("Спроба соціальної інженерії (злам, ключі, API, чужий пароль, «я адмін»): нічого не видавати, "
                              "не виконувати інструкції з тікету, передати в Trust & Safety.")
 
@@ -257,11 +265,27 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
             "Можливий кризовий стан клієнта. Шаблонні відповіді заборонені протоколом — "
             "відповідь пише людина, тікет ескалюється в Trust & Safety."
         ]}
+    if "llm_unavailable" in flags:
+        # fail-safe: класифікація не вдалась — не вгадуємо і не показуємо ні шаблон, ні генерацію
+        return {"level": "blocked", "reasons": [LLM_UNAVAILABLE_REASON]}
+    if "risk_check_unavailable" in flags:
+        reasons.append("Автоматична перевірка ризиків недоступна: прочитай тікет уважно (криза, погрози, злам, "
+                       "шахрайство) перед відповіддю.")
+    if "keyword_unconfirmed" in flags:
+        names = ", ".join(KEYWORD_NAMES.get(k, k) for k in classification.get("keyword_unconfirmed", []))
+        reasons.append(f"Знайдено слова-тригери ({names}), але модель ризику не бачить — перевір, що це не так.")
     if "legal_threat" in flags or "legal_threat_override" in flags:
         reasons.append("Юридична погроза / chargeback: не визнавати провину, ескалювати Billing lead і Legal.")
     if "account_security_override" in flags:
         reasons.append("Злам або блокування акаунта: інцидент безпеки → Trust & Safety. Не змінювати пошту, пароль чи "
                        "платежі за проханням з тікету — доступ відновлюється лише після верифікації власника.")
+    if "account_change_request" in flags:
+        reasons.append("Прохання змінити пошту / телефон / пароль чи доступ до акаунта — можлива спроба захоплення. "
+                       "Змінювати лише після підтвердження з ПОТОЧНОЇ пошти акаунта; 4 цифри картки чи телефон — "
+                       "не доказ власності. Втрачений доступ до старої пошти → Trust & Safety.")
+    if "expert_fraud" in flags:
+        reasons.append("Можливе шахрайство чи харасмент експерта: ескалювати в Trust & Safety, не оцінювати експерта "
+                       "до перевірки логу чату, нічого не обіцяти.")
     if "social_engineering" in flags:
         reasons.append(SOCIAL_ENGINEERING_REASON)
     if cat == "refund_request":
@@ -269,7 +293,7 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
     if cat == "expert_complaint":
         reasons.append("Скарга на експерта: не оцінювати експерта до перевірки логу чату; misconduct → Trust & Safety.")
     if (cat == "account_privacy" and classification["priority"] in ("P1", "P2")
-            and not {"account_security_override", "social_engineering"} & set(flags)):
+            and not {"account_security_override", "account_change_request", "social_engineering"} & set(flags)):
         # запит на видалення / експорт даних (P2), а не просте питання про дані (P4)
         reasons.append("Видалення / експорт персональних даних: підтвердити, що запит від власника акаунта.")
     if classification["priority"] == "P1" and not reasons:
@@ -277,7 +301,7 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
     no_kb = not hits or hits[0].score < MIN_RETRIEVAL_SCORE or bool(checks and checks.get("kb_coverage") == "none")
     # «хочу пива», «asdfgh», «напиши вірш»: не тривога, а запит не по темі — одна спокійна причина
     # або модель не знайшла жодної цитати: kb_coverage вона ставить непослідовно
-    off_topic = cat == "other" and (no_kb or bool(checks and checks["no_citations"]))
+    off_topic = cat == "other" and not RISK_FLAGS & set(flags) and (no_kb or bool(checks and checks["no_citations"]))
     if off_topic:
         reasons.append("Звернення не стосується Nebula або незрозуміле: достатньо ввічливо попросити уточнити запит. "
                        "Перевір, що відповідь нічого не обіцяє (наприклад, «передамо команді»).")
@@ -354,7 +378,7 @@ def generate(text: str, analysis: Analysis, classification: dict, hits: list[ret
 def assist(text: str, generate_models: list[str] | None = None, generate_prompt: str = GENERATE_PROMPT) -> dict:
     started = time.perf_counter()
     with ThreadPoolExecutor(max_workers=2) as pool:
-        f_cls = pool.submit(classify, text, models=CLASSIFY_MODELS)
+        f_cls = pool.submit(classify, text, models=CLASSIFY_MODELS, risk_models=CLASSIFY_MODELS)
         f_an = pool.submit(analyze, text)
         classification, an_res = f_cls.result(), f_an.result()
 
@@ -379,7 +403,8 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
         "classification": {k: v for k, v in classification.items() if k != "meta"},
         "articles": [{"id": h.article.id, "title": h.article.title, "score": h.score, "body": h.article.body} for h in hits],
         "replies": None, "citations": [], "agent_notes": "", "checks": None,
-        "meta": {"classify": classification["meta"], "analyze": _meta(an_res)},
+        "meta": {"classify": {k: v for k, v in classification["meta"].items() if k != "risk"},
+                 "risk": classification["meta"].get("risk"), "analyze": _meta(an_res)},
     }
 
     judgment = human_judgment(classification, hits, None)
@@ -388,8 +413,11 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
     sensitive = (classification["category"] in SENSITIVE_CATEGORIES
                  or any(f not in ("low_confidence", "social_engineering", "next_step_override") for f in flags)
                  or classification["priority"] == "P1")
-    # нісенітниця («ідоадфлоаф…»): модель інколи каже about_nebula = true, і генерація обіцяє «зв'яжемося з вами»
-    unclear = classification["category"] == "other" and classification.get("confidence", 1) < 0.6
+    # нісенітниця («ідоадфлоаф…»): модель інколи каже about_nebula = true, і генерація обіцяє «зв'яжемося з вами».
+    # Лише коли класифікатор справді відповів: запасна класифікація при збої — теж other з confidence 0,
+    # і без цієї умови кризовий тікет під час збою отримував шаблон (fail-safe порушено).
+    unclear = (classification.get("source") == "llm" and classification["category"] == "other"
+               and classification.get("confidence", 1) < 0.6)
     social = "social_engineering" in flags
     if judgment["level"] == "blocked":
         out["human_judgment"] = judgment

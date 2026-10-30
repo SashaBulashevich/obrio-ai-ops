@@ -6,11 +6,14 @@
 - перевірку, що відповідь — валідний JSON потрібної схеми;
 - при невалідному JSON — один повтор з підказкою моделі, що саме не так;
 - fallback-ланцюжок моделей: якщо основна модель не впоралась, пробуємо наступну;
+- circuit breaker: модель, яка щойно була недоступна, певний час пропускаємо без запитів,
+  тож під час збою наступні тікети одразу йдуть людині, а не чекають хвилину на повтори;
 - метрики: модель, latency, токени, вартість, кількість спроб.
 """
 
 import json
 import os
+import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -28,6 +31,11 @@ MAX_RETRIES = 3          # на одну модель, для rate limit / timeo
 BACKOFF_BASE_S = 1.5     # 1.5s, 3s, 6s ...
 RETRY_AFTER_CAP_S = 30.0 # довше не чекаємо в інтерактивному режимі; batch-скрипти можуть підняти
 DAILY_LIMITS = ("TPD", "RPD")  # токени / запити на добу
+CIRCUIT_COOLDOWN_S = 60        # модель недоступна (timeout / 5xx / немає з'єднання) -> пропускаємо її хвилину
+DAILY_LIMIT_COOLDOWN_S = 600   # добовий ліміт вичерпано -> пропускаємо 10 хв, далі пробуємо знову
+
+_open_until: dict[str, float] = {}  # модель -> до якого моменту (time.monotonic) її пропускаємо
+_circuit_lock = threading.Lock()    # класифікація і перевірка ризиків ідуть у паралельних потоках
 
 
 @dataclass
@@ -101,6 +109,9 @@ def call_json(
         extra["reasoning_effort"] = reasoning_effort
 
     for model in models:
+        if _circuit_open(model):
+            result.errors.append(f"{model}: circuit open (skipped)")
+            continue
         msgs = list(messages)
         repaired = False
         retries = 0
@@ -125,7 +136,9 @@ def call_json(
                     time.sleep(_retry_delay(e, retries))
                     retries += 1
                     continue
-                break  # ця модель недоступна -> наступна в ланцюжку
+                # ця модель недоступна -> пропускаємо її певний час і йдемо до наступної в ланцюжку
+                _open_circuit(model, DAILY_LIMIT_COOLDOWN_S if kind in DAILY_LIMITS else CIRCUIT_COOLDOWN_S)
+                break
             except groq.AuthenticationError as e:
                 raise APIKeyError("Groq відхилив ключ (401 Invalid API Key): перевір GROQ_API_KEY у файлі .env "
                                   "(README, крок 5).") from e
@@ -151,6 +164,7 @@ def call_json(
             try:
                 result.data = _parse(raw, schema)
                 result.model = model
+                _close_circuit(model)
                 result.latency_s = time.perf_counter() - started
                 return result
             except ValueError as e:
@@ -167,6 +181,27 @@ def call_json(
 
     result.latency_s = time.perf_counter() - started
     return result
+
+
+def _circuit_open(model: str) -> bool:
+    with _circuit_lock:
+        return _open_until.get(model, 0.0) > time.monotonic()
+
+
+def _open_circuit(model: str, cooldown_s: float) -> None:
+    with _circuit_lock:
+        _open_until[model] = time.monotonic() + cooldown_s
+
+
+def _close_circuit(model: str) -> None:
+    with _circuit_lock:
+        _open_until.pop(model, None)
+
+
+def reset_circuits() -> None:
+    """Забути всі вимкнені моделі (для тестів і batch-скриптів)."""
+    with _circuit_lock:
+        _open_until.clear()
 
 
 def _retry_delay(err: Exception, attempt: int) -> float:

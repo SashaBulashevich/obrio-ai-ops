@@ -17,8 +17,9 @@ import assistant  # noqa: E402
 import retrieval  # noqa: E402
 
 
-def cls(category="product_question", priority="P4", flags=(), confidence=0.9):
-    return {"category": category, "priority": priority, "guardrail_flags": list(flags), "confidence": confidence}
+def cls(category="product_question", priority="P4", flags=(), confidence=0.9, source="llm"):
+    return {"category": category, "priority": priority, "guardrail_flags": list(flags), "confidence": confidence,
+            "source": source}
 
 
 def gen(formal="Добрий день. Ми перевіримо списання.", empathetic="Розумію, як це неприємно. Ми перевіримо списання.",
@@ -139,10 +140,10 @@ class OffTopicFlowTest(unittest.TestCase):
     """assist() з підміненими викликами LLM: звернення не про Nebula → шаблон без генерації."""
 
     def run_assist(self, text, category, priority="P4", about_nebula=False, lang="uk", queries=None,
-                   confidence=0.9, flags=None):
+                   confidence=0.9, flags=None, source="llm"):
         meta = dict(model="fake", api_latency_s=0, cost_usd=0, prompt_tokens=0, completion_tokens=0,
                     cached_tokens=0, attempts=1, errors=[])
-        cls_ = {**cls(category, priority, flags or (), confidence), "language": lang, "meta": meta}
+        cls_ = {**cls(category, priority, flags or (), confidence, source), "language": lang, "meta": meta}
         an = SimpleNamespace(ok=True, data=assistant.Analysis(summary="s", customer_language=lang, search_queries=[text] if queries is None else queries,
                                                               about_nebula=about_nebula), **meta)
         failed = SimpleNamespace(ok=False, data=None, **meta)
@@ -183,6 +184,23 @@ class OffTopicFlowTest(unittest.TestCase):
     def test_confident_other_still_generates(self):
         # «небула»: other, confidence 0.8, про Nebula → звичайна генерація
         _, gen_mock = self.run_assist("небула", "other", about_nebula=True, confidence=0.8)
+        gen_mock.assert_called_once()
+
+    def test_llm_down_never_gives_template_or_ok(self):
+        # відгук OBRIO: при збої моделей запасна класифікація (other, confidence 0) потрапляла в шаблон з рівнем ok
+        for text in ("I can't do this anymore, nothing will ever get better", "How do I cancel?"):
+            r, gen_mock = self.run_assist(text, "other", "P1", about_nebula=False, confidence=0.0,
+                                          flags=["risk_check_unavailable", "llm_unavailable", "low_confidence"],
+                                          source="fallback")
+            gen_mock.assert_not_called()
+            self.assertEqual(r["human_judgment"]["level"], "blocked")
+            self.assertIsNone(r["replies"])
+            self.assertEqual(r["human_judgment"]["reasons"], [assistant.LLM_UNAVAILABLE_REASON])
+
+    def test_risk_flags_block_off_topic_template(self):
+        # модель класифікації відповіла, але перевірка ризиків — ні: шаблону немає, генерація з review
+        r, gen_mock = self.run_assist("хм", "other", "P4", about_nebula=False, confidence=0.3,
+                                      flags=["risk_check_unavailable", "low_confidence"])
         gen_mock.assert_called_once()
 
     def test_unknown_language_falls_back_to_english(self):

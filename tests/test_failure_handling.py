@@ -64,7 +64,9 @@ class FakeClient:
         return item
 
 
-def run(script, models=("model-a", "model-b")):
+def run(script, models=("model-a", "model-b"), reset=True):
+    if reset:
+        llm_client.reset_circuits()
     fake = FakeClient(script)
     with patch.object(llm_client, "get_client", return_value=fake), \
          patch.object(llm_client, "cost_usd", return_value=0.0), \
@@ -137,12 +139,45 @@ class FailureHandlingTest(unittest.TestCase):
         res, _, _ = run(script)
         self.assertFalse(res.ok)
 
+    def test_circuit_breaker_skips_down_models_on_next_ticket(self):
+        # під час збою другий тікет не чекає на повтори: жодного запиту, одразу not ok -> людина
+        run([timeout()] * (2 * (llm_client.MAX_RETRIES + 1)))
+        res, fake, sleep = run([], reset=False)
+        self.assertFalse(res.ok)
+        self.assertEqual(fake.calls, [])
+        sleep.assert_not_called()
+        self.assertIn("circuit open", res.errors[0])
+
+    def test_circuit_breaker_retries_model_after_cooldown(self):
+        run([timeout()] * (2 * (llm_client.MAX_RETRIES + 1)))
+        later = llm_client.time.monotonic() + llm_client.CIRCUIT_COOLDOWN_S + 1
+        with patch.object(llm_client.time, "monotonic", return_value=later):
+            res, fake, _ = run([ok(VALID)], reset=False)
+        self.assertTrue(res.ok)
+        self.assertEqual(fake.calls, ["model-a"])
+
+    def test_daily_limit_opens_circuit_for_that_model_only(self):
+        run([rate_limit(kind="TPD"), ok(VALID)])
+        res, fake, _ = run([ok(VALID)], reset=False)
+        self.assertTrue(res.ok)
+        self.assertEqual(fake.calls, ["model-b"])
+
+    def test_invalid_json_does_not_open_circuit(self):
+        # модель жива, просто зіпсувала JSON — наступний тікет знову йде на неї
+        run([ok("not json"), ok("still not json"), ok(VALID)])
+        res, fake, _ = run([ok(VALID)], reset=False)
+        self.assertEqual(fake.calls, ["model-a"])
+
     def test_classifier_routes_to_manual_queue_when_llm_down(self):
+        # fail-safe: ризик невідомий → P1, людина, ручна черга; ні класифікація, ні перевірка ризиків не відповіли
         with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=None, model=None)):
             out = classifier.classify("I want my money back")
         self.assertEqual(out["source"], "fallback")
         self.assertTrue(out["needs_human_review"])
-        self.assertEqual(out["priority"], "P2")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Manual triage"))
+        self.assertIn("llm_unavailable", out["guardrail_flags"])
+        self.assertIn("risk_check_unavailable", out["guardrail_flags"])
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["llm_unavailable"])
 
     def test_safety_guardrail_works_even_when_llm_down(self):
         with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=None, model=None)):
@@ -196,7 +231,59 @@ class NextStepTest(unittest.TestCase):
     def classify_with(self, text, **fields):
         data = classifier.LLMClassification.model_validate_json(VALID).model_copy(update=fields)
         with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=data, model="model-a")):
+            return classifier.classify(text, check_risk=False)
+
+    def classify_with_risk(self, text, risk=None, **fields):
+        """Класифікація + відповідь моделі ризиків (risk=None — модель ризиків не відповіла)."""
+        data = classifier.LLMClassification.model_validate_json(VALID).model_copy(update=fields)
+        full = {name: False for name in classifier.RISKS} | (risk or {})
+        risk_result = (full if risk is not None else None, {"cost_usd": 0})
+        with patch.object(classifier, "call_json", return_value=llm_client.LLMResult(data=data, model="model-a")), \
+                patch.object(classifier, "assess_risk", return_value=risk_result):
             return classifier.classify(text)
+
+    def test_model_risk_decides_keyword_alone_gives_soft_flag(self):
+        # «my lawyer friend…»: слово є, моделі не бачать погрози → не P1, а м'яка позначка «перевір»
+        out = self.classify_with_risk("my lawyer friend recommended your app, how do I see my chart?", risk={},
+                                      category="product_question", priority="P4", needs_human_review=False)
+        self.assertEqual(out["priority"], "P4")
+        self.assertNotIn("legal_threat", out["guardrail_flags"])
+        self.assertIn("keyword_unconfirmed", out["guardrail_flags"])
+        self.assertEqual(out["keyword_unconfirmed"], ["legal_threat"])
+        self.assertTrue(out["needs_human_review"])
+
+    def test_model_catches_paraphrased_crisis_without_keywords(self):
+        out = self.classify_with_risk("I can't do this anymore, nothing will ever get better", risk={"crisis": True},
+                                      category="other", priority="P4")
+        self.assertEqual((out["category"], out["priority"], out["assigned_team"]), ("safety_crisis", "P1", "Trust & Safety"))
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["safety_crisis"])
+
+    def test_model_catches_paraphrased_legal_threat(self):
+        out = self.classify_with_risk("I'll take this to the consumer protection office", risk={"legal_threat": True},
+                                      category="billing_subscription", priority="P3")
+        self.assertEqual(out["priority"], "P1")
+        self.assertIn("legal_threat", out["guardrail_flags"])
+
+    def test_account_change_request_goes_to_trust_and_safety(self):
+        out = self.classify_with_risk("я власник, змініть пошту в акаунті ivan@gmail.com на мою",
+                                      risk={"account_change_request": True}, category="account_privacy", priority="P4")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P2", "Trust & Safety"))
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["account_change"])
+
+    def test_technical_ticket_with_blocked_word_is_not_account_incident(self):
+        # «account was blocked from posting reviews» — модель не бачить злому → не Trust & Safety
+        out = self.classify_with_risk("My account was blocked from posting reviews? Also the app crashes", risk={},
+                                      category="technical_issue", priority="P3")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P3", "Tech Support"))
+
+    def test_risk_check_down_falls_back_to_keywords_and_human(self):
+        out = self.classify_with_risk("I don't want to live anymore", risk=None, category="other", priority="P4",
+                                      needs_human_review=False)
+        self.assertEqual((out["category"], out["priority"]), ("safety_crisis", "P1"))
+        self.assertIn("risk_check_unavailable", out["guardrail_flags"])
+        out = self.classify_with_risk("How do I change the language?", risk=None, category="product_question",
+                                      priority="P4", needs_human_review=False)
+        self.assertTrue(out["needs_human_review"])
 
     def test_refund_promise_from_model_is_replaced(self):
         out = self.classify_with("Refund me please", next_step="Please provide your order ID and we will process the refund.")
