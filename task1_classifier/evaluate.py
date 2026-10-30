@@ -36,11 +36,14 @@ def short(text: str, n: int = 70) -> str:
     return text if len(text) <= n else text[: n - 1] + "…"
 
 
-def run_model(model: str, prompt: str, tickets: list[dict], reasoning_effort: str | None = None) -> list[dict]:
+def run_model(model: str, prompt: str, tickets: list[dict], reasoning_effort: str | None = None,
+              check_risk: bool = False) -> list[dict]:
     rows = []
     for t in tickets:
         # без fallback: міряємо саму модель, а не ланцюжок
-        out = classify(t["text"], prompt_version=prompt, models=[model], reasoning_effort=reasoning_effort)
+        # check_risk=False — як у збережених прогонах (ризики за словами); --risk — нова логіка з моделлю ризиків
+        out = classify(t["text"], prompt_version=prompt, models=[model], reasoning_effort=reasoning_effort,
+                       check_risk=check_risk)
         rows.append({
             "id": t["id"],
             "tags": t["tags"],
@@ -78,7 +81,7 @@ def summarize(rows: list[dict]) -> dict:
     n = len(rows)
     lat = [r["output"]["meta"]["latency_s"] for r in rows]
     api_lat = [r["output"]["meta"].get("api_latency_s", 0) for r in rows]
-    cost = [r["output"]["meta"]["cost_usd"] for r in rows]
+    cost = [r["output"]["meta"]["cost_usd"] + r["output"]["meta"].get("risk", {}).get("cost_usd", 0) for r in rows]
     return {
         "n": n,
         "cat_acc": sum(r["cat_ok"] for r in rows) / n,
@@ -158,12 +161,15 @@ def main():
     parser.add_argument("--dataset", default="test_set", help="test_set або holdout_set")
     parser.add_argument("--reasoning-effort", choices=["low", "medium", "high"], help="лише для gpt-oss")
     parser.add_argument("--rescore", action="store_true", help="перерахувати метрики зі збережених JSON, без API")
+    parser.add_argument("--risk", action="store_true", help="з окремою перевіркою ризиків моделлю (results/<prompt>_risk)")
     args = parser.parse_args()
 
     tickets = json.loads((HERE / "data" / f"{args.dataset}.json").read_text(encoding="utf-8"))
     out_dir = HERE / "results" / args.prompt
     if args.reasoning_effort:
         out_dir = HERE / "results" / f"{args.prompt}_reasoning-{args.reasoning_effort}"
+    if args.risk:
+        out_dir = HERE / "results" / f"{args.prompt}_risk"
     if args.dataset != "test_set":
         out_dir = out_dir / args.dataset
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -177,7 +183,7 @@ def main():
                 continue
             rows = [score_next_step(r) for r in json.loads(path.read_text(encoding="utf-8"))]
         else:
-            rows = run_model(model, args.prompt, tickets, args.reasoning_effort)
+            rows = run_model(model, args.prompt, tickets, args.reasoning_effort, check_risk=args.risk)
         s = summarize(rows)
         summaries[model] = s
         write_model_report(out_dir / f"{slug(model)}.md", model, args.prompt, rows, s)
