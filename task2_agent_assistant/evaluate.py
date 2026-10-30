@@ -40,6 +40,7 @@ TICKETS_PER_MONTH = 10_000
 # Batch-прогін може чекати довше, ніж інтерактивний UI: хвилинний ліміт токенів скидається за ≤60 с
 llm_client.MAX_RETRIES = 6
 llm_client.RETRY_AFTER_CAP_S = 65.0
+llm_client.CALL_BUDGET_S = None  # batch: ліміт часу на виклик лише для інтерактивного режиму
 
 
 class Verdict(BaseModel):

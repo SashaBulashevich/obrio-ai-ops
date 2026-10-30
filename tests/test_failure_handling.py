@@ -4,6 +4,7 @@
     python -m unittest tests.test_failure_handling -v
 """
 
+import itertools
 import os
 import sys
 import unittest
@@ -42,6 +43,10 @@ def rate_limit(retry_after: str | None = None, kind: str = "TPM"):
 
 def timeout():
     return groq.APITimeoutError(request=REQUEST)
+
+
+def connection_error():
+    return groq.APIConnectionError(request=REQUEST)
 
 
 def bad_json_400():
@@ -161,6 +166,34 @@ class FailureHandlingTest(unittest.TestCase):
         res, fake, _ = run([ok(VALID)], reset=False)
         self.assertTrue(res.ok)
         self.assertEqual(fake.calls, ["model-b"])
+
+    def test_no_connection_stops_whole_chain(self):
+        # до Groq не достукатись: один повтор, далі інші моделі не пробуємо — вони на тому самому сервері
+        res, fake, _ = run([connection_error(), connection_error()], models=("model-a", "model-b", "model-c"))
+        self.assertFalse(res.ok)
+        self.assertEqual(fake.calls, ["model-a", "model-a"])
+        res, fake, _ = run([], reset=False)
+        self.assertFalse(res.ok)
+        self.assertEqual(fake.calls, [])
+        self.assertIn("provider unreachable", res.errors[0])
+
+    def test_time_budget_hands_ticket_to_human(self):
+        # кожне звернення до годинника — +10 с: ліміт 25 с вичерпується задовго до кінця ланцюжка retry/fallback
+        clock = (10.0 * i for i in itertools.count())
+        with patch.object(llm_client.time, "perf_counter", side_effect=lambda: next(clock)):
+            res, fake, _ = run([timeout()] * 8)
+        self.assertFalse(res.ok)
+        self.assertLess(len(fake.calls), 8)
+        self.assertIn("time budget", res.errors[-1])
+        res, fake, _ = run([], reset=False)  # Groq «висить» -> наступний тікет не чекає ще 25 с
+        self.assertEqual(fake.calls, [])
+
+    def test_retry_pause_longer_than_budget_is_skipped(self):
+        # retry-after 30 с не влазить у ліміт 25 с — не чекаємо, одразу наступна модель
+        res, fake, sleep = run([rate_limit("30"), ok(VALID)])
+        self.assertTrue(res.ok)
+        self.assertEqual(res.model, "model-b")
+        sleep.assert_not_called()
 
     def test_invalid_json_does_not_open_circuit(self):
         # модель жива, просто зіпсувала JSON — наступний тікет знову йде на неї

@@ -20,6 +20,9 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from classifier import KEYWORD_RULES, RISKS, assess_risk  # noqa: E402
+from common import llm_client  # noqa: E402
+
+llm_client.CALL_BUDGET_S = None  # batch: ліміт часу на виклик лише для інтерактивного режиму
 
 OUT_DIR = HERE / "results" / "risk_v1"
 

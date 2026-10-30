@@ -1,10 +1,10 @@
 # OBRIO · AI Ops — тестове завдання (Nebula)
 
-[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 66 тестів проганяються автоматично на кожен push
+[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 69 тестів проганяються автоматично на кожен push
 
 ## Коротко
 
-- **Task 1 — AI-класифікатор тікетів.** Приймає текст звернення будь-якою мовою і повертає категорію, пріоритет, рекомендований наступний крок і команду, якій передати тікет. Точність (категорія **і** пріоритет разом) — **96%** на 48 тікетах. Вартість — **≈ $1.58** на 10 000 тікетів (з окремою перевіркою ризиків ≈ $2.8). Ризики (кризовий стан, юридичні погрози, злам і спроби змінити чужий акаунт, соціальна інженерія, шахрайство експерта) визначає окрема перевірка моделлю — на відкладеному наборі 11 з 12 проти 2 з 12 у ключових слів, без хибних тривог; наслідки (P1, людина, Trust & Safety) задає код. Якщо моделі недоступні, тікет за принципом fail-safe одразу йде людині з P1, а наступні тікети під час збою не чекають на повтори (circuit breaker).
+- **Task 1 — AI-класифікатор тікетів.** Приймає текст звернення будь-якою мовою і повертає категорію, пріоритет, рекомендований наступний крок і команду, якій передати тікет. Точність (категорія **і** пріоритет разом) — **96%** на 48 тікетах. Вартість — **≈ $1.58** на 10 000 тікетів (з окремою перевіркою ризиків ≈ $2.8). Ризики (кризовий стан, юридичні погрози, злам і спроби змінити чужий акаунт, соціальна інженерія, шахрайство експерта) визначає окрема перевірка моделлю — на відкладеному наборі 11 з 12 проти 2 з 12 у ключових слів, без хибних тривог; наслідки (P1, людина, Trust & Safety) задає код. Якщо моделі недоступні, тікет за принципом fail-safe йде людині з P1 не довше ніж за 25 с, а наступні тікети під час збою — одразу (circuit breaker).
 - **Task 2 — AI-асистент support-агента.** Агент вставляє тікет і отримує summary, 3 варіанти відповіді мовою клієнта (формальний / емпатійний / короткий) і цитати з бази знань. Якість відповідей — **94%**, правильна стаття в топ-3 — **94%**. Вартість — **≈ $14** на 10 000 тікетів. Там, де рішення має ухвалити людина, інтерфейс блокує копіювання або взагалі ховає AI-варіанти.
 - **▶ Живе демо Task 2:** https://nebula-support-copilot-test-task.streamlit.app/ — нічого не треба встановлювати.
 - **Моделі:** open-weight gpt-oss-20b, gpt-oss-120b і qwen3.8-27b через Groq, на безкоштовному тарифі.
@@ -67,7 +67,7 @@ python task1_classifier/classifier.py
 **Локально** (після встановлення нижче):
 
 ```bash
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 66 тестів, без ключа і без API, ~1 с
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 69 тестів, без ключа і без API, ~1 с
 python task1_classifier/classifier.py                                            # Task 1: вводиш тікети, отримуєш картку з рішенням
 streamlit run task2_agent_assistant/app.py                                       # Task 2: інтерфейс на http://localhost:8501
 ```
@@ -123,7 +123,7 @@ pip install -r requirements.txt
 python -m unittest tests.test_failure_handling tests.test_assistant_checks -v
 ```
 
-Внизу має бути `Ran 66 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
+Внизу має бути `Ran 69 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
 
 ```bash
 python task1_classifier/classifier.py "How do I cancel my subscription?"
@@ -157,9 +157,9 @@ obrio-ai-ops/
 │   ├── data/                тестовий набір (18 тікетів)
 │   └── results/             результати оцінки
 ├── common/                  спільний код обох задач
-│   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі, circuit breaker
+│   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі, circuit breaker, ліміт часу
 │   └── pricing.py           ціни моделей і вартість кожного виклику
-├── tests/                   66 тестів без API
+├── tests/                   69 тестів без API
 ├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
 └── .env.example             шаблон файлу з ключем Groq

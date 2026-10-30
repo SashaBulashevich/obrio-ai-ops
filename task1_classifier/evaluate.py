@@ -21,7 +21,10 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from classifier import classify, next_step_problem, override_next_step  # noqa: E402
+from common import llm_client  # noqa: E402
 from common.llm_client import APIKeyError  # noqa: E402
+
+llm_client.CALL_BUDGET_S = None  # batch: ліміт часу на виклик лише для інтерактивного режиму
 
 ALL_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.8-27b"]
 TICKETS_PER_MONTH = 10_000
