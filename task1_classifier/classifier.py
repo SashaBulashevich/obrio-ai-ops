@@ -134,10 +134,13 @@ class RiskAssessment(BaseModel):
     account_compromised: bool
     account_change_request: bool
     social_engineering: bool
-    unauthorized_charge: bool = False  # немає в risk_v1 — так старий промпт теж можна прогнати
-    threat_to_others: bool = False  # немає в risk_v1 / v2
-    customer_endangered: bool = False  # немає в risk_v1–v3
-    data_exposure: bool = False
+    # Усі поля обов'язкові: якщо модель пропустила поле, це невалідна відповідь (повтор → запасна модель → людина),
+    # а не тихе «ризику немає». Старі промпти risk_v1–v3 цих полів не мають — вони лишились для історії,
+    # їхні результати перебудовуються без API: evaluate_risk.py --rescore.
+    unauthorized_charge: bool
+    threat_to_others: bool
+    customer_endangered: bool
+    data_exposure: bool
     expert_fraud: bool
     evidence: str = ""
 

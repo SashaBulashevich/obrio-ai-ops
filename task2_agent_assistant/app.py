@@ -17,7 +17,8 @@ import assistant  # noqa: E402
 st.set_page_config(page_title="Nebula Support Copilot", page_icon="✨", layout="wide")
 
 # різні мови Європи: асистент сам визначає мову й відповідає нею.
-# Chargeback і криза — англійською: їхні regex-guardrails покривають лише en/uk/ru, а демо має бути надійним.
+# Chargeback і криза — англійською, щоб будь-хто без перекладача бачив, на що спрацював захист.
+# Самі ризики перевіряє окремий виклик моделі будь-якою мовою (Task 1, risk_v4), а не ключові слова.
 SAMPLES = {
     "Подвійне списання": "Добрий день, з мене списали гроші двічі за підписку цього місяця. Поверніть, будь ласка, один платіж.",
     "Скасування підписки": "Hallo, wie kann ich mein Abo kündigen? Ich möchte nicht, dass es nächsten Monat verlängert wird.",

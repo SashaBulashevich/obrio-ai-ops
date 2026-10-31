@@ -5,6 +5,7 @@
 """
 
 import itertools
+import json
 import os
 import sys
 import unittest
@@ -147,6 +148,12 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertEqual(res.model, "model-b")
         self.assertEqual(fake.calls.count("model-a"), llm_client.MAX_RETRIES + 1)
 
+    def test_server_error_500_is_retried_on_same_model(self):
+        res, fake, sleep = run([status_error(groq.InternalServerError, 500, "internal error"), ok(VALID)])
+        self.assertTrue(res.ok)
+        self.assertEqual(fake.calls, ["model-a", "model-a"])
+        sleep.assert_called_once()
+
     def test_removed_model_404_goes_to_next_model(self):
         # Groq регулярно знімає моделі: 404 не має валити тікет
         res, fake, _ = run([status_error(groq.NotFoundError, 404, "model_decommissioned"), ok(VALID)])
@@ -172,6 +179,20 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertEqual((out["priority"], out["source"]), ("P1", "fallback"))
         self.assertIn("llm_unavailable", out["guardrail_flags"])
         self.assertIn("risk_check_unavailable", out["guardrail_flags"])
+
+    def test_missing_risk_field_is_invalid_not_silent_no_risk(self):
+        # модель «забула» customer_endangered: раніше це тихо означало «ризику немає»
+        full = {name: False for name in classifier.RISKS}
+        missing = dict(full)
+        del missing["customer_endangered"]
+        llm_client.reset_circuits()
+        fake = FakeClient([ok(json.dumps(missing))] * 4)
+        with patch.object(llm_client, "get_client", return_value=fake), \
+             patch.object(llm_client, "cost_usd", return_value=0.0):
+            risk, meta = classifier.assess_risk("hi", ["model-a", "model-b"])
+        self.assertIsNone(risk)  # далі classify ставить risk_check_unavailable → людина
+        self.assertEqual(len(fake.calls), 4)  # на кожній моделі відповідь + 1 ремонт
+        self.assertTrue(any("schema mismatch" in e for e in meta["errors"]))
 
     def test_all_models_down_returns_not_ok(self):
         script = [timeout()] * (2 * (llm_client.MAX_RETRIES + 1))

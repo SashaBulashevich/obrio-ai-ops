@@ -210,6 +210,20 @@ class OffTopicFlowTest(unittest.TestCase):
         self.assertEqual(r["human_judgment"]["level"], "review")
         self.assertTrue(any("напиши відповідь вручну" in x.lower() for x in r["human_judgment"]["reasons"]))
 
+    def test_failed_analysis_searches_by_ticket_text_and_still_generates(self):
+        meta = dict(model="fake", api_latency_s=0, cost_usd=0, prompt_tokens=0, completion_tokens=0,
+                    cached_tokens=0, attempts=1, errors=["fake: RateLimitError (TPD)"])
+        cls_ = {**cls("billing_subscription", "P2"), "language": "en", "meta": meta}
+        failed = SimpleNamespace(ok=False, data=None, **meta)
+        with patch.object(assistant, "classify", return_value=cls_), \
+                patch.object(assistant, "analyze", return_value=failed), \
+                patch.object(assistant, "generate", return_value=(failed, None)) as gen_mock:
+            r = assistant.assist("I was charged twice for my subscription")
+        gen_mock.assert_called_once()
+        self.assertEqual(r["summary"], "(AI-аналіз недоступний)")
+        self.assertEqual(r["search_queries"], ["I was charged twice for my subscription"])
+        self.assertEqual(r["human_judgment"]["level"], "review")
+
     def test_risk_flags_block_off_topic_template(self):
         # модель класифікації відповіла, але перевірка ризиків — ні: шаблону немає, генерація з review
         r, gen_mock = self.run_assist("хм", "other", "P4", about_nebula=False, confidence=0.3,
@@ -256,6 +270,24 @@ class OffTopicFlowTest(unittest.TestCase):
     def test_refund_goes_normal_path_even_if_model_says_off_topic(self):
         _, gen_mock = self.run_assist("Поверніть гроші", "refund_request", "P2")
         gen_mock.assert_called_once()
+
+
+class AppFailSafeTest(unittest.TestCase):
+    """Інтерфейс Streamlit: будь-який непередбачений збій → банер «відповідь пише людина», а не traceback."""
+
+    def test_unexpected_error_shows_blocked_banner(self):
+        from streamlit.testing.v1 import AppTest
+
+        import traceback
+
+        # traceback у лог сервера — так і має бути, але в тестах він лише шумить
+        with patch.object(assistant, "assist", side_effect=KeyError("boom")), patch.object(traceback, "print_exc"):
+            at = AppTest.from_file(str(ROOT / "task2_agent_assistant" / "app.py"), default_timeout=30).run()
+            at.text_area(key="ticket").set_value("I can't do this anymore").run()
+            next(b for b in at.button if b.label == "Проаналізувати").click().run()
+        self.assertEqual(len(at.exception), 0)
+        self.assertEqual(len(at.error), 1)
+        self.assertIn(assistant.INTERNAL_ERROR_REASON, at.error[0].value)
 
 
 class LanguageAndSignatureTest(unittest.TestCase):
