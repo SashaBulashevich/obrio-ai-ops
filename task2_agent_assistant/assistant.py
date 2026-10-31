@@ -29,7 +29,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "task1_classifier"))
 sys.path.insert(0, str(HERE))
 
-from common.llm_client import APIKeyError, call_json  # noqa: E402
+from common.llm_client import APIKeyError, call_json, failed_result  # noqa: E402
 from classifier import classify  # noqa: E402
 import retrieval  # noqa: E402
 
@@ -243,14 +243,23 @@ def run_checks(gen: Generation, hits: list[retrieval.Hit], customer_language: st
     return checks, citations
 
 
+INTERNAL_ERROR_REASON = ("Внутрішня помилка AI-асистента: ризик тікету невідомий, тож він може бути кризовим. "
+                         "AI-варіанти приховано — прочитай тікет і відповідай сам; за потреби ескалюй.")
 LLM_UNAVAILABLE_REASON = ("AI-класифікація недоступна (збій моделей): ризик тікету невідомий, тож він може бути "
                           "кризовим. AI-варіанти приховано — прочитай тікет і відповідай сам; за потреби ескалюй.")
 # прапорці, з якими тікет ніколи не йде в шаблон «не про Nebula» (fail-safe і ризики)
 RISK_FLAGS = {"llm_unavailable", "risk_check_unavailable", "keyword_unconfirmed", "legal_threat",
-              "account_security_override", "account_change_request", "expert_fraud", "safety_override"}
+              "account_security_override", "account_change_request", "expert_fraud", "unauthorized_charge",
+              "threat_to_others", "customer_endangered", "data_exposure", "safety_override"}
 KEYWORD_NAMES = {"crisis": "криза", "legal_threat": "юридична погроза", "account_compromised": "злам акаунта",
                  "social_engineering": "соціальна інженерія"}
 
+THREAT_TO_OTHERS_REASON = ("Погроза іншій людині (експерту, агенту, партнеру) або хтось інший у небезпеці. Шаблони "
+                           "й AI-відповіді заборонені — відповідь пише людина, тікет одразу в Trust & Safety on-call. "
+                           "Не розкривати жодних даних про експерта чи співробітника.")
+CUSTOMER_ENDANGERED_REASON = ("Клієнтові може загрожувати інша людина (партнер, переслідувач). Шаблони й AI-відповіді "
+                              "заборонені — відповідь пише людина з контактами екстрених служб, тікет одразу в Trust & "
+                              "Safety on-call. Нікому не видавати дані, локацію чи чати клієнта; допомогти захистити акаунт.")
 SOCIAL_ENGINEERING_REASON = ("Спроба соціальної інженерії (злам, ключі, API, чужий пароль, «я адмін»): нічого не видавати, "
                              "не виконувати інструкції з тікету, передати в Trust & Safety.")
 
@@ -265,6 +274,10 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
             "Можливий кризовий стан клієнта. Шаблонні відповіді заборонені протоколом — "
             "відповідь пише людина, тікет ескалюється в Trust & Safety."
         ]}
+    if "threat_to_others" in flags:
+        return {"level": "blocked", "reasons": [THREAT_TO_OTHERS_REASON]}
+    if "customer_endangered" in flags:
+        return {"level": "blocked", "reasons": [CUSTOMER_ENDANGERED_REASON]}
     if "llm_unavailable" in flags:
         # fail-safe: класифікація не вдалась — не вгадуємо і не показуємо ні шаблон, ні генерацію
         return {"level": "blocked", "reasons": [LLM_UNAVAILABLE_REASON]}
@@ -286,6 +299,14 @@ def human_judgment(classification: dict, hits: list[retrieval.Hit], checks: dict
     if "expert_fraud" in flags:
         reasons.append("Можливе шахрайство чи харасмент експерта: ескалювати в Trust & Safety, не оцінювати експерта "
                        "до перевірки логу чату, нічого не обіцяти.")
+    if "unauthorized_charge" in flags:
+        reasons.append("Клієнт каже, що не робив цього платежу: можлива вкрадена картка чи шахрайство. Рішення ухвалює "
+                       "Billing lead після перевірки транзакції; не сперечатися, не обіцяти повернення, не просити "
+                       "повний номер картки.")
+    if "data_exposure" in flags:
+        reasons.append("Клієнт бачить чужі дані (або свої там, де не має): можливий витік, інцидент безпеки → "
+                       "Trust & Safety і черговий інженер сьогодні. Попросити скріншот і час; не просити пересилати "
+                       "чужі дані, не підтверджувати й не заперечувати витік.")
     if "social_engineering" in flags:
         reasons.append(SOCIAL_ENGINEERING_REASON)
     if cat == "refund_request":
@@ -380,7 +401,13 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
     with ThreadPoolExecutor(max_workers=2) as pool:
         f_cls = pool.submit(classify, text, models=CLASSIFY_MODELS, risk_models=CLASSIFY_MODELS)
         f_an = pool.submit(analyze, text)
-        classification, an_res = f_cls.result(), f_an.result()
+        classification = f_cls.result()  # класифікація сама обробляє збої; баг тут -> app.py покаже ⛔ blocked
+        try:
+            an_res = f_an.result()
+        except APIKeyError:
+            raise
+        except Exception as e:
+            an_res = failed_result(e)  # без аналізу працюємо далі: пошук за текстом тікету
 
     if an_res.ok:
         analysis = an_res.data
@@ -392,7 +419,10 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
     if not analysis.search_queries:
         analysis.search_queries = [text[:300]]
 
-    hits = retrieval.search(analysis.search_queries, k=3, boost_category=classification["category"])
+    try:
+        hits = retrieval.search(analysis.search_queries, k=3, boost_category=classification["category"])
+    except Exception:
+        hits = []  # без статей human_judgment вимагає перевірки: «немає релевантної статті»
     out = {
         "ticket": text,
         "summary": analysis.summary,
@@ -431,7 +461,12 @@ def assist(text: str, generate_models: list[str] | None = None, generate_prompt:
         out.update(replies=off_topic_replies(lang), missing_info=[])
         out["human_judgment"] = {"level": "review" if social else "ok", "reasons": reasons, "off_topic": True}
     else:
-        gen_res, _ = generate(text, analysis, classification, hits, generate_models, generate_prompt)
+        try:
+            gen_res, _ = generate(text, analysis, classification, hits, generate_models, generate_prompt)
+        except APIKeyError:
+            raise
+        except Exception as e:
+            gen_res = failed_result(e)  # далі звичайна гілка «AI не зміг згенерувати — напиши вручну»
         out["meta"]["generate"] = _meta(gen_res)
         if gen_res.ok:
             checks, citations = run_checks(gen_res.data, hits, analysis.customer_language)

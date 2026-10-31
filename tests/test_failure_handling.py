@@ -53,6 +53,14 @@ def bad_json_400():
     return groq.BadRequestError("json_validate_failed", response=httpx.Response(400, request=REQUEST), body=None)
 
 
+def status_error(cls, code: int, message: str):
+    return cls(message, response=httpx.Response(code, request=REQUEST), body=None)
+
+
+def empty_reply():
+    return SimpleNamespace(choices=[], usage=None)
+
+
 class FakeClient:
     """Видає заздалегідь задані відповіді/помилки по черзі і запам'ятовує, яку модель викликали."""
 
@@ -138,6 +146,32 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertTrue(res.ok)
         self.assertEqual(res.model, "model-b")
         self.assertEqual(fake.calls.count("model-a"), llm_client.MAX_RETRIES + 1)
+
+    def test_removed_model_404_goes_to_next_model(self):
+        # Groq регулярно знімає моделі: 404 не має валити тікет
+        res, fake, _ = run([status_error(groq.NotFoundError, 404, "model_decommissioned"), ok(VALID)])
+        self.assertTrue(res.ok)
+        self.assertEqual(fake.calls, ["model-a", "model-b"])
+        self.assertIn("model-a: NotFoundError 404", res.errors)
+
+    def test_too_large_413_and_403_are_failed_result_not_exception(self):
+        res, fake, _ = run([status_error(groq.APIStatusError, 413, "Request too large"),
+                            status_error(groq.PermissionDeniedError, 403, "forbidden")])
+        self.assertFalse(res.ok)
+        self.assertEqual(len(fake.calls), 2)
+
+    def test_empty_reply_is_repaired_then_next_model(self):
+        res, fake, _ = run([empty_reply(), empty_reply(), ok(VALID)])
+        self.assertTrue(res.ok)
+        self.assertEqual(fake.calls, ["model-a", "model-a", "model-b"])
+
+    def test_bug_inside_classification_goes_to_human_as_p1(self):
+        # не помилка API, а баг у коді: класифікація все одно повертає fail-safe, а не виняток
+        with patch.object(classifier, "call_json", side_effect=KeyError("boom")):
+            out = classifier.classify("I can't do this anymore")
+        self.assertEqual((out["priority"], out["source"]), ("P1", "fallback"))
+        self.assertIn("llm_unavailable", out["guardrail_flags"])
+        self.assertIn("risk_check_unavailable", out["guardrail_flags"])
 
     def test_all_models_down_returns_not_ok(self):
         script = [timeout()] * (2 * (llm_client.MAX_RETRIES + 1))
@@ -302,6 +336,44 @@ class NextStepTest(unittest.TestCase):
                                       risk={"account_change_request": True}, category="account_privacy", priority="P4")
         self.assertEqual((out["priority"], out["assigned_team"]), ("P2", "Trust & Safety"))
         self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["account_change"])
+
+    def test_unauthorized_charge_is_p1_for_billing_lead(self):
+        # #115: «я ніякої підписки не оформлював» — класифікатор між прогонами давав то P1, то P2
+        out = self.classify_with_risk("Ви шахраї! Я ніякої підписки не оформлював, а ви знімаєте гроші з картки!",
+                                      risk={"unauthorized_charge": True}, category="billing_subscription", priority="P2")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Billing"))
+        self.assertIn("unauthorized_charge", out["guardrail_flags"])
+        self.assertTrue(out["needs_human_review"])
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["unauthorized_charge"])
+
+    def test_threat_to_others_is_p1_for_trust_and_safety(self):
+        out = self.classify_with_risk("I know which city this astrologer lives in, I'll find her and she'll regret it",
+                                      risk={"threat_to_others": True}, category="expert_complaint", priority="P2")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Trust & Safety"))
+        self.assertIn("threat_to_others", out["guardrail_flags"])
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["threat_to_others"])
+
+    def test_endangered_customer_is_p1_and_overrides_account_step(self):
+        # #146: «колишній бив мене і зайшов у мій акаунт» — risk_v3 бачив лише злам, крок був про сесії й паролі
+        out = self.classify_with_risk("Mein Ex hat mein Konto benutzt und weiss jetzt wo ich wohne, er hat mich geschlagen",
+                                      risk={"customer_endangered": True, "account_compromised": True},
+                                      category="account_privacy", priority="P2")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Trust & Safety"))
+        self.assertIn("customer_endangered", out["guardrail_flags"])
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["customer_endangered"])
+
+    def test_data_exposure_is_security_incident(self):
+        out = self.classify_with_risk("У моєму акаунті з'явилися чужі чати й чужа натальна карта",
+                                      risk={"data_exposure": True}, category="technical_issue", priority="P3")
+        self.assertEqual((out["priority"], out["assigned_team"]), ("P1", "Trust & Safety"))
+        self.assertTrue(out["needs_human_review"])
+        self.assertEqual(out["next_step"], classifier.SAFE_NEXT_STEPS["data_exposure"])
+
+    def test_double_charge_without_risk_stays_ordinary_refund(self):
+        out = self.classify_with_risk("Списали гроші двічі за підписку, поверніть один платіж", risk={},
+                                      category="refund_request", priority="P2")
+        self.assertEqual(out["priority"], "P2")
+        self.assertNotIn("unauthorized_charge", out["guardrail_flags"])
 
     def test_technical_ticket_with_blocked_word_is_not_account_incident(self):
         # «account was blocked from posting reviews» — модель не бачить злому → не Trust & Safety

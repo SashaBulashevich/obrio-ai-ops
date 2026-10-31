@@ -197,11 +197,50 @@ class OffTopicFlowTest(unittest.TestCase):
             self.assertIsNone(r["replies"])
             self.assertEqual(r["human_judgment"]["reasons"], [assistant.LLM_UNAVAILABLE_REASON])
 
+    def test_bugs_in_analysis_search_and_generation_do_not_crash(self):
+        meta = dict(model="fake", api_latency_s=0, cost_usd=0, prompt_tokens=0, completion_tokens=0,
+                    cached_tokens=0, attempts=1, errors=[])
+        cls_ = {**cls("billing_subscription", "P2"), "language": "en", "meta": meta}
+        with patch.object(assistant, "classify", return_value=cls_), \
+                patch.object(assistant, "analyze", side_effect=KeyError("boom")), \
+                patch.object(assistant.retrieval, "search", side_effect=RuntimeError("index broken")), \
+                patch.object(assistant, "generate", side_effect=ValueError("bug")):
+            r = assistant.assist("I was charged twice")
+        self.assertIsNone(r["replies"])
+        self.assertEqual(r["human_judgment"]["level"], "review")
+        self.assertTrue(any("напиши відповідь вручну" in x.lower() for x in r["human_judgment"]["reasons"]))
+
     def test_risk_flags_block_off_topic_template(self):
         # модель класифікації відповіла, але перевірка ризиків — ні: шаблону немає, генерація з review
         r, gen_mock = self.run_assist("хм", "other", "P4", about_nebula=False, confidence=0.3,
                                       flags=["risk_check_unavailable", "low_confidence"])
         gen_mock.assert_called_once()
+
+    def test_unauthorized_charge_needs_review_and_never_gets_template(self):
+        r, gen_mock = self.run_assist("я не оформлював підписку, а гроші списали", "other", "P1",
+                                      about_nebula=False, confidence=0.4, flags=["unauthorized_charge"])
+        gen_mock.assert_called_once()
+        self.assertEqual(r["human_judgment"]["level"], "review")
+        j = assistant.human_judgment(cls("billing_subscription", "P1", ["unauthorized_charge"]), [], None)
+        self.assertEqual(j["level"], "review")
+        self.assertTrue(any("не робив цього платежу" in x for x in j["reasons"]))
+
+    def test_threat_to_others_hides_ai_replies(self):
+        j = assistant.human_judgment(cls("expert_complaint", "P1", ["threat_to_others"]), [], None)
+        self.assertEqual(j, {"level": "blocked", "reasons": [assistant.THREAT_TO_OTHERS_REASON]})
+
+    def test_endangered_customer_hides_ai_replies(self):
+        j = assistant.human_judgment(cls("account_privacy", "P1", ["account_security_override", "customer_endangered"]),
+                                     [], None)
+        self.assertEqual(j, {"level": "blocked", "reasons": [assistant.CUSTOMER_ENDANGERED_REASON]})
+
+    def test_data_exposure_needs_review_and_never_gets_template(self):
+        r, gen_mock = self.run_assist("I see someone else's chats in my account", "other", "P1",
+                                      about_nebula=False, confidence=0.4, flags=["data_exposure"])
+        gen_mock.assert_called_once()
+        j = assistant.human_judgment(cls("technical_issue", "P1", ["data_exposure"]), [], None)
+        self.assertEqual(j["level"], "review")
+        self.assertTrue(any("чужі дані" in x for x in j["reasons"]))
 
     def test_unknown_language_falls_back_to_english(self):
         r, _ = self.run_assist("jaké je hlavní město Francie", "other", lang="cs")

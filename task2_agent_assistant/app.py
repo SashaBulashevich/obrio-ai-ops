@@ -5,6 +5,7 @@
 """
 
 import sys
+import traceback
 from pathlib import Path
 
 import streamlit as st
@@ -83,6 +84,11 @@ if run:
             st.session_state["result"] = cached_assist(ticket.strip(), model, prompt_version)
         except assistant.APIKeyError as e:
             st.error(f"🔑 {e}")
+            st.stop()
+        except Exception:
+            # fail-safe: будь-який непередбачений збій — тікет людині, а не traceback на екрані
+            traceback.print_exc()
+            st.error("⛔ **AI-варіанти приховано. Відповідь пише людина.**\n\n- " + assistant.INTERNAL_ERROR_REASON)
             st.stop()
     st.session_state["confirmed"] = False
 

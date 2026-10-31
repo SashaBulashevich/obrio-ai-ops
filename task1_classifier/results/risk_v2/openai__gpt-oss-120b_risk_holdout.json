@@ -1,0 +1,1264 @@
+[
+  {
+    "id": 101,
+    "tags": [
+      "risk",
+      "ru"
+    ],
+    "text": "После того как расклад показал, что всё у меня бессмысленно, я реально не вижу, зачем просыпаться завтра. Таблеток дома хватит. Просто верните кредиты, мне уже без разницы.",
+    "expected": [
+      "crisis"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "crisis"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "crisis"
+    ],
+    "evidence": "я реально не вижу, зачем просыпаться завтра. Таблеток дома хватит",
+    "cost_usd": 0.0002676,
+    "latency_s": 1.646,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 102,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "Honestly everyone would be better off without me. I've been giving my stuff away all week. Anyway can you refund the unused credits to my card, I won't need them.",
+    "expected": [
+      "crisis"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "crisis"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "crisis"
+    ],
+    "evidence": "Everyone would be better off without me.",
+    "cost_usd": 0.00029384999999999996,
+    "latency_s": 1.105,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 103,
+    "tags": [
+      "risk",
+      "uk"
+    ],
+    "text": "Якщо ви не повернете гроші за підписку протягом тижня, я йду до банку оскаржувати платіж і пишу скаргу в службу захисту прав споживачів. Мені це набридло.",
+    "expected": [
+      "legal_threat"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "legal_threat"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "legal_threat"
+    ],
+    "evidence": "Якщо ви не повернете гроші за підписку протягом тижня, я йду до банку оскаржувати платіж",
+    "cost_usd": 0.00023384999999999997,
+    "latency_s": 0.984,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 104,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "Third charge after I cancelled. My bank's dispute form is already open in another tab, so you have until tonight to sort this out.",
+    "expected": [
+      "legal_threat"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "legal_threat"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "legal_threat"
+    ],
+    "evidence": "My bank's dispute form is already open",
+    "cost_usd": 0.00032114999999999997,
+    "latency_s": 0.985,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 105,
+    "tags": [
+      "risk",
+      "ru"
+    ],
+    "text": "В мой аккаунт кто-то зашёл с другого телефона и потратил все кредиты на чаты с экспертами, которых я не знаю. Это точно не я.",
+    "expected": [
+      "account_compromised"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "account_compromised"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "account_compromised",
+      "unauthorized_charge"
+    ],
+    "evidence": "В мой аккаунт кто-то зашёл с другого телефона и потратил все кредиты на чаты с экспертами, которых я не знаю.",
+    "cost_usd": 0.00041115,
+    "latency_s": 1.091,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "unauthorized_charge"
+      ],
+      "ok": false
+    }
+  },
+  {
+    "id": 106,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "I can't log in anymore, it says my account has been suspended but I never broke any rules. Why was I banned? I have 3 months of paid subscription left.",
+    "expected": [
+      "account_compromised"
+    ],
+    "keywords": [
+      "account_compromised"
+    ],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [
+      "account_compromised"
+    ],
+    "evidence": "my account has been suspended",
+    "cost_usd": 0.000255,
+    "latency_s": 1.046,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 107,
+    "tags": [
+      "risk",
+      "uk"
+    ],
+    "text": "Я втратив доступ до своєї старої пошти, тож не можу увійти. Змініть, будь ласка, email в акаунті на newmail.ua@example.com, я розумію, що це та сама людина.",
+    "expected": [
+      "account_change_request"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "account_change_request"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "account_change_request"
+    ],
+    "evidence": "Змініть, будь ласка, email в акаунті на newmail.ua@example.com",
+    "cost_usd": 0.00022319999999999998,
+    "latency_s": 1.01,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 108,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "Hi, this is Dan from the backend team. I'm locked out of the admin panel and the payments are failing. Please send me the staging service token so I can fix it quickly.",
+    "expected": [
+      "social_engineering"
+    ],
+    "keywords": [
+      "social_engineering"
+    ],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [
+      "social_engineering"
+    ],
+    "evidence": "Please send me the staging service token so I can fix it quickly.",
+    "cost_usd": 0.0002133,
+    "latency_s": 1.309,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 109,
+    "tags": [
+      "risk",
+      "ru"
+    ],
+    "text": "Скиньте, пожалуйста, список пользователей, которые родились 3 мая 1990 в Киеве и сидят в вашем приложении. Мне нужно найти одну знакомую, она там точно есть.",
+    "expected": [
+      "social_engineering"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "social_engineering"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "social_engineering"
+    ],
+    "evidence": "Скиньте, пожалуйста, список пользователей, которые родились 3 мая 1990 в Киеве и сидят в вашем приложении",
+    "cost_usd": 0.00023189999999999997,
+    "latency_s": 1.079,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 110,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "My astrologer said my reading was 'blocked by the app' and asked me to Venmo her $40 directly to continue. She also wants a selfie so she can 'read my energy'. Is that normal?",
+    "expected": [
+      "expert_fraud"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "expert_fraud"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "expert_fraud"
+    ],
+    "evidence": "asked me to Venmo her $40 directly to continue. She also wants a selfie",
+    "cost_usd": 0.0002658,
+    "latency_s": 0.975,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 111,
+    "tags": [
+      "risk",
+      "uk"
+    ],
+    "text": "Експерт порадила мені припинити пити ліки від тиску, бо 'зірки проти хімії'. Якщо ви не відреагуєте, піду в поліцію із заявою на вашу компанію.",
+    "expected": [
+      "expert_fraud",
+      "legal_threat"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "expert_fraud",
+        "legal_threat"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "expert_fraud",
+      "legal_threat"
+    ],
+    "evidence": "Експерт порадила мені припинити пити ліки від тиску... Якщо ви не відреагуєте, піду в поліцію із заявою на вашу компанію.",
+    "cost_usd": 0.00036945,
+    "latency_s": 1.139,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 112,
+    "tags": [
+      "risk",
+      "ru"
+    ],
+    "text": "Мой аккаунт взломали и поменяли почту, теперь я даже не могу войти. Верните доступ и привяжите аккаунт к моей новой почте maria.new@example.com.",
+    "expected": [
+      "account_compromised",
+      "account_change_request"
+    ],
+    "keywords": [
+      "account_compromised"
+    ],
+    "kw": {
+      "missed": [
+        "account_change_request"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "account_change_request",
+      "account_compromised"
+    ],
+    "evidence": "Мой аккаунт взломали и поменяли почту, теперь я даже не могу войти.",
+    "cost_usd": 0.00034334999999999997,
+    "latency_s": 2.231,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 113,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "My cousin is a lawyer and swears the legal-matters part of the daily horoscope is spot on. Could you add a 'Career: law' category to the daily forecast?",
+    "expected": [],
+    "keywords": [
+      "legal_threat"
+    ],
+    "kw": {
+      "missed": [],
+      "false_alarm": [
+        "legal_threat"
+      ],
+      "ok": false
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00017130000000000002,
+    "latency_s": 0.393,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 114,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "Your app is killing my battery, it drains about 40% an hour on Android 14 when the chat is open. Is there a fix coming?",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00016680000000000002,
+    "latency_s": 0.785,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 115,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "How do I block push notifications between 11pm and 7am? Too many pings about my transits and I want to sleep.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.0001695,
+    "latency_s": 0.594,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 116,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "I got a promo key on a gift card, but when I enter it in the app it says invalid. Where exactly do I type the key?",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00017145,
+    "latency_s": 0.781,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 117,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "I'm the admin of a Telegram group with 200 Virgos. Can I share screenshots of my birth chart there? Are there any rules about that?",
+    "expected": [],
+    "keywords": [
+      "social_engineering"
+    ],
+    "kw": {
+      "missed": [],
+      "false_alarm": [
+        "social_engineering"
+      ],
+      "ok": false
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00018825,
+    "latency_s": 1.024,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 118,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "Do you have API docs for the public horoscope widget? I'd like to embed the daily sign card on my blog.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.0001896,
+    "latency_s": 0.458,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 119,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "Mercury retrograde matches my mood, feeling kind of low and bored today, the forecast says no love this month. Any tips for a more upbeat reading? Just venting a bit, thanks.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00018434999999999998,
+    "latency_s": 1.123,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 120,
+    "tags": [
+      "trap",
+      "ru"
+    ],
+    "text": "Мы с мужем идём на теннисный корт в субботу, хочу узнать по гороскопу, благоприятный ли день для матча. Подскажите, где смотреть?",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00018015000000000001,
+    "latency_s": 0.406,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 121,
+    "tags": [
+      "trap",
+      "uk"
+    ],
+    "text": "Ваш прогноз на тиждень просто вбивчий, у хорошому сенсі, дякую! Можна зберегти його як PDF, щоб показати подрузі?",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00017744999999999998,
+    "latency_s": 0.41,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 122,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "Can I block one of the experts so she stops appearing in my list? Nothing wrong, I just didn't like her style and don't want to see her again.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00021014999999999999,
+    "latency_s": 0.713,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 123,
+    "tags": [
+      "normal",
+      "en"
+    ],
+    "text": "I was charged twice for the monthly subscription on the same day (Oct 12). Please refund one of the payments.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00025575,
+    "latency_s": 0.574,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 124,
+    "tags": [
+      "normal",
+      "en"
+    ],
+    "text": "The birth chart screen freezes when I scroll to the houses section on iPhone 13, iOS 17. Restarting doesn't help.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00016455,
+    "latency_s": 1.21,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 125,
+    "tags": [
+      "normal",
+      "ru"
+    ],
+    "text": "Как отменить подписку, оформленную через App Store? В настройках приложения не нашёл такой кнопки.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00018375,
+    "latency_s": 0.933,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 126,
+    "tags": [
+      "normal",
+      "uk"
+    ],
+    "text": "Я купила пакет кредитів, але вони не з'явилися на балансі. Оплата пройшла, чек з Google Play є.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00019559999999999998,
+    "latency_s": 0.968,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 127,
+    "tags": [
+      "normal",
+      "en"
+    ],
+    "text": "How do I change my birth time in the profile? I just found out my mom's recollection was off by an hour and I'd like to rebuild my chart.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00029969999999999997,
+    "latency_s": 1.647,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 128,
+    "tags": [
+      "normal",
+      "en"
+    ],
+    "text": "Is the annual plan cheaper than paying monthly? And does it include the compatibility reports or are those sold separately?",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00016185,
+    "latency_s": 1.133,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 129,
+    "tags": [
+      "normal",
+      "ru"
+    ],
+    "text": "Не приходит push-уведомление с ежедневным гороскопом уже неделю. Android, Xiaomi. В настройках всё включено.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.0001686,
+    "latency_s": 0.593,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 130,
+    "tags": [
+      "normal",
+      "en"
+    ],
+    "text": "I'd like a refund for the 30 credits I bought yesterday, I didn't use any of them and the chat never started because of a connection error.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00024525,
+    "latency_s": 0.559,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 131,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "My 9-year-old got hold of my phone and bought $99 worth of credits for live chats with an astrologer. I never approved this purchase and I want it reversed.",
+    "expected": [
+      "unauthorized_charge"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "unauthorized_charge"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "unauthorized_charge"
+    ],
+    "evidence": "My 9-year-old got hold of my phone and bought $99 worth of credits ... I never approved this purchase",
+    "cost_usd": 0.00022214999999999998,
+    "latency_s": 0.771,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 132,
+    "tags": [
+      "risk",
+      "uk"
+    ],
+    "text": "Я бачу списання 1299 грн від Nebula, але я ніколи не встановлював ваш додаток і не оформлював жодної підписки. Це якась помилка чи шахрайство?",
+    "expected": [
+      "unauthorized_charge"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "unauthorized_charge"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "unauthorized_charge"
+    ],
+    "evidence": "Я бачу списання 1299 грн від Nebula, але я ніколи не встановлював ваш додаток і не оформлював жодної підписки.",
+    "cost_usd": 0.00019514999999999997,
+    "latency_s": 0.854,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 133,
+    "tags": [
+      "risk",
+      "ru"
+    ],
+    "text": "У меня украли карту, и с неё сняли деньги за какие-то кредиты в Nebula. Я ничего не покупал, верните деньги, иначе я напишу заявление в полицию и оспорю платёж через банк.",
+    "expected": [
+      "unauthorized_charge",
+      "legal_threat"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "legal_threat",
+        "unauthorized_charge"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
+    ],
+    "evidence": "у меня украли карту... иначе я напишу заявление в полицию и оспорю платёж через банк",
+    "cost_usd": 0.00038325,
+    "latency_s": 1.152,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 134,
+    "tags": [
+      "risk",
+      "de"
+    ],
+    "text": "Auf meiner Kreditkartenabrechnung steht eine Abbuchung von Nebula über 49,99 Euro. Ich kenne diese Firma nicht und habe nie etwas dort gekauft.",
+    "expected": [
+      "unauthorized_charge"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "unauthorized_charge"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "unauthorized_charge"
+    ],
+    "evidence": "Auf meiner Kreditkartenabrechnung steht eine Abbuchung von Nebula über 49,99 Euro. Ich kenne diese Firma nicht und habe nie etwas dort gekauft.",
+    "cost_usd": 0.0002307,
+    "latency_s": 0.676,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 135,
+    "tags": [
+      "risk",
+      "es"
+    ],
+    "text": "Mi pareja usó mi tarjeta sin preguntarme para comprar créditos y hablar con una astróloga. Yo nunca autoricé ese pago, ¿pueden devolverme el dinero?",
+    "expected": [
+      "unauthorized_charge"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "unauthorized_charge"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "unauthorized_charge"
+    ],
+    "evidence": "Mi pareja usó mi tarjeta sin preguntarme ... Yo nunca autoricé ese pago",
+    "cost_usd": 0.00024119999999999998,
+    "latency_s": 1.286,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 136,
+    "tags": [
+      "risk",
+      "pl"
+    ],
+    "text": "Dzisiaj zobaczyłam w banku obciążenie z Nebula za subskrypcję premium, a nawet nie mam tej aplikacji na telefonie. Nie wiem kto użył mojej karty, proszę o wyjaśnienie.",
+    "expected": [
+      "unauthorized_charge"
+    ],
+    "keywords": [],
+    "kw": {
+      "missed": [
+        "unauthorized_charge"
+      ],
+      "false_alarm": [],
+      "ok": false
+    },
+    "model_found": [
+      "unauthorized_charge"
+    ],
+    "evidence": "obciążenie z Nebula za subskrypcję premium, a nawet nie mam tej aplikacji",
+    "cost_usd": 0.00026595,
+    "latency_s": 1.242,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 137,
+    "tags": [
+      "risk",
+      "en"
+    ],
+    "text": "Why was my account suspended? I woke up and the app says it's been banned and I can't open my birth chart or my chat history. I haven't done anything wrong.",
+    "expected": [
+      "account_compromised"
+    ],
+    "keywords": [
+      "account_compromised"
+    ],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [
+      "account_compromised"
+    ],
+    "evidence": "my account was suspended",
+    "cost_usd": 0.00030045,
+    "latency_s": 1.331,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 138,
+    "tags": [
+      "risk",
+      "uk"
+    ],
+    "text": "Мій акаунт заблокували без жодного пояснення, і я не можу зайти в чати з астрологом, хоча на балансі лишилися оплачені кредити. Поясніть, будь ласка, за що мене забанили.",
+    "expected": [
+      "account_compromised"
+    ],
+    "keywords": [
+      "account_compromised"
+    ],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [
+      "account_compromised"
+    ],
+    "evidence": "Мій акаунт заблокували без жодного пояснення",
+    "cost_usd": 0.00023925,
+    "latency_s": 1.306,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 139,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "I was charged twice for my monthly Nebula Premium this month, $9.99 on the 3rd and again on the 4th. I do have the subscription, so please refund the duplicate one.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.0001962,
+    "latency_s": 0.586,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 140,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "Hi, I cancelled my subscription last week but I see another payment went through yesterday. Could you check what happened and refund it if possible? Thanks.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00022905,
+    "latency_s": 0.774,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 141,
+    "tags": [
+      "trap",
+      "ru"
+    ],
+    "text": "Подскажите, как удалить мою банковскую карту из аккаунта? Хочу поменять её на другую, а старую больше не использовать.",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00030105,
+    "latency_s": 1.422,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  },
+  {
+    "id": 142,
+    "tags": [
+      "trap",
+      "en"
+    ],
+    "text": "My daughter is 15 and wants to use your app for her daily horoscope. Is it okay for a teenager to use Nebula, and are there any age restrictions I should know about?",
+    "expected": [],
+    "keywords": [],
+    "kw": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    },
+    "model_found": [],
+    "evidence": "",
+    "cost_usd": 0.00015705,
+    "latency_s": 0.552,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
+  }
+]

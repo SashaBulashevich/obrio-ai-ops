@@ -10,6 +10,8 @@
   тож під час збою наступні тікети одразу йдуть людині, а не чекають хвилину на повтори;
 - немає з'єднання з Groq -> вимикаємо всі моделі одразу: вони на тому самому сервері;
 - загальний ліміт часу на виклик: агент не чекає довше, тікет іде людині;
+- будь-яка інша помилка API (модель знято — 404, запит завеликий — 413, 403, порожня відповідь) -> наступна модель,
+  а не виняток: викликач отримує result.ok == False і вмикає fail-safe;
 - метрики: модель, latency, токени, вартість, кількість спроб.
 """
 
@@ -59,6 +61,11 @@ class LLMResult:
     @property
     def ok(self) -> bool:
         return self.data is not None
+
+
+def failed_result(e: Exception) -> LLMResult:
+    """Непередбачена помилка (баг у коді, а не відповідь API) як невдалий результат: далі спрацює fail-safe."""
+    return LLMResult(data=None, model=None, errors=[f"unexpected {type(e).__name__}: {str(e)[:150]}"])
 
 
 _client = None
@@ -183,17 +190,24 @@ def call_json(
                     msgs = msgs + [{"role": "user", "content": "Your previous output was not valid JSON. Return ONLY one valid JSON object matching the schema."}]
                     continue
                 break
+            except groq.APIError as e:
+                # 404 модель знято з Groq, 403, 413 запит завеликий, інші коди: повтор тієї самої моделі не допоможе
+                status = getattr(e, "status_code", None)
+                result.errors.append(f"{model}: {type(e).__name__}{f' {status}' if status else ''}")
+                break
 
             result.api_latency_s = time.perf_counter() - call_started
             usage = resp.usage
-            result.prompt_tokens += usage.prompt_tokens
-            result.completion_tokens += usage.completion_tokens
-            details = getattr(usage, "prompt_tokens_details", None)
-            cached = (getattr(details, "cached_tokens", 0) or 0) if details else 0
-            result.cached_tokens += cached
-            result.cost_usd += cost_usd(model, usage.prompt_tokens, usage.completion_tokens, cached)
+            if usage:
+                result.prompt_tokens += usage.prompt_tokens
+                result.completion_tokens += usage.completion_tokens
+                details = getattr(usage, "prompt_tokens_details", None)
+                cached = (getattr(details, "cached_tokens", 0) or 0) if details else 0
+                result.cached_tokens += cached
+                result.cost_usd += cost_usd(model, usage.prompt_tokens, usage.completion_tokens, cached)
 
-            raw = resp.choices[0].message.content or ""
+            # порожня відповідь -> «invalid JSON» нижче: один ремонт, далі наступна модель
+            raw = (resp.choices[0].message.content if resp.choices else "") or ""
             try:
                 result.data = _parse(raw, schema)
                 result.model = model

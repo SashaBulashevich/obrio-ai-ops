@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from common.llm_client import APIKeyError, call_json  # noqa: E402
+from common.llm_client import APIKeyError, call_json, failed_result  # noqa: E402
 
 PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
 
@@ -113,9 +113,12 @@ SOCIAL_ENGINEERING_PATTERNS = re.compile(
 # вони діють, лише коли модель ризиків недоступна (fail-safe), а без підтвердження моделлю дають
 # м'яку позначку «перевір», а не P1. Слова самі по собі дають і хибні спрацювання
 # («my lawyer friend…»), і пропуски перефразувань.
-RISK_PROMPT = "risk_v1"
+RISK_PROMPT = "risk_v4"  # v2: + unauthorized_charge, бан явно; v3: + threat_to_others, data_exposure;
+                         # v4: + customer_endangered, чужа спроба самогубства — це crisis
 RISK_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
-RISKS = ("crisis", "legal_threat", "account_compromised", "account_change_request", "social_engineering", "expert_fraud")
+RISKS = ("crisis", "legal_threat", "account_compromised", "account_change_request", "social_engineering",
+         "unauthorized_charge", "threat_to_others", "customer_endangered", "data_exposure",
+         "expert_fraud")
 KEYWORD_RULES = {
     "crisis": SAFETY_PATTERNS,
     "legal_threat": LEGAL_PATTERNS,
@@ -131,6 +134,10 @@ class RiskAssessment(BaseModel):
     account_compromised: bool
     account_change_request: bool
     social_engineering: bool
+    unauthorized_charge: bool = False  # немає в risk_v1 — так старий промпт теж можна прогнати
+    threat_to_others: bool = False  # немає в risk_v1 / v2
+    customer_endangered: bool = False  # немає в risk_v1–v3
+    data_exposure: bool = False
     expert_fraud: bool
     evidence: str = ""
 
@@ -182,8 +189,19 @@ def classify(
     with ThreadPoolExecutor(max_workers=2) as pool:
         f_cls = pool.submit(call_json, messages, LLMClassification, models, reasoning_effort=reasoning_effort)
         f_risk = pool.submit(assess_risk, text, risk_models) if check_risk else None
-        res = f_cls.result()
-        risk, risk_meta = f_risk.result() if f_risk else (None, None)
+        # баг у коді (не помилка API) не має валити тікет: класифікацію чи ризики вважаємо невдалими -> fail-safe
+        try:
+            res = f_cls.result()
+        except APIKeyError:
+            raise
+        except Exception as e:
+            res = failed_result(e)
+        try:
+            risk, risk_meta = f_risk.result() if f_risk else (None, None)
+        except APIKeyError:
+            raise
+        except Exception as e:
+            risk, risk_meta = None, _meta(failed_result(e))
 
     if res.ok:
         out = res.data.model_dump()
@@ -208,8 +226,9 @@ def classify(
     out = apply_guardrails(text, out, risk, risk_status)
     out["assigned_team"] = TEAM_BY_CATEGORY[out["category"]]
     flags = set(out["guardrail_flags"])
-    if {"account_security_override", "account_change_request", "social_engineering"} & flags:
-        # злам, спроба змінити чужий акаунт, соціальна інженерія — у Trust & Safety
+    if {"account_security_override", "account_change_request", "social_engineering", "threat_to_others",
+            "customer_endangered", "data_exposure"} & flags:
+        # злам, спроба змінити чужий акаунт, соціальна інженерія, загроза іншим, витік даних — у Trust & Safety
         out["assigned_team"] = "Trust & Safety"
     elif "llm_unavailable" in flags and out["category"] != "safety_crisis":
         out["assigned_team"] = "Manual triage"
@@ -281,6 +300,26 @@ def apply_guardrails(text: str, out: dict, risk: dict | None = None, risk_status
             _raise_priority(out, "P3")
             out["needs_human_review"] = True
             flags.append("social_engineering")
+    if found["unauthorized_charge"]:
+        # клієнт не робив цього платежу: можлива вкрадена картка чи шахрайство, а далі — chargeback
+        _raise_priority(out, "P1")
+        out["needs_human_review"] = True
+        flags.append("unauthorized_charge")
+    if found["threat_to_others"]:
+        # погроза експерту / агенту / партнеру або інша людина в небезпеці: шаблонів немає, вирішує Trust & Safety
+        _raise_priority(out, "P1")
+        out["needs_human_review"] = True
+        flags.append("threat_to_others")
+    if found["customer_endangered"]:
+        # клієнтові погрожує чи шкодить інша людина (партнер, переслідувач): нікому не видавати його дані
+        _raise_priority(out, "P1")
+        out["needs_human_review"] = True
+        flags.append("customer_endangered")
+    if found["data_exposure"]:
+        # клієнт бачить чужі дані або свої там, де не має: інцидент безпеки, GDPR — 72 год на повідомлення регулятора
+        _raise_priority(out, "P1")
+        out["needs_human_review"] = True
+        flags.append("data_exposure")
     if found["expert_fraud"]:
         _raise_priority(out, "P1")
         out["needs_human_review"] = True
@@ -312,6 +351,22 @@ SAFE_NEXT_STEPS = {
              "reply only after their review.",
     "expert_fraud": "Escalate to Trust & Safety and Expert Quality: review the chat log and suspend the expert during "
                     "the investigation; tell the customer not to send money outside the app. Do not promise refunds.",
+    "unauthorized_charge": "Customer says they did not make this payment (possible stolen card or fraud): the Billing lead "
+                           "checks the transaction and where it was paid (App Store / Google Play / web) today; if "
+                           "someone else used the account, escalate to Trust & Safety. Do not argue, do not promise a "
+                           "refund, never ask for the full card number.",
+    "threat_to_others": "Escalate to the Trust & Safety on-call now: threat of harm to another person or someone "
+                        "else in danger. A human writes the reply, no templates. Never share an expert's or employee's "
+                        "personal details; if the threat is specific (person, place, time), T&S decides on contacting "
+                        "emergency services.",
+    "customer_endangered": "Escalate to the Trust & Safety on-call now: the customer may be in danger from another "
+                           "person (violent partner, stalker). A human writes the reply, no templates; it includes local "
+                           "emergency services. Never share the customer's account data, location or chats with anyone "
+                           "who asks; help them secure the account (sign out other sessions, reset the password from "
+                           "their own email).",
+    "data_exposure": "Possible data leak: escalate to Trust & Safety and the on-call engineer as a security incident "
+                     "today (GDPR: 72 h to notify the regulator). Ask for a screenshot and the time it happened; do not "
+                     "ask the customer to forward the other person's data, and do not confirm or deny a leak.",
     "llm_unavailable": "AI classification unavailable: read the ticket in full and triage manually; treat it as "
                        "potentially urgent (possible crisis or legal risk) until a human has checked it.",
     "refund_request": "Route to Billing: verify the transaction and where it was paid (App Store / Google Play / web) "
@@ -328,6 +383,12 @@ def override_next_step(text: str, out: dict) -> dict:
     flags = out["guardrail_flags"]
     if out["category"] == "safety_crisis":
         key = "safety_crisis"
+    elif "threat_to_others" in flags:
+        key = "threat_to_others"
+    elif "customer_endangered" in flags:
+        key = "customer_endangered"
+    elif "data_exposure" in flags:
+        key = "data_exposure"
     elif "account_security_override" in flags:
         key = "account_security"
     elif "account_change_request" in flags:
@@ -336,6 +397,8 @@ def override_next_step(text: str, out: dict) -> dict:
         key = "legal"
     elif "expert_fraud" in flags:
         key = "expert_fraud"
+    elif "unauthorized_charge" in flags:
+        key = "unauthorized_charge"
     elif "llm_unavailable" in flags:
         key = "llm_unavailable"
     elif "social_engineering" in flags:
