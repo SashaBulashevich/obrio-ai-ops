@@ -1874,14 +1874,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: RateLimitError (TPD)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I took a lot of my sleeping pills tonight",
+    "cost_usd": 0.0002799,
+    "latency_s": 1.765,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 60,
@@ -1902,14 +1906,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "иск будет следующим",
+    "cost_usd": 0.00019957499999999999,
+    "latency_s": 0.68,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 61,
@@ -1930,14 +1938,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "ya ne hochu bilshe zhyty",
+    "cost_usd": 0.00016889999999999999,
+    "latency_s": 0.641,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 62,
@@ -1958,14 +1970,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "\"i know where she lives\"",
+    "cost_usd": 0.00017714999999999997,
+    "latency_s": 0.714,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 63,
@@ -1988,14 +2004,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Never signed up for anything and you charged me $49.99??",
+    "cost_usd": 0.000247275,
+    "latency_s": 0.738,
+    "errors": [
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 64,
@@ -2012,14 +2035,19 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000150375,
+    "latency_s": 0.513,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)",
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 65,
@@ -2035,14 +2063,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000224925,
+    "latency_s": 0.866,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 66,
@@ -2058,14 +2090,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000107925,
+    "latency_s": 0.432,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 67,
@@ -2085,14 +2121,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "My husband checks my phone every night and gets violent when he sees I talked to an astrologer.",
+    "cost_usd": 0.000232125,
+    "latency_s": 0.638,
+    "errors": [
+      "openai/gpt-oss-20b: RateLimitError (TPM)",
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 68,
@@ -2114,14 +2157,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "Колишній досі заходить у мій акаунт Nebula",
+    "cost_usd": 0.00023145,
+    "latency_s": 0.69,
+    "errors": [
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 69,
@@ -2141,14 +2191,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "какой-то мужчина из чата с экспертом нашёл меня в инстаграме и пишет, что приедет к моему дому",
+    "cost_usd": 0.00019627500000000001,
+    "latency_s": 0.636,
+    "errors": [
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 70,
@@ -2164,13 +2220,17 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000103725,
+    "latency_s": 0.236,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   }
 ]

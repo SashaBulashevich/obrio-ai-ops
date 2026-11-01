@@ -856,14 +856,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: RateLimitError (TPD)"
-    ],
-    "llm": null
+    "cost_usd": 0.001548,
+    "latency_s": 1.14,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 130,
@@ -879,14 +881,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0015512,
+    "latency_s": 0.408,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 131,
@@ -906,14 +910,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "My 9-year-old got hold of my phone and bought $99 worth of credits... I never approved this purchase",
+    "cost_usd": 0.0016552000000000001,
+    "latency_s": 0.448,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 132,
@@ -933,14 +941,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "я ніколи не встановлював ваш додаток і не оформлював жодної підписки",
+    "cost_usd": 0.0016584000000000002,
+    "latency_s": 0.47,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 133,
@@ -962,14 +974,19 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "У меня украли карту, и с неё сняли деньги... Я ничего не покупал... оспорю платёж через банк",
+    "cost_usd": 0.0016768,
+    "latency_s": 0.47,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 134,
@@ -989,14 +1006,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Ich kenne diese Firma nicht und habe nie etwas dort gekauft.",
+    "cost_usd": 0.0016056000000000002,
+    "latency_s": 0.632,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 135,
@@ -1016,14 +1039,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Mi pareja usó mi tarjeta sin preguntarme para comprar créditos... Yo nunca autoricé ese pago",
+    "cost_usd": 0.0016376000000000001,
+    "latency_s": 1.515,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 136,
@@ -1043,14 +1072,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "nawet nie mam tej aplikacji na telefonie. Nie wiem kto użył mojej karty",
+    "cost_usd": 0.001644,
+    "latency_s": 0.596,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 137,
@@ -1070,14 +1105,20 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "Why was my account suspended? I woke up and the app says it's been banned",
+    "cost_usd": 0.0016264,
+    "latency_s": 0.587,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 138,
@@ -1097,14 +1138,20 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "Мій акаунт заблокували без жодного пояснення",
+    "cost_usd": 0.0016376000000000001,
+    "latency_s": 0.495,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 139,
@@ -1120,14 +1167,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00156,
+    "latency_s": 0.438,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 140,
@@ -1143,14 +1194,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015488,
+    "latency_s": 0.49,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 141,
@@ -1166,14 +1221,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.001548,
+    "latency_s": 0.509,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 142,
@@ -1189,14 +1248,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015568,
+    "latency_s": 0.51,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 143,
@@ -1216,14 +1279,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "expert_fraud",
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "I know which city he lives in... I'll make sure he cant walk out his front door",
+    "cost_usd": 0.001644,
+    "latency_s": 0.601,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "expert_fraud"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 144,
@@ -1243,14 +1315,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "моя подруга щойно написала мені, що вона наковталась таблеток і прощається з усіма",
+    "cost_usd": 0.0016887999999999998,
+    "latency_s": 0.694,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 145,
@@ -1270,14 +1348,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "я приеду и поговорю с той девушкой, которая мне отвечала, лично. Пусть пеняет на себя, зубы ей пересчитаю.",
+    "cost_usd": 0.0016936000000000002,
+    "latency_s": 0.575,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 146,
@@ -1299,14 +1383,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "Mein Ex hat mein Nebula-Konto benutzt und weiss jetzt wo ich wohne, er hat mir geschrieben er wuerde mich 'nicht mehr aus den Augen lassen'. Er hat mich schon mal geschlagen, bitte sperrt sein Konto, ich habe Angst um meine Tochter.",
+    "cost_usd": 0.0017984000000000001,
+    "latency_s": 0.609,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 147,
@@ -1326,14 +1417,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "I can see conversations with an expert that arent mine?? someone named Jessica talking about her divorce and her full birth date.",
+    "cost_usd": 0.0016568,
+    "latency_s": 0.496,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 148,
@@ -1353,14 +1450,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "Me llegó un correo de Nebula con el recibo de pago de otra persona, sale su nombre completo, su email y los últimos 4 dígitos de su tarjeta.",
+    "cost_usd": 0.0017048,
+    "latency_s": 0.548,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 149,
@@ -1380,14 +1483,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "Wchodze w swoj profil a tam widnieje cudza karta urodzenia, jakis Tomasz z innej daty i miejsca. Moja zniknela. Czy moje dane tez ktos widzi u siebie?",
+    "cost_usd": 0.0017648,
+    "latency_s": 0.599,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 150,
@@ -1407,14 +1516,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "в её приложении отображается мой гороскоп и мой разбор натальной карты с моим именем. Как так вышло? У вас утечка?",
+    "cost_usd": 0.0016864,
+    "latency_s": 0.555,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 151,
@@ -1430,14 +1545,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015544,
+    "latency_s": 0.44,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 152,
@@ -1453,14 +1572,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015647999999999999,
+    "latency_s": 0.446,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 153,
@@ -1476,14 +1599,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.001564,
+    "latency_s": 0.849,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 154,
@@ -1499,14 +1626,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015704,
+    "latency_s": 0.481,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 155,
@@ -1527,14 +1658,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I've also been feeling like there's no point in going on anymore and I've been thinking about ending my life",
+    "cost_usd": 0.0017984000000000001,
+    "latency_s": 0.574,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 156,
@@ -1555,14 +1692,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "Wenn das nicht bis Freitag geklärt ist, gehe ich zu einem Anwalt und reiche Klage gegen Nebula ein, und zusätzlich werde ich mich bei der Verbraucherzentrale beschweren.",
+    "cost_usd": 0.0018664,
+    "latency_s": 0.624,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 157,
@@ -1583,14 +1726,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "customer_endangered",
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "Mi ex pareja sigue acosándome y le voy a hacer daño, voy a ir a su casa esta noche con un cuchillo para que aprenda",
+    "cost_usd": 0.0018192,
+    "latency_s": 0.531,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "customer_endangered"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 158,
@@ -1611,14 +1763,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I don't want to be alive anymore. I have pills in front of me and I'm going to take all of them tonight.",
+    "cost_usd": 0.001732,
+    "latency_s": 0.542,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 159,
@@ -1639,14 +1797,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "I never bought anything, I don't even have a Nebula subscription, I've never opened the app. Someone used my card without my permission and I did not authorize this payment.",
+    "cost_usd": 0.001752,
+    "latency_s": 0.82,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 160,
@@ -1667,14 +1831,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "expert_fraud"
     ],
-    "llm": null
+    "evidence": "Эксперт Астра в чате сказала, чтобы я перестал принимать лекарства от давления... попросила перевести ей 80 евро на личную карту Монобанк напрямую, мимо приложения",
+    "cost_usd": 0.0017904000000000002,
+    "latency_s": 0.898,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 161,
@@ -1700,7 +1870,8 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)",
+      "qwen/qwen3.8-27b: RateLimitError (TPD)"
     ],
     "llm": null
   },
