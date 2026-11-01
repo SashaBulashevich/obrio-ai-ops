@@ -310,14 +310,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: RateLimitError (TPD)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "filing a complaint with consumer protection",
+    "cost_usd": 0.00017385,
+    "latency_s": 1.503,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 11,
@@ -338,14 +342,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "заяву в поліцію",
+    "cost_usd": 0.00018442500000000002,
+    "latency_s": 0.643,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 12,
@@ -366,14 +374,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "I'm asking my bank to reverse the payment, this is theft.",
+    "cost_usd": 0.00022964999999999997,
+    "latency_s": 0.707,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "unauthorized_charge"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 13,
@@ -394,14 +409,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "refund me or I'll dispute with my bank",
+    "cost_usd": 0.00020302500000000002,
+    "latency_s": 0.795,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 14,
@@ -422,14 +441,18 @@
       ],
       "ok": false
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000146325,
+    "latency_s": 0.507,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 15,
@@ -450,14 +473,18 @@
       ],
       "ok": false
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00015255000000000002,
+    "latency_s": 0.941,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 16,
@@ -478,14 +505,18 @@
       ],
       "ok": false
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00015404999999999998,
+    "latency_s": 0.623,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 17,
@@ -510,7 +541,8 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "openai/gpt-oss-20b: RateLimitError (TPM)",
+      "openai/gpt-oss-20b: APIConnectionError"
     ],
     "llm": null
   },
@@ -537,7 +569,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -564,7 +596,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -592,7 +624,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -616,7 +648,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -643,7 +675,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -670,7 +702,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -697,7 +729,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -721,7 +753,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -748,7 +780,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -775,7 +807,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -802,7 +834,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -829,7 +861,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -857,7 +889,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -885,7 +917,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -913,7 +945,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -940,7 +972,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -967,7 +999,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -994,7 +1026,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1018,7 +1050,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1041,7 +1073,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1064,7 +1096,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1087,7 +1119,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1110,7 +1142,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1137,7 +1169,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1167,7 +1199,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1194,7 +1226,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1221,7 +1253,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1248,7 +1280,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1271,7 +1303,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1298,7 +1330,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1325,7 +1357,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1352,7 +1384,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1379,7 +1411,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1406,7 +1438,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1433,7 +1465,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1456,7 +1488,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1479,7 +1511,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1502,7 +1534,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1525,7 +1557,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1553,7 +1585,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1581,7 +1613,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1609,7 +1641,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1637,7 +1669,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1665,7 +1697,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1693,7 +1725,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1723,7 +1755,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1747,7 +1779,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1770,7 +1802,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1793,7 +1825,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1820,7 +1852,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1849,7 +1881,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1876,7 +1908,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1899,7 +1931,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "openai/gpt-oss-20b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   }

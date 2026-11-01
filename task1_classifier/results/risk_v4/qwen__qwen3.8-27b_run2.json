@@ -1153,14 +1153,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: RateLimitError (TPD)"
-    ],
-    "llm": null
+    "cost_usd": 0.00154,
+    "latency_s": 1.233,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 37,
@@ -1176,14 +1178,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0015304000000000001,
+    "latency_s": 0.422,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 38,
@@ -1199,14 +1203,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0015408,
+    "latency_s": 0.762,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 39,
@@ -1222,14 +1228,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0015352,
+    "latency_s": 0.44,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 40,
@@ -1245,14 +1253,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0015344,
+    "latency_s": 0.47,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 41,
@@ -1272,14 +1282,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I feel like giving up on everything, nothing works out for me",
+    "cost_usd": 0.0015968,
+    "latency_s": 0.714,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 42,
@@ -1302,14 +1318,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "expert_fraud",
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "Your expert asked me to pay him on PayPal, and if you don't ban him I'm going to my lawyer",
+    "cost_usd": 0.0016392,
+    "latency_s": 3.009,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 43,
@@ -1329,14 +1352,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "I never signed up for anything, what is this?",
+    "cost_usd": 0.0015912,
+    "latency_s": 1.411,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 44,
@@ -1361,7 +1390,8 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)",
+      "qwen/qwen3.8-27b: APIConnectionError"
     ],
     "llm": null
   },
@@ -1388,7 +1418,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1411,7 +1441,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1438,7 +1468,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1465,7 +1495,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1492,7 +1522,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1519,7 +1549,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1546,7 +1576,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1573,7 +1603,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1596,7 +1626,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1619,7 +1649,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1642,7 +1672,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1665,7 +1695,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1693,7 +1723,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1721,7 +1751,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1749,7 +1779,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1777,7 +1807,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1805,7 +1835,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1833,7 +1863,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1863,7 +1893,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1887,7 +1917,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1910,7 +1940,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1933,7 +1963,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1960,7 +1990,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -1989,7 +2019,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -2016,7 +2046,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   },
@@ -2039,7 +2069,7 @@
     "cost_usd": 0.0,
     "latency_s": 0.0,
     "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+      "groq: provider unreachable, circuit open (skipped)"
     ],
     "llm": null
   }

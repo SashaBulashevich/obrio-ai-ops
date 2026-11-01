@@ -1,14 +1,14 @@
 # Детекція ризиків (risk_set) — ключові слова проти qwen/qwen3.8-27b (risk_v4, прогін 2)
 
-**Неповний прогін:** 35 з 70 тікетів без відповіді моделі (ліміт Groq?) — дозапитати: `--run 2 --resume`.
+**Неповний прогін:** 27 з 70 тікетів без відповіді моделі (ліміт Groq?) — дозапитати: `--run 2 --resume`.
 
 | Метрика | Ключові слова | Модель |
 |---|---|---|
-| Тікети з ризиком: знайдено всі ризики | 8/45 (18%) | 24/24 (100%) |
-| «Чисті» тікети і пастки: хибна тривога | 7/25 (28%) | 0/11 (0%) |
-| Повний збіг з розміткою | 26/70 (37%) | 35/35 (100%) |
+| Тікети з ризиком: знайдено всі ризики | 8/45 (18%) | 27/27 (100%) |
+| «Чисті» тікети і пастки: хибна тривога | 7/25 (28%) | 0/16 (0%) |
+| Повний збіг з розміткою | 26/70 (37%) | 43/43 (100%) |
 
-Вартість перевірки моделлю: **$0.000790** за тікет (≈ $7.90 на 10 000 тікетів).
+Вартість перевірки моделлю: **$0.000969** за тікет (≈ $9.69 на 10 000 тікетів).
 
 | # | Теги | Тікет | Очікувано | Слова | Модель | Цитата моделі |
 |---|---|---|---|---|---|---|
@@ -47,14 +47,14 @@
 | 33 | expert_fraud, en | The astrologer told me to send $200 via PayPal for a protection ritua… | expert_fraud | ❌ — | ✅ expert_fraud | The astrologer told me to send $200 via PayPal for a protect |
 | 34 | expert_fraud, uk | Експерт у чаті попросив мої фото в купальнику для 'точнішого прогнозу' | expert_fraud | ❌ — | ✅ expert_fraud | Експерт у чаті попросив мої фото в купальнику для 'точнішого |
 | 35 | expert_fraud, en | My astrologer said I should stop taking my antidepressants because of… | expert_fraud | ❌ — | ✅ expert_fraud | My astrologer said I should stop taking my antidepressants b |
-| 36 | trap, expert, en | The expert was nice but a bit slow to answer, can I pick someone fast… | — | ✅ — | — (модель не відповіла) |  |
-| 37 | normal, en | How do I cancel my subscription? | — | ✅ — | — (модель не відповіла) |  |
-| 38 | normal, uk | Списали гроші двічі за підписку, поверніть один платіж | — | ✅ — | — (модель не відповіла) |  |
-| 39 | normal, de | Die App stürzt ab, sobald ich mein Horoskop öffne | — | ✅ — | — (модель не відповіла) |  |
-| 40 | normal, es | ¿Cómo puedo ver mi signo ascendente en la app? | — | ✅ — | — (модель не відповіла) |  |
-| 41 | mixed, en | I was charged after cancelling and honestly I feel like giving up on … | crisis | ❌ — | — (модель не відповіла) |  |
-| 42 | mixed, en | Your expert asked me to pay him on PayPal, and if you don't ban him I… | expert_fraud, legal_threat | ❌ legal_threat | — (модель не відповіла) |  |
-| 43 | unauthorized_charge, en | There's a $29.99 charge from Nebula on my statement. I never signed u… | unauthorized_charge | ❌ — | — (модель не відповіла) |  |
+| 36 | trap, expert, en | The expert was nice but a bit slow to answer, can I pick someone fast… | — | ✅ — | ✅ — |  |
+| 37 | normal, en | How do I cancel my subscription? | — | ✅ — | ✅ — |  |
+| 38 | normal, uk | Списали гроші двічі за підписку, поверніть один платіж | — | ✅ — | ✅ — |  |
+| 39 | normal, de | Die App stürzt ab, sobald ich mein Horoskop öffne | — | ✅ — | ✅ — |  |
+| 40 | normal, es | ¿Cómo puedo ver mi signo ascendente en la app? | — | ✅ — | ✅ — |  |
+| 41 | mixed, en | I was charged after cancelling and honestly I feel like giving up on … | crisis | ❌ — | ✅ crisis | I feel like giving up on everything, nothing works out for m |
+| 42 | mixed, en | Your expert asked me to pay him on PayPal, and if you don't ban him I… | expert_fraud, legal_threat | ❌ legal_threat | ✅ expert_fraud, legal_threat | Your expert asked me to pay him on PayPal, and if you don't  |
+| 43 | unauthorized_charge, en | There's a $29.99 charge from Nebula on my statement. I never signed u… | unauthorized_charge | ❌ — | ✅ unauthorized_charge | I never signed up for anything, what is this? |
 | 44 | unauthorized_charge, uk | Ви шахраї! Я ніякої підписки не оформлював, а ви щомісяця знімаєте гр… | unauthorized_charge | ❌ — | — (модель не відповіла) |  |
 | 45 | unauthorized_charge, ru | Сын без спроса купил кредиты с моей карты, я ничего не подтверждала | unauthorized_charge | ❌ — | — (модель не відповіла) |  |
 | 46 | trap, en | I want to cancel before the next charge on the 5th, how do I do it? | — | ✅ — | — (модель не відповіла) |  |

@@ -1,4 +1,4 @@
-# Nebula Support AI — класифікатор тікетів і асистент support-агента
+# OBRIO · AI Ops — тестове завдання (Nebula)
 
 [![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 87 тестів проганяються автоматично на кожен push
 
