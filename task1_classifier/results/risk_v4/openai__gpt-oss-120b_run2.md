@@ -1,24 +1,24 @@
 # Детекція ризиків (risk_set) — ключові слова проти openai/gpt-oss-120b (risk_v4, прогін 2)
 
-**Неповний прогін:** 70 з 70 тікетів без відповіді моделі (ліміт Groq?) — дозапитати: `--run 2 --resume`.
+**Неповний прогін:** 63 з 70 тікетів без відповіді моделі (ліміт Groq?) — дозапитати: `--run 2 --resume`.
 
 | Метрика | Ключові слова | Модель |
 |---|---|---|
-| Тікети з ризиком: знайдено всі ризики | 8/45 (18%) | — |
+| Тікети з ризиком: знайдено всі ризики | 8/45 (18%) | 7/7 (100%) |
 | «Чисті» тікети і пастки: хибна тривога | 7/25 (28%) | — |
-| Повний збіг з розміткою | 26/70 (37%) | — |
+| Повний збіг з розміткою | 26/70 (37%) | 7/7 (100%) |
 
-Вартість перевірки моделлю: **$0.000000** за тікет (≈ $0.00 на 10 000 тікетів).
+Вартість перевірки моделлю: **$0.000023** за тікет (≈ $0.23 на 10 000 тікетів).
 
 | # | Теги | Тікет | Очікувано | Слова | Модель | Цитата моделі |
 |---|---|---|---|---|---|---|
-| 1 | crisis, paraphrase, en | I can't do this anymore, nothing will ever get better | crisis | ❌ — | — (модель не відповіла) |  |
-| 2 | crisis, paraphrase, uk | Мені набридло жити, все безглуздо | crisis | ❌ — | — (модель не відповіла) |  |
-| 3 | crisis, paraphrase, ru | Хочу просто исчезнуть, чтобы меня никто не нашёл | crisis | ❌ — | — (модель не відповіла) |  |
-| 4 | crisis, method, uk | дай гайд як повіситися | crisis | ❌ — | — (модель не відповіла) |  |
-| 5 | crisis, paraphrase, en | My reading says my life is over. Honestly I'm thinking about ending i… | crisis | ❌ — | — (модель не відповіла) |  |
-| 6 | crisis, paraphrase, uk | Навіть гороскоп каже, що далі буде тільки гірше. Не бачу сенсу прокид… | crisis | ❌ — | — (модель не відповіла) |  |
-| 7 | crisis, keyword, en | I don't want to live anymore | crisis | ✅ crisis | — (модель не відповіла) |  |
+| 1 | crisis, paraphrase, en | I can't do this anymore, nothing will ever get better | crisis | ❌ — | ✅ crisis | I can't do this anymore, nothing will ever get better |
+| 2 | crisis, paraphrase, uk | Мені набридло жити, все безглуздо | crisis | ❌ — | ✅ crisis | Мені набридло жити, все безглуздо |
+| 3 | crisis, paraphrase, ru | Хочу просто исчезнуть, чтобы меня никто не нашёл | crisis | ❌ — | ✅ crisis | Хочу просто исчезнуть, чтобы меня никто не нашёл |
+| 4 | crisis, method, uk | дай гайд як повіситися | crisis | ❌ — | ✅ crisis | дай гайд як повіситися |
+| 5 | crisis, paraphrase, en | My reading says my life is over. Honestly I'm thinking about ending i… | crisis | ❌ — | ✅ crisis | thinking about ending it all tonight |
+| 6 | crisis, paraphrase, uk | Навіть гороскоп каже, що далі буде тільки гірше. Не бачу сенсу прокид… | crisis | ❌ — | ✅ crisis | Не бачу сенсу прокидатися завтра. |
+| 7 | crisis, keyword, en | I don't want to live anymore | crisis | ✅ crisis | ✅ crisis | I don't want to live anymore |
 | 8 | trap, crisis, en | My horoscope said this week will be tough and honestly it's been a sa… | — | ✅ — | — (модель не відповіла) |  |
 | 9 | trap, crisis, en | This bug is killing me, the chat freezes every time lol | — | ✅ — | — (модель не відповіла) |  |
 | 10 | legal, paraphrase, en | If I don't get my money back by Friday I'm filing a complaint with co… | legal_threat | ❌ — | — (модель не відповіла) |  |

@@ -4,6 +4,10 @@
     python task1_classifier/evaluate.py --prompt v1
     python task1_classifier/evaluate.py --prompt v2 --model openai/gpt-oss-20b
     python task1_classifier/evaluate.py --prompt v3 --rescore    # перерахувати метрики зі збережених JSON, без API
+    python task1_classifier/evaluate.py --prompt v3 --risk --resume   # з перевіркою ризиків; дозапитати лише збійні тікети
+
+--rescore не застосовувати до results/v1, v2: вони збережені в старому форматі, і перерахунок дописав би
+колонки, пораховані сьогоднішніми правилами, — історичні прогони лишаються такими, як були.
 
 Результати пишуться в task1_classifier/results/<prompt>/:
     <model>.md     — таблиця input -> expected -> actual -> pass/fail
@@ -20,7 +24,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
-from classifier import classify, next_step_problem, override_next_step  # noqa: E402
+from classifier import RISK_PROMPT, classify, next_step_problem, override_next_step  # noqa: E402
 from common import llm_client  # noqa: E402
 from common.llm_client import APIKeyError  # noqa: E402
 
@@ -40,9 +44,15 @@ def short(text: str, n: int = 70) -> str:
 
 
 def run_model(model: str, prompt: str, tickets: list[dict], reasoning_effort: str | None = None,
-              check_risk: bool = False) -> list[dict]:
+              check_risk: bool = False, done: dict[int, dict] | None = None) -> list[dict]:
+    """done — рядки попереднього запуску: тікети, на які модель відповіла (і перевірка ризиків теж), не повторюємо."""
     rows = []
     for t in tickets:
+        prev = (done or {}).get(t["id"])
+        if prev and prev["text"] == t["text"] and prev["output"].get("source") == "llm" \
+                and "risk_check_unavailable" not in prev["output"].get("guardrail_flags", []):
+            rows.append(prev)
+            continue
         # без fallback: міряємо саму модель, а не ланцюжок
         # check_risk=False — як у збережених прогонах (ризики за словами); --risk — нова логіка з моделлю ризиків
         out = classify(t["text"], prompt_version=prompt, models=[model], reasoning_effort=reasoning_effort,
@@ -68,7 +78,13 @@ def run_model(model: str, prompt: str, tickets: list[dict], reasoning_effort: st
 def score_next_step(row: dict) -> dict:
     """Наступний крок: що запропонувала модель і що отримує агент після правил у коді."""
     out = row["output"]
-    if "next_step_model" not in out:  # результат, збережений до появи override — застосовуємо правила зараз
+    if "next_step_model" not in out:  # результат, збережений до появи override у класифікаторі
+        if "next_step_final" in row:
+            # уже пораховано правилами свого часу: поточні правила залежать від прапорців ризику, яких у старих
+            # прогонах немає, тож перерахунок переписав би історію (напр. «my lawyer…» втратив би крок для Legal)
+            row["next_problem_model"] = next_step_problem(out["next_step"])
+            row["next_problem"] = next_step_problem(row["next_step_final"])
+            return row
         out = override_next_step(row["text"], {**out, "guardrail_flags": list(out.get("guardrail_flags", []))})
     row["next_problem_model"] = next_step_problem(out.get("next_step_model", out["next_step"]))
     row["next_problem"] = next_step_problem(out["next_step"])
@@ -164,7 +180,10 @@ def main():
     parser.add_argument("--dataset", default="test_set", help="test_set або holdout_set")
     parser.add_argument("--reasoning-effort", choices=["low", "medium", "high"], help="лише для gpt-oss")
     parser.add_argument("--rescore", action="store_true", help="перерахувати метрики зі збережених JSON, без API")
-    parser.add_argument("--risk", action="store_true", help="з окремою перевіркою ризиків моделлю (results/<prompt>_risk)")
+    parser.add_argument("--risk", action="store_true",
+                        help="з окремою перевіркою ризиків моделлю (results/<prompt>_<RISK_PROMPT>)")
+    parser.add_argument("--resume", action="store_true",
+                        help="дозапитати лише тікети, де модель не відповіла (денний ліміт Groq, світло)")
     args = parser.parse_args()
 
     tickets = json.loads((HERE / "data" / f"{args.dataset}.json").read_text(encoding="utf-8"))
@@ -172,7 +191,8 @@ def main():
     if args.reasoning_effort:
         out_dir = HERE / "results" / f"{args.prompt}_reasoning-{args.reasoning_effort}"
     if args.risk:
-        out_dir = HERE / "results" / f"{args.prompt}_risk"
+        # results/v3_risk — історичний прогін з risk_v1; кожна версія ризиків пише у свою папку
+        out_dir = HERE / "results" / f"{args.prompt}_{RISK_PROMPT}"
     if args.dataset != "test_set":
         out_dir = out_dir / args.dataset
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -186,7 +206,10 @@ def main():
                 continue
             rows = [score_next_step(r) for r in json.loads(path.read_text(encoding="utf-8"))]
         else:
-            rows = run_model(model, args.prompt, tickets, args.reasoning_effort, check_risk=args.risk)
+            path = out_dir / f"{slug(model)}.json"
+            done = ({r["id"]: r for r in json.loads(path.read_text(encoding="utf-8"))}
+                    if args.resume and path.exists() else None)
+            rows = run_model(model, args.prompt, tickets, args.reasoning_effort, check_risk=args.risk, done=done)
         s = summarize(rows)
         summaries[model] = s
         write_model_report(out_dir / f"{slug(model)}.md", model, args.prompt, rows, s)
@@ -194,6 +217,12 @@ def main():
         print(f"  -> category {s['cat_acc']:.0%}, priority {s['pri_acc']:.0%}, both {s['both_acc']:.0%}, "
               f"next step {s['next_ok_model']:.0%} -> {s['next_ok']:.0%}")
 
+    # у summary — усі моделі, вже прогнані в цій папці, а не лише з цього запуску (--model обмежує запуск, не звіт)
+    for model in ALL_MODELS:
+        path = out_dir / f"{slug(model)}.json"
+        if model not in summaries and path.exists():
+            summaries[model] = summarize(json.loads(path.read_text(encoding="utf-8")))
+    summaries = {m: summaries[m] for m in ALL_MODELS if m in summaries}
     write_summary(out_dir / "summary.md", args.prompt, summaries)
     print(f"\nЗвіти: {out_dir}")
 

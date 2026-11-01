@@ -25,6 +25,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import assistant  # noqa: E402
+from classifier import RISK_PROMPT  # noqa: E402 — шлях до task1 додає assistant
 import retrieval  # noqa: E402
 from common import llm_client  # noqa: E402
 from common.llm_client import APIKeyError, call_json  # noqa: E402
@@ -61,18 +62,26 @@ def stage1(tickets: list[dict]) -> dict:
     cache = json.loads(STAGE1_CACHE.read_text(encoding="utf-8")) if STAGE1_CACHE.exists() else {}
     # аналіз зафіксовано на v1: на ньому зроблено всі прогони; v2 лише додає about_nebula,
     # а всі 18 тікетів — про Nebula (перевірено окремо, див. README розділ 5)
-    key_version = f"{EVAL_ANALYZE_PROMPT}|task1-v3"
+    # версія перевірки ризиків — частина ключа: класифікація з іншими ризиками дає інші прапорці й рівні;
+    # старі записи (task1-v3 без ризиків моделлю) лишаються у файлі як історія
+    key_version = f"{EVAL_ANALYZE_PROMPT}|task1-v3|{RISK_PROMPT}"
     for t in tickets:
         key = f"{key_version}|{t['text']}"
         if key in cache:
             continue
         cls = assistant.classify(t["text"])
         an = assistant.analyze(t["text"], prompt=EVAL_ANALYZE_PROMPT)
+        if cls.get("source") != "llm" or "risk_check_unavailable" in cls.get("guardrail_flags", []):
+            print(f"  stage1 #{t['id']}: класифікація чи ризики не відповіли — не кешую, дозапит наступним запуском")
+            continue
         cache[key] = {"classification": cls, "analysis": an.data.model_dump() if an.ok else None,
                       "analyze_meta": assistant._meta(an)}
         print(f"  stage1 #{t['id']}: {cls['category']}/{cls['priority']}")
     STAGE1_CACHE.parent.mkdir(parents=True, exist_ok=True)
     STAGE1_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=1), encoding="utf-8")
+    missing = [t["id"] for t in tickets if f"{key_version}|{t['text']}" not in cache]
+    if missing:
+        sys.exit(f"Stage 1 неповний (ліміт Groq?): тікети {missing}. Запусти ще раз — готові вже в кеші.")
     return {t["id"]: cache[f"{key_version}|{t['text']}"] for t in tickets}
 
 
@@ -259,10 +268,12 @@ def main():
     parser.add_argument("--model", action="append")
     parser.add_argument("--report-only", action="store_true", help="лише перебудувати звіти з наявних JSON, без API")
     parser.add_argument("--rejudge", action="store_true", help="переоцінити наявні відповіді поточним суддею, без генерації")
+    parser.add_argument("--tag", help="суфікс папки результатів, напр. risk_v4 → results/<prompt>_risk_v4 "
+                                      "(щоб новий прогін не змішався зі старими рядками в кеші результатів)")
     args = parser.parse_args()
 
     tickets = json.loads((HERE / "data" / "test_set.json").read_text(encoding="utf-8"))
-    out_dir = HERE / "results" / args.prompt
+    out_dir = HERE / "results" / (f"{args.prompt}_{args.tag}" if args.tag else args.prompt)
     out_dir.mkdir(parents=True, exist_ok=True)
     per_model = {}
     if not args.report_only:
