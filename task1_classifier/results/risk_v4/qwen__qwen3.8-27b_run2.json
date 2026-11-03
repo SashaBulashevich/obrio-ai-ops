@@ -1385,15 +1385,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: RateLimitError (unknown)",
-      "qwen/qwen3.8-27b: APIConnectionError"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Я ніякої підписки не оформлював, а ви щомісяця знімаєте гроші з картки",
+    "cost_usd": 0.001668,
+    "latency_s": 1.38,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 45,
@@ -1413,14 +1416,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Сын без спроса купил кредиты с моей карты, я ничего не подтверждала",
+    "cost_usd": 0.0016152,
+    "latency_s": 0.499,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 46,
@@ -1436,14 +1443,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0015408,
+    "latency_s": 0.486,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 47,
@@ -1463,14 +1472,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "I found out which city she lives in and I'm going there, she will regret it.",
+    "cost_usd": 0.0016224000000000002,
+    "latency_s": 0.503,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 48,
@@ -1490,14 +1503,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "Подруга щойно написала, що сьогодні все закінчить і попрощалась",
+    "cost_usd": 0.001644,
+    "latency_s": 0.542,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 49,
@@ -1517,14 +1534,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "я узнаю, где сидит ваш офис, и приду разбираться лично. Мало не покажется.",
+    "cost_usd": 0.0016447999999999999,
+    "latency_s": 0.765,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 50,
@@ -1544,14 +1567,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "there are conversations with an expert that aren't mine, some woman named Kateryna with her birth date and address",
+    "cost_usd": 0.0016447999999999999,
+    "latency_s": 0.752,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 51,
@@ -1571,14 +1600,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "Мені прийшов лист від Nebula з чеком і натальною картою іншої людини, там її ім'я, пошта і час народження.",
+    "cost_usd": 0.0016928,
+    "latency_s": 0.712,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 52,
@@ -1598,14 +1633,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "Мой расклад про мою беременность увидела подруга у себя в приложении в ленте",
+    "cost_usd": 0.0016344,
+    "latency_s": 0.695,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 53,
@@ -1621,14 +1662,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00154,
+    "latency_s": 0.694,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 54,
@@ -1644,14 +1689,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015472,
+    "latency_s": 0.628,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 55,
@@ -1667,14 +1716,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015448,
+    "latency_s": 0.736,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 56,
@@ -1690,14 +1743,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015416000000000002,
+    "latency_s": 0.681,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 57,
@@ -1718,14 +1775,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "lately I keep thinking everyone would be better off if I just wasn't here anymore",
+    "cost_usd": 0.0017248,
+    "latency_s": 0.803,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 58,
@@ -1746,14 +1809,20 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "ми вже підготували позов до суду щодо неякісної послуги, подамо його в понеділок",
+    "cost_usd": 0.001784,
+    "latency_s": 0.759,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 59,
@@ -1774,14 +1843,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I took a lot of my sleeping pills tonight",
+    "cost_usd": 0.0015992,
+    "latency_s": 0.776,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 60,
@@ -1802,14 +1877,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "жалобу в Госпотребслужбу я уже отправил, иск будет следующим",
+    "cost_usd": 0.0016256,
+    "latency_s": 0.705,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 61,
@@ -1830,14 +1911,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "ya ne hochu bilshe zhyty, nichogo ne maie sensu",
+    "cost_usd": 0.0016248,
+    "latency_s": 0.716,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 62,
@@ -1858,14 +1945,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "i know where she lives і скоро вона дізнається, що буває з такими",
+    "cost_usd": 0.0016248,
+    "latency_s": 0.814,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 63,
@@ -1888,14 +1981,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Never signed up for anything and you charged me $49.99?? I've already filed a dispute with my bank and reported it as fraud.",
+    "cost_usd": 0.0016736000000000001,
+    "latency_s": 0.729,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 64,
@@ -1912,14 +2012,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.001544,
+    "latency_s": 0.867,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 65,
@@ -1935,14 +2039,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015576000000000001,
+    "latency_s": 0.652,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 66,
@@ -1958,14 +2066,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015432,
+    "latency_s": 0.671,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 67,
@@ -1985,14 +2097,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "My husband checks my phone every night and gets violent when he sees I talked to an astrologer.",
+    "cost_usd": 0.0016376000000000001,
+    "latency_s": 0.782,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 68,
@@ -2014,14 +2132,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "Колишній досі заходить у мій акаунт Nebula, бачить мої чати і пише, що знає, де я тепер живу. Мені страшно",
+    "cost_usd": 0.0017456000000000001,
+    "latency_s": 0.823,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 69,
@@ -2041,14 +2166,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "нашёл меня в инстаграме и пишет, что приедет к моему дому, знает школу моей дочки",
+    "cost_usd": 0.0016608,
+    "latency_s": 0.749,
+    "errors": [
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 70,
@@ -2064,13 +2195,17 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0015464,
+    "latency_s": 0.689,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "qwen/qwen3.8-27b: RateLimitError (unknown)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   }
 ]

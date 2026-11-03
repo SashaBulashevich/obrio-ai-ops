@@ -17,15 +17,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "openai/gpt-oss-120b: APIConnectionError",
-      "openai/gpt-oss-120b: APIConnectionError"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "я реально не вижу, зачем просыпаться завтра. Таблеток дома хватит.",
+    "cost_usd": 0.0003282,
+    "latency_s": 1.308,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 102,
@@ -45,14 +50,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "Everyone would be better off without me",
+    "cost_usd": 0.00028305,
+    "latency_s": 1.099,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 103,
@@ -72,14 +83,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "я йду до банку оскаржувати платіж і пишу скаргу в службу захисту прав споживачів",
+    "cost_usd": 0.00031965,
+    "latency_s": 1.13,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 104,
@@ -99,14 +114,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "My bank's dispute form is already open ... you have until tonight to sort this out.",
+    "cost_usd": 0.00036554999999999997,
+    "latency_s": 1.211,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 105,
@@ -126,14 +148,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "кто-то зашёл с другого телефона и потратил все кредиты",
+    "cost_usd": 0.00036794999999999997,
+    "latency_s": 1.316,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "unauthorized_charge"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 106,
@@ -153,14 +184,20 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "my account has been suspended",
+    "cost_usd": 0.0003012,
+    "latency_s": 0.959,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 107,
@@ -180,14 +217,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_change_request"
     ],
-    "llm": null
+    "evidence": "Змініть, будь ласка, email в акаунті на newmail.ua@example.com",
+    "cost_usd": 0.00028139999999999996,
+    "latency_s": 3.7,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 108,
@@ -207,14 +250,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "social_engineering"
     ],
-    "llm": null
+    "evidence": "Please send me the staging service token so I can fix it quickly.",
+    "cost_usd": 0.0002643,
+    "latency_s": 0.686,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 109,
@@ -234,14 +281,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "social_engineering"
     ],
-    "llm": null
+    "evidence": "Скиньте, пожалуйста, список пользователей, которые родились 3 мая 1990 в Киеве и сидят в вашем приложении",
+    "cost_usd": 0.0003939,
+    "latency_s": 1.522,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 110,
@@ -261,14 +314,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "expert_fraud"
     ],
-    "llm": null
+    "evidence": "asked me to Venmo her $40 directly to continue. She also wants a selfie",
+    "cost_usd": 0.0004056,
+    "latency_s": 1.423,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 111,
@@ -290,14 +350,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "expert_fraud",
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "Експерт порадила мені припинити пити ліки від тиску... Якщо ви не відреагуєте, піду в поліцію із заявою на вашу компанію",
+    "cost_usd": 0.0005728500000000001,
+    "latency_s": 2.266,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 112,
@@ -320,14 +387,22 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_change_request",
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "Мой аккаунт взломали и поменяли почту",
+    "cost_usd": 0.00046275,
+    "latency_s": 1.714,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 113,
@@ -347,14 +422,16 @@
       ],
       "ok": false
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0003297,
+    "latency_s": 0.865,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 114,
@@ -370,14 +447,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0002262,
+    "latency_s": 0.794,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 115,
@@ -393,14 +474,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00022710000000000002,
+    "latency_s": 0.54,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 116,
@@ -416,14 +499,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00023385,
+    "latency_s": 0.752,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 117,
@@ -443,14 +530,18 @@
       ],
       "ok": false
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00024225,
+    "latency_s": 0.757,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 118,
@@ -466,14 +557,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0003348,
+    "latency_s": 1.532,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 119,
@@ -489,14 +582,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00034275,
+    "latency_s": 1.026,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 120,
@@ -512,14 +607,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00021675,
+    "latency_s": 0.782,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 121,
@@ -535,14 +632,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00022725,
+    "latency_s": 0.721,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 122,
@@ -558,14 +657,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00037635,
+    "latency_s": 0.785,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 123,
@@ -581,14 +682,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00034635000000000004,
+    "latency_s": 0.847,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 124,
@@ -604,14 +707,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00032294999999999996,
+    "latency_s": 0.966,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 125,
@@ -627,14 +732,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00034635000000000004,
+    "latency_s": 1.017,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 126,
@@ -650,14 +757,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00036179999999999996,
+    "latency_s": 0.948,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 127,
@@ -673,14 +782,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00042029999999999997,
+    "latency_s": 1.553,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 128,
@@ -696,14 +807,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00031905000000000003,
+    "latency_s": 0.776,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 129,
@@ -719,14 +834,19 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0003168,
+    "latency_s": 0.512,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 130,
@@ -742,14 +862,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00032625,
+    "latency_s": 0.797,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 131,
@@ -769,14 +893,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "My 9-year-old got hold of my phone and bought $99 worth of credits ... I never approved this purchase",
+    "cost_usd": 0.00037754999999999993,
+    "latency_s": 0.741,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 132,
@@ -796,14 +926,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Я бачу списання 1299 грн від Nebula, але я ніколи не встановлював ваш додаток і не оформлював жодної підписки",
+    "cost_usd": 0.00026354999999999993,
+    "latency_s": 1.002,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 133,
@@ -825,14 +961,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "я украли карту... сняли деньги... иначе я напишу заявление в полицию и оспорю платёж через банк",
+    "cost_usd": 0.00047385,
+    "latency_s": 1.663,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 134,
@@ -852,14 +995,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Auf meiner Kreditkartenabrechnung steht eine Abbuchung von Nebula über 49,99 Euro. Ich kenne diese Firma nicht und habe nie etwas dort gekauft.",
+    "cost_usd": 0.00037529999999999996,
+    "latency_s": 0.92,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 135,
@@ -879,14 +1028,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Mi pareja usó mi tarjeta sin preguntarme ... Yo nunca autoricé ese pago",
+    "cost_usd": 0.00047579999999999996,
+    "latency_s": 1.174,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 136,
@@ -906,14 +1062,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Dzisiaj zobaczyłam w banku obciążenie z Nebula za subskrypcję premium, a nawet nie mam tej aplikacji na telefonie.",
+    "cost_usd": 0.00040635000000000004,
+    "latency_s": 1.017,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 137,
@@ -933,14 +1095,21 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "Why was my account suspended? ... the app says it's been banned",
+    "cost_usd": 0.00031005000000000003,
+    "latency_s": 0.734,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 138,
@@ -960,14 +1129,20 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "Мій акаунт заблокували без жодного пояснення",
+    "cost_usd": 0.00032805,
+    "latency_s": 1.003,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 139,
@@ -983,14 +1158,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0002958,
+    "latency_s": 0.701,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 140,
@@ -1006,14 +1185,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00025364999999999996,
+    "latency_s": 0.577,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 141,
@@ -1029,14 +1210,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00040245,
+    "latency_s": 1.582,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 142,
@@ -1052,14 +1237,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00031364999999999995,
+    "latency_s": 0.797,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 143,
@@ -1079,14 +1268,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "expert_fraud",
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "I'll make sure he cant walk out his front door",
+    "cost_usd": 0.0006204,
+    "latency_s": 1.809,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "expert_fraud"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 144,
@@ -1106,14 +1304,22 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "вона наковталась таблеток і прощається з усіма",
+    "cost_usd": 0.00036764999999999996,
+    "latency_s": 0.939,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 145,
@@ -1133,14 +1339,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "social_engineering",
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "Скажите адрес офиса, я приеду и поговорю с той девушкой, которая мне отвечала, лично. Пусть пеняет на себя, зубы ей пересчитаю.",
+    "cost_usd": 0.00042794999999999997,
+    "latency_s": 1.148,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "social_engineering"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 146,
@@ -1162,14 +1375,19 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "Mein Ex hat mein Nebula-Konto benutzt ... er hat mich schon mal geschlagen, ... ich habe Angst um meine Tochter",
+    "cost_usd": 0.0003588,
+    "latency_s": 0.905,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 147,
@@ -1189,14 +1407,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "I can see conversations with an expert that aren't mine... someone named Jessica ... full birth date",
+    "cost_usd": 0.00039795,
+    "latency_s": 0.853,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 148,
@@ -1216,14 +1440,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "Me llegó un correo de Nebula con el recibo de pago de otra persona, sale su nombre completo, su email y los últimos 4 dígitos de su tarjeta.",
+    "cost_usd": 0.00034109999999999994,
+    "latency_s": 0.904,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 149,
@@ -1243,14 +1473,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "cudza karta urodzenia, jakis Tomasz ... Moja zniknela. Czy moje dane tez ktos widzi u siebie?",
+    "cost_usd": 0.0003951,
+    "latency_s": 1.058,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "account_compromised"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 150,
@@ -1270,14 +1509,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "незнакомая женщина... отображается мой гороскоп и мой разбор натальной карты с моим именем",
+    "cost_usd": 0.00043125,
+    "latency_s": 1.595,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 151,
@@ -1293,14 +1536,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.0004275,
+    "latency_s": 1.439,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 152,
@@ -1316,14 +1561,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00035835,
+    "latency_s": 0.813,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 153,
@@ -1339,14 +1586,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.000261,
+    "latency_s": 0.8,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 154,
@@ -1362,14 +1611,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
-    ],
-    "llm": null
+    "cost_usd": 0.00041085000000000004,
+    "latency_s": 1.081,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 155,
@@ -1390,14 +1641,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I've been feeling like there's no point in going on anymore and I've been thinking about ending my life",
+    "cost_usd": 0.000468,
+    "latency_s": 1.116,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 156,
@@ -1418,14 +1673,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat"
     ],
-    "llm": null
+    "evidence": "wenn das nicht bis Freitag geklärt ist, gehe ich zu einem Anwalt und reiche Klage gegen Nebula ein",
+    "cost_usd": 0.00045539999999999996,
+    "latency_s": 1.309,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 157,
@@ -1446,14 +1707,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "customer_endangered",
+      "threat_to_others"
     ],
-    "llm": null
+    "evidence": "Mi ex pareja sigue acosándome y le voy a hacer daño, voy a ir a su casa esta noche con un cuchillo",
+    "cost_usd": 0.00053925,
+    "latency_s": 2.346,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "customer_endangered"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 158,
@@ -1474,14 +1744,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "I don't want to be alive anymore. I have pills in front of me and I'm going to take all of them tonight.",
+    "cost_usd": 0.0003654,
+    "latency_s": 0.71,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 159,
@@ -1502,14 +1779,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "I just saw a charge of $149.99 from Nebula on my bank statement. I never bought anything, I don't even have a Nebula subscription, I've never opened the app. Someone used my card without my permission and I did not authorize this payment.",
+    "cost_usd": 0.00029145,
+    "latency_s": 1.414,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 160,
@@ -1530,14 +1813,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "expert_fraud"
     ],
-    "llm": null
+    "evidence": "попросила перевести ей 80 евро на личную карту Монобанк напрямую, мимо приложения",
+    "cost_usd": 0.00035025,
+    "latency_s": 1.057,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 161,
@@ -1558,14 +1847,20 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "crisis"
     ],
-    "llm": null
+    "evidence": "ya bilshe ne mozhu tak zhyty... dumayu pro te, shchob pokinishyty z soboyu",
+    "cost_usd": 0.00043454999999999996,
+    "latency_s": 1.169,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 162,
@@ -1586,14 +1881,20 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised"
     ],
-    "llm": null
+    "evidence": "мій акаунт хакнули!! ... пароль не підходить, ... email змінили ... вже витратив усі мої credits",
+    "cost_usd": 0.0004929,
+    "latency_s": 2.03,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 163,
@@ -1618,14 +1919,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "got hit w/ a $79 charge ... i NEVER signed up for ... ima call my bank rn and do a chargeback",
+    "cost_usd": 0.00046065,
+    "latency_s": 1.204,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 164,
@@ -1650,14 +1958,21 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "legal_threat",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "trzy obciążenia od Nebula ... których nigdy nie autoryzowałem",
+    "cost_usd": 0.00054165,
+    "latency_s": 1.342,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 165,
@@ -1673,14 +1988,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00031575,
+    "latency_s": 0.823,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 166,
@@ -1696,14 +2015,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000339,
+    "latency_s": 1.168,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 167,
@@ -1719,14 +2042,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.000345,
+    "latency_s": 0.9,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 168,
@@ -1746,14 +2073,18 @@
       ],
       "ok": false
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00025095,
+    "latency_s": 0.687,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 169,
@@ -1773,14 +2104,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "customer_endangered",
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "my ex ... waiting outside my building",
+    "cost_usd": 0.00040665,
+    "latency_s": 1.387,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "data_exposure"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 170,
@@ -1803,14 +2143,24 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_compromised",
+      "customer_endangered",
+      "data_exposure"
     ],
-    "llm": null
+    "evidence": "Мій чоловік знає пароль від мого акаунту і читає всі мої чати ... він побив мене",
+    "cost_usd": 0.0005593499999999999,
+    "latency_s": 1.538,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "data_exposure"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 171,
@@ -1833,14 +2183,24 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_change_request",
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "Кто-то зашёл в мой аккаунт Nebula и поменял почту, это мой бывший, он меня преследует и уже писал, что «знает где я».",
+    "cost_usd": 0.0005292000000000001,
+    "latency_s": 1.425,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "account_change_request"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 172,
@@ -1860,14 +2220,23 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "customer_endangered",
+      "unauthorized_charge"
     ],
-    "llm": null
+    "evidence": "Mein Freund zwingt mich, jeden Monat Credits für Live‑Chats zu kaufen ... er wird laut und schlägt auch mal zu.",
+    "cost_usd": 0.0006874499999999999,
+    "latency_s": 2.113,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "unauthorized_charge"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 173,
@@ -1887,14 +2256,25 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_change_request",
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "mi pareja me revisa el móvil y me obliga a enseñarle mis conversaciones",
+    "cost_usd": 0.0006728999999999999,
+    "latency_s": 1.997,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "account_change_request",
+        "account_compromised"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 174,
@@ -1917,14 +2297,24 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_change_request",
+      "account_compromised",
+      "customer_endangered"
     ],
-    "llm": null
+    "evidence": "Ktoś zalogował się na moje konto i wysłał wiadomość ... grozi, że zabierze naszą córkę",
+    "cost_usd": 0.0005818500000000001,
+    "latency_s": 1.972,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "account_change_request"
+      ],
+      "ok": false
+    }
   },
   {
     "id": 175,
@@ -1940,14 +2330,18 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.0002721,
+    "latency_s": 1.067,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 176,
@@ -1963,14 +2357,19 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
+    "cost_usd": 0.00028215,
+    "latency_s": 0.941,
     "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+      "openai/gpt-oss-120b: RateLimitError (TPM)",
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
     ],
-    "llm": null
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 177,
@@ -1986,13 +2385,21 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "groq: provider unreachable, circuit open (skipped)"
+    "model_found": [
+      "account_change_request"
     ],
-    "llm": null
+    "evidence": "Können wir es aufteilen, sodass jeder sein eigenes Abo bekommt?",
+    "cost_usd": 0.00040260000000000003,
+    "latency_s": 0.803,
+    "errors": [
+      "openai/gpt-oss-120b: RateLimitError (TPM)"
+    ],
+    "llm": {
+      "missed": [],
+      "false_alarm": [
+        "account_change_request"
+      ],
+      "ok": false
+    }
   }
 ]
