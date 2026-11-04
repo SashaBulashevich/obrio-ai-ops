@@ -1,6 +1,6 @@
 # OBRIO · AI Ops — тестове завдання (Nebula)
 
-[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 87 тестів проганяються автоматично на кожен push
+[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 88 тестів проганяються автоматично на кожен push
 
 **▶ Живе демо:** https://nebula-support-copilot-test-task.streamlit.app/ — нічого не треба встановлювати.
 
@@ -13,7 +13,7 @@ AI для служби підтримки астрологічного заст�
 | | Що робить | Головні цифри |
 |---|---|---|
 | **Task 1 — класифікатор** | категорія, пріоритет P1–P4, наступний крок для агента, команда | категорія і пріоритет разом — **96%** на 48 тікетах; **≈ $2.8** на 10 000 тікетів разом із перевіркою ризиків |
-| **Перевірка ризиків** | окремий виклик моделі: 10 ризиків, наслідки (P1, людина, Trust & Safety) задає код | на відкладеному наборі (77 тікетів, писав окремий агент): production-модель gpt-oss-20b — **43/44** ризиків і **1** хибна тривога з 33 в усіх 3 прогонах; ключові слова — **5/44**. Зокрема prompt injection, транслітерація, ризик, схований у довгому листі |
+| **Перевірка ризиків** | окремий виклик моделі: 10 ризиків, наслідки (P1, людина, Trust & Safety) задає код | `risk_v4` на відкладеному наборі (77 тікетів, писав окремий агент; `risk_v5` зараз проганяється): production-модель gpt-oss-20b — **43/44** ризиків і **1** хибна тривога з 33 в усіх 3 прогонах; ключові слова — **5/44**. Зокрема prompt injection, транслітерація, ризик, схований у довгому листі |
 | **Task 2 — асистент агента** | summary, 3 варіанти відповіді мовою клієнта, цитати з бази знань, рівень втручання людини | якість відповідей — **94%**, правильна стаття в топ-3 — **94%**; **≈ $14** на 10 000 тікетів |
 | **Fail-safe** | будь-який збій моделей чи коду → тікет людині, AI-варіанти приховано | не довше ніж 25 с на тікет, під час збою наступні тікети — одразу (circuit breaker) |
 
@@ -33,7 +33,7 @@ AI для служби підтримки астрологічного заст�
 
 | Завдання | Документація |
 |---|---|
-| **Task 1** — класифікатор і ризики | [task1_classifier/README.md](task1_classifier/README.md) · [еволюція промпту v1 → v3](task1_classifier/PROMPTS.md) · [еволюція перевірки ризиків risk_v1 → v4](task1_classifier/RISKS.md) |
+| **Task 1** — класифікатор і ризики | [task1_classifier/README.md](task1_classifier/README.md) · [еволюція промпту v1 → v3](task1_classifier/PROMPTS.md) · [еволюція перевірки ризиків risk_v1 → v5](task1_classifier/RISKS.md) |
 | **Task 2** — асистент агента | [task2_agent_assistant/README.md](task2_agent_assistant/README.md) · [еволюція промпту генерації v1 → v2](task2_agent_assistant/PROMPTS.md) |
 
 ## Як я працював з AI
@@ -88,7 +88,7 @@ python task1_classifier/classifier.py
 **Локально** (після встановлення нижче):
 
 ```bash
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 87 тестів, без ключа і без API, ~1 с
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 88 тестів, без ключа і без API, ~1 с
 python task1_classifier/classifier.py                                            # Task 1: вводиш тікети, отримуєш картку з рішенням
 streamlit run task2_agent_assistant/app.py                                       # Task 2: інтерфейс на http://localhost:8501
 ```
@@ -144,7 +144,7 @@ pip install -r requirements.txt
 python -m unittest tests.test_failure_handling tests.test_assistant_checks -v
 ```
 
-Внизу має бути `Ran 87 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
+Внизу має бути `Ran 88 tests` і `OK`. Тести не звертаються до API, тож працюють навіть без ключа.
 
 ```bash
 python task1_classifier/classifier.py "How do I cancel my subscription?"
@@ -164,9 +164,9 @@ obrio-ai-ops/
 │   ├── classifier.py        класифікація, guardrails, інтерактивний режим
 │   ├── evaluate.py          прогін тестових наборів, таблиці pass/fail, порівняння моделей
 │   ├── evaluate_risk.py     evaluation детекції ризиків: модель проти ключових слів, повторні прогони
-│   ├── RISKS.md             історія перевірки ризиків risk_v1 → v4
-│   ├── prompts/             промпти класифікації v1, v2, v3 і перевірки ризиків risk_v1 … risk_v4
-│   ├── data/                тестовий набір (32 тікети) і відкладений (16); набори ризиків (70) і відкладений (77)
+│   ├── RISKS.md             історія перевірки ризиків risk_v1 → v5
+│   ├── prompts/             промпти класифікації v1, v2, v3 і перевірки ризиків risk_v1 … risk_v5
+│   ├── data/                тестовий набір (32 тікети) і відкладений (16); набори ризиків (70) і відкладений (93)
 │   └── results/             усі прогони: таблиці .md і сирі відповіді .json
 ├── task2_agent_assistant/   Task 2 — асистент агента
 │   ├── app.py               веб-інтерфейс (Streamlit)
@@ -181,7 +181,7 @@ obrio-ai-ops/
 ├── common/                  спільний код обох задач
 │   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі, circuit breaker, ліміт часу
 │   └── pricing.py           ціни моделей і вартість кожного виклику
-├── tests/                   87 тестів без API
+├── tests/                   88 тестів без API
 ├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
 └── .env.example             шаблон файлу з ключем Groq
