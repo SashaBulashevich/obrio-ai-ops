@@ -113,8 +113,9 @@ SOCIAL_ENGINEERING_PATTERNS = re.compile(
 # вони діють, лише коли модель ризиків недоступна (fail-safe), а без підтвердження моделлю дають
 # м'яку позначку «перевір», а не P1. Слова самі по собі дають і хибні спрацювання
 # («my lawyer friend…»), і пропуски перефразувань.
-RISK_PROMPT = "risk_v4"  # v2: + unauthorized_charge, бан явно; v3: + threat_to_others, data_exposure;
-                         # v4: + customer_endangered, чужа спроба самогубства — це crisis
+RISK_PROMPT = "risk_v5"  # v2: + unauthorized_charge, бан явно; v3: + threat_to_others, data_exposure;
+                         # v4: + customer_endangered, чужа спроба самогубства — це crisis;
+                         # v5: межі між ризиками за помилками 3 прогонів v4 (RISKS.md)
 RISK_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b"]
 RISKS = ("crisis", "legal_threat", "account_compromised", "account_change_request", "social_engineering",
          "unauthorized_charge", "threat_to_others", "customer_endangered", "data_exposure",

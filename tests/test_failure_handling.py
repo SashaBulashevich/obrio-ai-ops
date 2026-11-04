@@ -180,6 +180,12 @@ class FailureHandlingTest(unittest.TestCase):
         self.assertIn("llm_unavailable", out["guardrail_flags"])
         self.assertIn("risk_check_unavailable", out["guardrail_flags"])
 
+    def test_current_risk_prompt_asks_for_every_risk(self):
+        # поле обов'язкове в схемі: якщо промпт його не просить, кожна відповідь буде невалідною
+        prompt = classifier.load_prompt(classifier.RISK_PROMPT)
+        for name in classifier.RISKS:
+            self.assertIn(f'"{name}": false', prompt)
+
     def test_missing_risk_field_is_invalid_not_silent_no_risk(self):
         # модель «забула» customer_endangered: раніше це тихо означало «ризику немає»
         full = {name: False for name in classifier.RISKS}
