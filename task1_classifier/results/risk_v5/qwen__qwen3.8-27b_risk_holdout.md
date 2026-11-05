@@ -1,14 +1,12 @@
 # Детекція ризиків (risk_holdout) — ключові слова проти qwen/qwen3.8-27b (risk_v5, прогін 1)
 
-**Неповний прогін:** 3 з 93 тікетів без відповіді моделі (ліміт Groq?) — дозапитати: `--run 1 --resume`.
-
 | Метрика | Ключові слова | Модель |
 |---|---|---|
-| Тікети з ризиком: знайдено всі ризики | 5/55 (9%) | 53/53 (100%) |
-| «Чисті» тікети і пастки: хибна тривога | 3/38 (8%) | 0/37 (0%) |
-| Повний збіг з розміткою | 40/93 (43%) | 88/90 (98%) |
+| Тікети з ризиком: знайдено всі ризики | 5/55 (9%) | 55/55 (100%) |
+| «Чисті» тікети і пастки: хибна тривога | 3/38 (8%) | 0/38 (0%) |
+| Повний збіг з розміткою | 40/93 (43%) | 91/93 (98%) |
 
-Вартість перевірки моделлю: **$0.001731** за тікет (≈ $17.31 на 10 000 тікетів).
+Вартість перевірки моделлю: **$0.001788** за тікет (≈ $17.88 на 10 000 тікетів).
 
 | # | Теги | Тікет | Очікувано | Слова | Модель | Цитата моделі |
 |---|---|---|---|---|---|---|
@@ -102,6 +100,6 @@
 | 188 | v5_pattern, unauthorized_charge, de | Jemand hat mit meiner Karte bei euch Credits für Chats gekauft, dreim… | unauthorized_charge | ❌ — | ✅ unauthorized_charge | Jemand hat mit meiner Karte bei euch Credits für Chats gekau |
 | 189 | v5_pattern, trap, en | My ex and I are on the family plan and we broke up. How do I move mys… | — | ✅ — | ✅ — |  |
 | 190 | v5_pattern, trap, uk | Ми з чоловіком розлучаємось, і я хочу вийти із сімейного плану та офо… | — | ✅ — | ✅ — |  |
-| 191 | v5_pattern, trap, es | Soy el administrador del plan familiar y quiero quitar a mi hijo mayo… | — | ✅ — | — (модель не відповіла) |  |
-| 192 | v5_pattern, account_change_request, en | Please change the email on my ex's Nebula account to mine. She stoppe… | account_change_request | ❌ — | — (модель не відповіла) |  |
-| 193 | v5_pattern, account_change_request, ru | Помогите сбросить пароль и поменять почту на аккаунте моей сестры, он… | account_change_request | ❌ — | — (модель не відповіла) |  |
+| 191 | v5_pattern, trap, es | Soy el administrador del plan familiar y quiero quitar a mi hijo mayo… | — | ✅ — | ✅ — |  |
+| 192 | v5_pattern, account_change_request, en | Please change the email on my ex's Nebula account to mine. She stoppe… | account_change_request | ❌ — | ✅ account_change_request | Please change the email on my ex's Nebula account to mine. |
+| 193 | v5_pattern, account_change_request, ru | Помогите сбросить пароль и поменять почту на аккаунте моей сестры, он… | account_change_request | ❌ — | ✅ account_change_request | Помогите сбросить пароль и поменять почту на аккаунте моей с |

@@ -2802,14 +2802,16 @@
       "false_alarm": [],
       "ok": true
     },
-    "model_found": null,
+    "model_found": [],
     "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: RateLimitError (TPD)"
-    ],
-    "llm": null
+    "cost_usd": 0.0016992,
+    "latency_s": 2.292,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 192,
@@ -2830,14 +2832,18 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "account_change_request"
     ],
-    "llm": null
+    "evidence": "Please change the email on my ex's Nebula account to mine.",
+    "cost_usd": 0.0017568000000000002,
+    "latency_s": 0.487,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   },
   {
     "id": 193,
@@ -2858,13 +2864,17 @@
       "false_alarm": [],
       "ok": false
     },
-    "model_found": null,
-    "evidence": "",
-    "cost_usd": 0.0,
-    "latency_s": 0.0,
-    "errors": [
-      "qwen/qwen3.8-27b: circuit open (skipped)"
+    "model_found": [
+      "account_change_request"
     ],
-    "llm": null
+    "evidence": "Помогите сбросить пароль и поменять почту на аккаунте моей сестры... Привяжите, пожалуйста, мой номер телефона, а я сам зайду.",
+    "cost_usd": 0.001856,
+    "latency_s": 0.751,
+    "errors": [],
+    "llm": {
+      "missed": [],
+      "false_alarm": [],
+      "ok": true
+    }
   }
 ]
