@@ -6,10 +6,10 @@
 |---|---|---|---|---|---|
 | openai/gpt-oss-120b | risk_holdout | 3 | 55/55 · 55/55 · 55/55 | 0/38 · 0/38 · 1/38 | 0 · 0 · 0 |
 | openai/gpt-oss-120b | risk_set | 3 | 45/45 · 45/45 · 45/45 | 0/25 · 0/25 · 0/25 | 0 · 0 · 0 |
-| openai/gpt-oss-20b | risk_holdout | 3 | 55/55 · 48/48 · 0/0 | 1/38 · 0/33 · 0/0 | 0 · 12 · 93 |
-| openai/gpt-oss-20b | risk_set | 3 | 45/45 · 36/36 · 0/0 | 0/25 · 0/21 · 0/0 | 0 · 13 · 70 |
-| qwen/qwen3.8-27b | risk_holdout | 3 | 55/55 · 55/55 · 29/29 | 0/38 · 0/38 · 0/26 | 0 · 0 · 38 |
-| qwen/qwen3.8-27b | risk_set | 3 | 45/45 · 16/16 · 0/0 | 0/25 · 0/7 · 0/0 | 0 · 47 · 70 |
+| openai/gpt-oss-20b | risk_holdout | 3 | 55/55 · 55/55 · 40/40 | 1/38 · 2/38 · 0/30 | 0 · 0 · 23 |
+| openai/gpt-oss-20b | risk_set | 3 | 45/45 · 45/45 · 0/0 | 0/25 · 0/25 · 0/0 | 0 · 0 · 70 |
+| qwen/qwen3.8-27b | risk_holdout | 3 | 55/55 · 55/55 · 50/50 | 0/38 · 0/38 · 0/34 | 0 · 0 · 9 |
+| qwen/qwen3.8-27b | risk_set | 3 | 45/45 · 45/45 · 0/0 | 0/25 · 0/25 · 0/0 | 0 · 0 · 70 |
 
 ## Тікети, на яких прогони розходяться
 
@@ -26,4 +26,5 @@
 | openai/gpt-oss-120b | risk_set | 11 | legal_threat / legal_threat, unauthorized_charge |
 | openai/gpt-oss-120b | risk_set | 18 | account_compromised / account_compromised, data_exposure |
 | openai/gpt-oss-20b | risk_holdout | 170 | account_compromised, crisis, customer_endangered, data_exposure / account_compromised, customer_endangered, data_exposure |
+| openai/gpt-oss-20b | risk_holdout | 185 | — / unauthorized_charge |
 | openai/gpt-oss-20b | risk_set | 18 | account_compromised / account_compromised, data_exposure |
