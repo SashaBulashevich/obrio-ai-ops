@@ -1,6 +1,6 @@
 # OBRIO · AI Ops — тестове завдання (Nebula)
 
-[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 88 тестів проганяються автоматично на кожен push
+[![tests](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml/badge.svg)](https://github.com/SashaBulashevich/obrio-ai-ops/actions/workflows/tests.yml) — 90 тестів проганяються автоматично на кожен push
 
 **▶ Живе демо:** https://nebula-support-copilot-test-task.streamlit.app/ — нічого не треба встановлювати.
 
@@ -12,12 +12,12 @@ AI для служби підтримки астрологічного заст�
 
 | | Що робить | Головні цифри |
 |---|---|---|
-| **Task 1 — класифікатор** | категорія, пріоритет P1–P4, наступний крок для агента, команда | категорія і пріоритет разом — **96%** на 48 тікетах; **≈ $2.8** на 10 000 тікетів разом із перевіркою ризиків |
-| **Перевірка ризиків** | окремий виклик моделі: 10 ризиків, наслідки (P1, людина, Trust & Safety) задає код | `risk_v4` на відкладеному наборі (77 тікетів, писав окремий агент; `risk_v5` зараз проганяється): production-модель gpt-oss-20b — **43/44** ризиків і **1** хибна тривога з 33 в усіх 3 прогонах; ключові слова — **5/44**. Зокрема prompt injection, транслітерація, ризик, схований у довгому листі |
+| **Task 1 — класифікатор** | категорія, пріоритет P1–P4, наступний крок для агента, команда | категорія і пріоритет разом — **96%** на 48 тікетах; **≈ $5** на 10 000 тікетів разом із перевіркою ризиків |
+| **Перевірка ризиків** | окремий виклик моделі: 10 ризиків, наслідки (P1, людина, Trust & Safety) задає код | `risk_v5` на відкладеному наборі (93 тікети, писав окремий агент): gpt-oss-120b (основна для ризиків) — **55/55** ризиків у кожному з 3 прогонів, **0–1** хибна тривога з 38; запасна gpt-oss-20b — теж 55/55, 1–2 хибні; ключові слова — **5/55**. Зокрема prompt injection, транслітерація, ризик, схований у довгому листі |
 | **Task 2 — асистент агента** | summary, 3 варіанти відповіді мовою клієнта, цитати з бази знань, рівень втручання людини | якість відповідей — **94%**, правильна стаття в топ-3 — **94%**; **≈ $14** на 10 000 тікетів |
 | **Fail-safe** | будь-який збій моделей чи коду → тікет людині, AI-варіанти приховано | не довше ніж 25 с на тікет, під час збою наступні тікети — одразу (circuit breaker) |
 
-**Моделі:** open-weight gpt-oss-20b, gpt-oss-120b і qwen3.8-27b через Groq, на безкоштовному тарифі. Ризики проганяю на всіх трьох по кілька разів: [зведення прогонів](task1_classifier/results/risk_v4/summary.md).
+**Моделі:** open-weight gpt-oss-20b, gpt-oss-120b і qwen3.8-27b через Groq, на безкоштовному тарифі. Ризики проганяю на всіх трьох по кілька разів: [зведення прогонів](task1_classifier/results/risk_v5/summary.md).
 
 ## Після рев'ю: було → стало
 
@@ -88,7 +88,7 @@ python task1_classifier/classifier.py
 **Локально** (після встановлення нижче):
 
 ```bash
-python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 88 тестів, без ключа і без API, ~1 с
+python -m unittest tests.test_failure_handling tests.test_assistant_checks -v   # 90 тестів, без ключа і без API, ~1 с
 python task1_classifier/classifier.py                                            # Task 1: вводиш тікети, отримуєш картку з рішенням
 streamlit run task2_agent_assistant/app.py                                       # Task 2: інтерфейс на http://localhost:8501
 ```
@@ -181,7 +181,7 @@ obrio-ai-ops/
 ├── common/                  спільний код обох задач
 │   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі, circuit breaker, ліміт часу
 │   └── pricing.py           ціни моделей і вартість кожного виклику
-├── tests/                   88 тестів без API
+├── tests/                   90 тестів без API
 ├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
 └── .env.example             шаблон файлу з ключем Groq

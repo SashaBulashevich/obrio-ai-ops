@@ -65,7 +65,7 @@ python task2_agent_assistant/assistant.py "текст тікету"          # �
 python -m task2_agent_assistant.evaluate --prompt generate_v2      # evaluation (див. розділ 6)
 python -m task2_agent_assistant.evaluate --prompt generate_v2 --report-only   # перебудувати звіти без API
 python -m task2_agent_assistant.compare_prompts                     # v1 vs v2 детерміновано, без API
-python -m unittest tests.test_assistant_checks -v                   # 39 тестів без API
+python -m unittest tests.test_assistant_checks -v                   # 40 тестів без API
 ```
 
 ---
@@ -430,7 +430,7 @@ python -m unittest tests.test_assistant_checks -v                   # 39 тес�
 | **Перенос рядка екранований двічі** (у тексті буквально `\n\n`) | знайдено ручним тестом («пайпал»): так виглядали 66 з 363 відповідей eval (18%), а ні LLM-суддя, ні перевірки цього не бачили. Код перед показом замінює буквальний `\n` на справжній перенос (`add_signature()`) |
 | **Rate limits безкоштовного тарифу** | безкоштовний тариф: **8 000 токенів/хв і 200 000 токенів/добу на модель**. За всі прогони eval: 85 викликів генерації, **282 відповіді 429** (135 добових TPD, 12 хвилинних TPM, 135 — до того, як я почав логувати тип ліміту) і **3 реальні випадки невалідного JSON** (Groq 400 `json_validate_failed` → repair-запит). Жоден тікет не загубився і скрипт не впав: тікет позначався «generation failed» → ⚠️ review, а повторний запуск дозаповнював лише пропуски з кешу. Висновок із прогонів, втілений у коді: **при добовому ліміті (TPD/RPD) retry марний** — клієнт одразу переходить до наступної моделі, а не чекає 7 разів по хвилині (unit-тест `test_daily_limit_skips_retries_and_falls_back`). У production — платний тариф і алерт на частку fallback'ів |
 
-Тести детермінованої частини (пошук, перевірка цитат, regex обіцянок 5 мовами, рівні human judgment): [tests/test_assistant_checks.py](../tests/test_assistant_checks.py) — 39 тестів (зокрема мова uk/ru, підпис, звернення не про Nebula, **сценарій «усі моделі впали»** з підміненими викликами LLM), + 49 тестів failure handling LLM-клієнта і класифікатора, включно з логікою «модель ризиків вирішує, слова страхують» ([tests/test_failure_handling.py](../tests/test_failure_handling.py)), зокрема добовий ліміт без марних retry, circuit breaker і ліміт часу.
+Тести детермінованої частини (пошук, перевірка цитат, regex обіцянок 5 мовами, рівні human judgment): [tests/test_assistant_checks.py](../tests/test_assistant_checks.py) — 40 тестів (зокрема мова uk/ru, підпис, звернення не про Nebula, **сценарій «усі моделі впали»** з підміненими викликами LLM), + 50 тестів failure handling LLM-клієнта і класифікатора, включно з логікою «модель ризиків вирішує, слова страхують» ([tests/test_failure_handling.py](../tests/test_failure_handling.py)), зокрема добовий ліміт без марних retry, circuit breaker і ліміт часу.
 
 ## 9. Cost
 
@@ -439,10 +439,10 @@ python -m unittest tests.test_assistant_checks -v                   # 39 тес�
 | Крок | Модель | $ / тікет |
 |---|---|---|
 | Класифікація (Task 1) | gpt-oss-20b | $0.00017 |
-| Перевірка ризиків (Task 1, `risk_v5`, паралельно з класифікацією) | gpt-oss-20b | $0.00012 |
+| Перевірка ризиків (Task 1, `risk_v5`, паралельно з класифікацією) | gpt-oss-120b (запасні 20b, qwen) | $0.00035 |
 | Аналіз (summary, запити, факти) | gpt-oss-20b | $0.00014 |
 | Генерація 3 тонів + цитат (v2) | gpt-oss-120b | $0.00115 |
-| **Разом** | | **≈ $0.0015** (без перевірки ризиків — $0.0014, на ній побудовано evaluation нижче) |
+| **Разом** | | **≈ $0.0018** (без перевірки ризиків — $0.0014, на ній побудовано evaluation нижче) |
 
 Кризові тікети (`blocked`) коштують лише класифікацію й аналіз — генерація не запускається. LLM-суддя працює лише в eval, у продукті його немає.
 
