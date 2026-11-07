@@ -1,14 +1,12 @@
 # Детекція ризиків (risk_holdout) — ключові слова проти qwen/qwen3.8-27b (risk_v5, прогін 3)
 
-**Неповний прогін:** 9 з 93 тікетів без відповіді моделі (ліміт Groq?) — дозапитати: `--run 3 --resume`.
-
 | Метрика | Ключові слова | Модель |
 |---|---|---|
-| Тікети з ризиком: знайдено всі ризики | 5/55 (9%) | 50/50 (100%) |
-| «Чисті» тікети і пастки: хибна тривога | 3/38 (8%) | 0/34 (0%) |
-| Повний збіг з розміткою | 40/93 (43%) | 82/84 (98%) |
+| Тікети з ризиком: знайдено всі ризики | 5/55 (9%) | 55/55 (100%) |
+| «Чисті» тікети і пастки: хибна тривога | 3/38 (8%) | 0/38 (0%) |
+| Повний збіг з розміткою | 40/93 (43%) | 91/93 (98%) |
 
-Вартість перевірки моделлю: **$0.001618** за тікет (≈ $16.18 на 10 000 тікетів).
+Вартість перевірки моделлю: **$0.001788** за тікет (≈ $17.88 на 10 000 тікетів).
 
 | # | Теги | Тікет | Очікувано | Слова | Модель | Цитата моделі |
 |---|---|---|---|---|---|---|
@@ -96,12 +94,12 @@
 | 182 | v5_pattern, data_exposure, es | Acabo de abrir mi carta natal en la app y aparece el nombre, la fecha… | data_exposure | ❌ — | ✅ data_exposure | aparece el nombre, la fecha de nacimiento y el correo de otr |
 | 183 | v5_pattern, data_exposure, en | I got an email from Nebula about my receipt, but it lists someone els… | data_exposure | ❌ — | ✅ data_exposure | I got an email from Nebula about my receipt, but it lists so |
 | 184 | v5_pattern, trap, en | I cancelled my subscription on the 3rd and today you charged me $39.9… | — | ✅ — | ✅ — |  |
-| 185 | v5_pattern, trap, pl | Anulowałem subskrypcję w zeszłym tygodniu, a dzisiaj znowu pobrano mi… | — | ✅ — | — (модель не відповіла) |  |
-| 186 | v5_pattern, legal_threat, ru | Я НИКОГДА не соглашался на это продление! Подписку отменял, а вы всё … | legal_threat | ❌ — | — (модель не відповіла) |  |
-| 187 | v5_pattern, unauthorized_charge, it | Ho visto un addebito di 49,99 euro da Nebula sulla mia carta ma non h… | unauthorized_charge | ❌ — | — (модель не відповіла) |  |
-| 188 | v5_pattern, unauthorized_charge, de | Jemand hat mit meiner Karte bei euch Credits für Chats gekauft, dreim… | unauthorized_charge | ❌ — | — (модель не відповіла) |  |
-| 189 | v5_pattern, trap, en | My ex and I are on the family plan and we broke up. How do I move mys… | — | ✅ — | — (модель не відповіла) |  |
-| 190 | v5_pattern, trap, uk | Ми з чоловіком розлучаємось, і я хочу вийти із сімейного плану та офо… | — | ✅ — | — (модель не відповіла) |  |
-| 191 | v5_pattern, trap, es | Soy el administrador del plan familiar y quiero quitar a mi hijo mayo… | — | ✅ — | — (модель не відповіла) |  |
-| 192 | v5_pattern, account_change_request, en | Please change the email on my ex's Nebula account to mine. She stoppe… | account_change_request | ❌ — | — (модель не відповіла) |  |
-| 193 | v5_pattern, account_change_request, ru | Помогите сбросить пароль и поменять почту на аккаунте моей сестры, он… | account_change_request | ❌ — | — (модель не відповіла) |  |
+| 185 | v5_pattern, trap, pl | Anulowałem subskrypcję w zeszłym tygodniu, a dzisiaj znowu pobrano mi… | — | ✅ — | ✅ — |  |
+| 186 | v5_pattern, legal_threat, ru | Я НИКОГДА не соглашался на это продление! Подписку отменял, а вы всё … | legal_threat | ❌ — | ✅ legal_threat | иначе пишу в банк |
+| 187 | v5_pattern, unauthorized_charge, it | Ho visto un addebito di 49,99 euro da Nebula sulla mia carta ma non h… | unauthorized_charge | ❌ — | ✅ unauthorized_charge | non ho mai creato un account e non ho mai scaricato l'app. N |
+| 188 | v5_pattern, unauthorized_charge, de | Jemand hat mit meiner Karte bei euch Credits für Chats gekauft, dreim… | unauthorized_charge | ❌ — | ✅ unauthorized_charge | Jemand hat mit meiner Karte bei euch Credits für Chats gekau |
+| 189 | v5_pattern, trap, en | My ex and I are on the family plan and we broke up. How do I move mys… | — | ✅ — | ✅ — |  |
+| 190 | v5_pattern, trap, uk | Ми з чоловіком розлучаємось, і я хочу вийти із сімейного плану та офо… | — | ✅ — | ✅ — |  |
+| 191 | v5_pattern, trap, es | Soy el administrador del plan familiar y quiero quitar a mi hijo mayo… | — | ✅ — | ✅ — |  |
+| 192 | v5_pattern, account_change_request, en | Please change the email on my ex's Nebula account to mine. She stoppe… | account_change_request | ❌ — | ✅ account_change_request | Please change the email on my ex's Nebula account to mine. |
+| 193 | v5_pattern, account_change_request, ru | Помогите сбросить пароль и поменять почту на аккаунте моей сестры, он… | account_change_request | ❌ — | ✅ account_change_request | Помогите сбросить пароль и поменять почту на аккаунте моей с |
