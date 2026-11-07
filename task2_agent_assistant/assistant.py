@@ -30,7 +30,7 @@ sys.path.insert(0, str(ROOT / "task1_classifier"))
 sys.path.insert(0, str(HERE))
 
 from common.llm_client import APIKeyError, call_json, failed_result  # noqa: E402
-from classifier import classify  # noqa: E402
+from classifier import RISK_MODELS as CLASSIFIER_RISK_MODELS, classify  # noqa: E402
 import retrieval  # noqa: E402
 
 DetectorFactory.seed = 0  # langdetect детермінований
@@ -44,6 +44,7 @@ FALLBACK_MODEL = "qwen/qwen3.8-27b"
 CLASSIFY_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", FALLBACK_MODEL]
 ANALYZE_MODELS = ["openai/gpt-oss-20b", "openai/gpt-oss-120b", FALLBACK_MODEL]
 GENERATE_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", FALLBACK_MODEL]
+RISK_MODELS = CLASSIFIER_RISK_MODELS + [FALLBACK_MODEL]  # 120b → 20b → qwen, чому 120b — у classifier.py
 
 MIN_RETRIEVAL_SCORE = 2.0   # нижче — вважаємо, що релевантної статті немає
 SHORT_MAX_WORDS = 60
@@ -399,7 +400,7 @@ def generate(text: str, analysis: Analysis, classification: dict, hits: list[ret
 def assist(text: str, generate_models: list[str] | None = None, generate_prompt: str = GENERATE_PROMPT) -> dict:
     started = time.perf_counter()
     with ThreadPoolExecutor(max_workers=2) as pool:
-        f_cls = pool.submit(classify, text, models=CLASSIFY_MODELS, risk_models=CLASSIFY_MODELS)
+        f_cls = pool.submit(classify, text, models=CLASSIFY_MODELS, risk_models=RISK_MODELS)
         f_an = pool.submit(analyze, text)
         classification = f_cls.result()  # класифікація сама обробляє збої; баг тут -> app.py покаже ⛔ blocked
         try:

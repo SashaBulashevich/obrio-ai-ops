@@ -25,7 +25,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 import assistant  # noqa: E402
-from classifier import RISK_PROMPT  # noqa: E402 — шлях до task1 додає assistant
+from classifier import RISK_MODELS, RISK_PROMPT  # noqa: E402 — шлях до task1 додає assistant
 import retrieval  # noqa: E402
 from common import llm_client  # noqa: E402
 from common.llm_client import APIKeyError, call_json  # noqa: E402
@@ -64,7 +64,7 @@ def stage1(tickets: list[dict]) -> dict:
     # а всі 18 тікетів — про Nebula (перевірено окремо, див. README розділ 5)
     # версія перевірки ризиків — частина ключа: класифікація з іншими ризиками дає інші прапорці й рівні;
     # старі записи (task1-v3 без ризиків моделлю) лишаються у файлі як історія
-    key_version = f"{EVAL_ANALYZE_PROMPT}|task1-v3|{RISK_PROMPT}"
+    key_version = f"{EVAL_ANALYZE_PROMPT}|task1-v3|{RISK_PROMPT}|{RISK_MODELS[0]}"  # змінилась модель ризиків — новий ключ
     for t in tickets:
         key = f"{key_version}|{t['text']}"
         if key in cache:

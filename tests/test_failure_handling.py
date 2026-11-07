@@ -186,6 +186,17 @@ class FailureHandlingTest(unittest.TestCase):
         for name in classifier.RISKS:
             self.assertIn(f'"{name}": false', prompt)
 
+    def test_risk_check_runs_on_120b_first_20b_as_fallback(self):
+        # 20b стабільно ставить unauthorized_charge на «скасував, а знову списали» (#184) — ризики веде 120b
+        full = {name: False for name in classifier.RISKS} | {"evidence": ""}
+        llm_client.reset_circuits()
+        fake = FakeClient([status_error(groq.NotFoundError, 404, "model_decommissioned"), ok(json.dumps(full))])
+        with patch.object(llm_client, "get_client", return_value=fake),              patch.object(llm_client, "cost_usd", return_value=0.0), patch("time.sleep"):
+            risk, meta = classifier.assess_risk("hi")
+        self.assertIsNotNone(risk)
+        self.assertEqual(fake.calls[0], "openai/gpt-oss-120b")
+        self.assertEqual(fake.calls[-1], "openai/gpt-oss-20b")
+
     def test_missing_risk_field_is_invalid_not_silent_no_risk(self):
         # модель «забула» customer_endangered: раніше це тихо означало «ризику немає»
         full = {name: False for name in classifier.RISKS}

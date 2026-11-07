@@ -151,6 +151,13 @@ class OffTopicFlowTest(unittest.TestCase):
                 patch.object(assistant, "generate", return_value=(failed, None)) as gen_mock:
             return assistant.assist(text), gen_mock
 
+    def test_assist_checks_risks_on_120b_first(self):
+        with patch.object(assistant, "classify", side_effect=RuntimeError("stop")) as cls_mock:
+            with self.assertRaises(RuntimeError):
+                assistant.assist("hi")
+        self.assertEqual(cls_mock.call_args.kwargs["risk_models"][:2], ["openai/gpt-oss-120b", "openai/gpt-oss-20b"])
+        self.assertEqual(cls_mock.call_args.kwargs["models"][0], "openai/gpt-oss-20b")  # класифікація — як була
+
     def test_off_topic_uses_template_without_generation(self):
         r, gen_mock = self.run_assist("столиця англії", "product_question")
         gen_mock.assert_not_called()

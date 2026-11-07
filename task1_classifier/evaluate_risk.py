@@ -3,8 +3,8 @@
 Набір data/risk_set.json: перефразовані кризи й погрози, захоплення акаунта, соціальна інженерія,
 шахрайство експерта, а також «пастки» — звичайні тікети зі словами-тригерами («my lawyer friend…»).
 
-    python task1_classifier/evaluate_risk.py                              # gpt-oss-20b (основна модель ризиків)
-    python task1_classifier/evaluate_risk.py --model openai/gpt-oss-120b
+    python task1_classifier/evaluate_risk.py                              # gpt-oss-120b (основна модель ризиків)
+    python task1_classifier/evaluate_risk.py --model openai/gpt-oss-20b
     python task1_classifier/evaluate_risk.py --dataset risk_holdout       # відкладений набір (писав окремий агент)
     python task1_classifier/evaluate_risk.py --rescore                    # перебудувати звіт без API
     python task1_classifier/evaluate_risk.py --run 2                      # повторний прогін (стабільність моделі)
@@ -163,7 +163,7 @@ def summary() -> None:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="openai/gpt-oss-20b")
+    parser.add_argument("--model", default="openai/gpt-oss-120b")
     parser.add_argument("--dataset", default="risk_set",
                         help="risk_set або risk_holdout (писав окремий агент, без доступу до промпту)")
     parser.add_argument("--rescore", action="store_true", help="перебудувати звіт зі збереженого JSON, без API")
