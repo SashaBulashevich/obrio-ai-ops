@@ -19,6 +19,9 @@ import feedback  # noqa: E402
 from classifier import RISKS, Category, Priority  # noqa: E402
 
 st.set_page_config(page_title="Nebula Support Copilot", page_icon="✨", layout="wide")
+# підказка Streamlit «Press Ctrl+Enter to apply» під полем лише відволікає: агент натискає «Проаналізувати»,
+# а кнопка сама забирає текст поля (Ctrl+Enter при цьому працює й далі)
+st.markdown("<style>[data-testid='InputInstructions'] {display: none;}</style>", unsafe_allow_html=True)
 
 # різні мови Європи: асистент сам визначає мову й відповідає нею.
 # Chargeback і криза — англійською, щоб будь-хто без перекладача бачив, на що спрацював захист.
