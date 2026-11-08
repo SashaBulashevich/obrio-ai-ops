@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "task2_agent_assistant"))
 
 import assistant  # noqa: E402
+import feedback  # noqa: E402
+import feedback_to_eval  # noqa: E402
 import retrieval  # noqa: E402
 
 
@@ -295,6 +297,73 @@ class AppFailSafeTest(unittest.TestCase):
         self.assertEqual(len(at.exception), 0)
         self.assertEqual(len(at.error), 1)
         self.assertIn(assistant.INTERNAL_ERROR_REASON, at.error[0].value)
+
+
+def fake_result(ticket="Charged again after I cancelled", level="review", risks=()):
+    risk = {name: name in risks for name in feedback.RISKS}
+    return {"ticket": ticket, "summary": "s", "customer_language": "en", "key_facts": [], "missing_info": [],
+            "search_queries": [ticket], "articles": [], "replies": None, "citations": [], "agent_notes": "",
+            "checks": None, "human_judgment": {"level": level, "reasons": ["r"]},
+            "classification": {"category": "billing_subscription", "priority": "P1", "assigned_team": "Billing",
+                               "sentiment": "frustrated", "guardrail_flags": [], "risk": risk},
+            "meta": {"total_latency_s": 1, "total_cost_usd": 0.0}}
+
+
+class FeedbackLoopTest(unittest.TestCase):
+    """Виправлення агента → кандидати в тестові набори; модель сама нічого не змінює."""
+
+    def test_record_keeps_ai_and_agent_values_and_what_changed(self):
+        rec = feedback.make_record(fake_result(risks=("unauthorized_charge",)), "billing_subscription", "P2", "review",
+                                   [], " too strict ", "generate_v2")
+        self.assertEqual(rec["changed"], ["priority", "risks"])
+        self.assertEqual(rec["ai"]["risks"], ["unauthorized_charge"])
+        self.assertEqual(rec["comment"], "too strict")
+        self.assertEqual(rec["versions"]["risk_prompt"], feedback.RISK_PROMPT)
+
+    def test_unknown_risk_or_level_is_rejected(self):
+        with self.assertRaises(ValueError):
+            feedback.make_record(fake_result(), "other", "P4", "ok", ["made_up_risk"])
+        with self.assertRaises(ValueError):
+            feedback.make_record(fake_result(), "other", "P4", "maybe", [])
+
+    def test_save_and_load_round_trip(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "fb" / "corrections.jsonl"
+            for pri in ("P2", "P3"):
+                feedback.save(feedback.make_record(fake_result(), "billing_subscription", pri, "review", []), path)
+            self.assertEqual([r["agent"]["priority"] for r in feedback.load(path)], ["P2", "P3"])
+        self.assertEqual(feedback.load(Path(tmp) / "missing.jsonl"), [])
+
+    def test_candidates_use_latest_fix_and_dataset_format(self):
+        r1 = feedback.make_record(fake_result(), "billing_subscription", "P3", "review", [])
+        r2 = feedback.make_record(fake_result(), "billing_subscription", "P2", "review", [])  # той самий тікет пізніше
+        r3 = feedback.make_record(fake_result("You're killing me, refund", risks=()), "billing_subscription", "P1",
+                                  "review", ["legal_threat"])
+        out = feedback.to_eval_candidates([r1, r2, r3])
+        self.assertEqual([t["expected_priority"] for t in out["test_set"]], ["P2"])
+        self.assertEqual(set(out["test_set"][0]), {"id", "tags", "text", "expected_category", "expected_priority"})
+        self.assertEqual(out["risk_set"][0]["expected"], ["legal_threat"])
+        self.assertIn("from_feedback", out["risk_set"][0]["tags"])
+
+    def test_summary_flags_cases_where_ai_was_too_soft(self):
+        soft = feedback.make_record(fake_result(level="ok"), "billing_subscription", "P1", "blocked", ["crisis"])
+        text = feedback_to_eval.summary([soft])
+        self.assertIn("м'якшим, ніж треба (рівень втручання): 1", text)
+        self.assertIn("Пропущені ризики: crisis — 1", text)
+
+    def test_demo_form_saves_correction(self):
+        from streamlit.testing.v1 import AppTest
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp,                 patch.object(feedback, "FEEDBACK_PATH", Path(tmp) / "corrections.jsonl"),                 patch.object(assistant, "assist", return_value=fake_result()):
+            at = AppTest.from_file(str(ROOT / "task2_agent_assistant" / "app.py"), default_timeout=30).run()
+            at.text_area(key="ticket").set_value("Charged again after I cancelled").run()
+            next(b for b in at.button if b.label == "Проаналізувати").click().run()
+            next(s for s in at.selectbox if s.label == "Пріоритет").set_value("P2")
+            next(b for b in at.button if b.label == "Зберегти виправлення").click().run()
+            self.assertEqual(len(at.exception), 0)
+            saved = feedback.load(Path(tmp) / "corrections.jsonl")
+        self.assertEqual([r["changed"] for r in saved], [["priority"]])
 
 
 class LanguageAndSignatureTest(unittest.TestCase):

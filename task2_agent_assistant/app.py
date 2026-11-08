@@ -4,15 +4,19 @@
     streamlit run task2_agent_assistant/app.py
 """
 
+import json
 import sys
 import traceback
 from pathlib import Path
+from typing import get_args
 
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import assistant  # noqa: E402
+import feedback  # noqa: E402
+from classifier import RISKS, Category, Priority  # noqa: E402
 
 st.set_page_config(page_title="Nebula Support Copilot", page_icon="✨", layout="wide")
 
@@ -170,6 +174,38 @@ for a in [] if no_answer else r["articles"]:
 bad = [q for q in r["citations"] if not q["valid"] and q["article_id"] not in {a["id"] for a in r["articles"]}]
 for q in bad:
     st.markdown(f"❌ Посилання на неіснуючу статтю `{q['article_id']}`: {q['quote']}")
+
+# ---------- виправлення агента (human-in-the-loop) ----------
+# Модель не «довчається» сама: виправлення збираються, людина переглядає їх і переносить у тестові набори,
+# нова версія промпту виходить, лише якщо evaluation не гірша (README, розділ 14).
+with st.expander("✏️ AI помилився? Виправ — це піде в тестові набори"):
+    c = r["classification"]
+    cats, pris = list(get_args(Category)), list(get_args(Priority))
+    with st.form(f"fix_{hash(r['ticket'])}"):
+        f1, f2, f3 = st.columns(3)
+        fix_cat = f1.selectbox("Категорія", cats, index=cats.index(c["category"]))
+        fix_pri = f2.selectbox("Пріоритет", pris, index=pris.index(c["priority"]))
+        fix_level = f3.selectbox("Рівень втручання", feedback.LEVELS, index=feedback.LEVELS.index(hj["level"]),
+                                 format_func={"blocked": "⛔ відповідає людина", "review": "⚠️ перевір",
+                                              "ok": "✅ можна надсилати"}.get)
+        fix_risks = st.multiselect("Ризики в тікеті (як правильно)", RISKS, default=feedback.ai_risks(c))
+        fix_comment = st.text_input("Коментар (необов'язково)", placeholder="Що саме AI зрозумів не так")
+        sent = st.form_submit_button("Зберегти виправлення")
+    if sent:
+        rec = feedback.make_record(r, fix_cat, fix_pri, fix_level, fix_risks, fix_comment, prompt_version)
+        if not rec["changed"]:
+            st.info("Нічого не змінено — AI відповів правильно.")
+        else:
+            try:
+                feedback.save(rec)
+                st.success(f"Збережено: {', '.join(rec['changed'])}. Людина перегляне і додасть тікет у тестові набори.")
+            except OSError:
+                st.warning("Не вдалося записати на сервер — завантаж запис файлом нижче.")
+            # на Streamlit Cloud файли зникають при перезапуску: запис можна забрати одразу
+            st.download_button("Завантажити запис (JSON)", json.dumps(rec, ensure_ascii=False, indent=1),
+                               file_name="correction.json", mime="application/json")
+    st.caption("У демо записи зберігаються на сервері Streamlit лише до його перезапуску; "
+               "у production — у базі з доступом лише для команди якості (тікети містять персональні дані).")
 
 m = r["meta"]
 models = ", ".join(sorted({v["model"] for v in m.values() if isinstance(v, dict) and v.get("model")}))

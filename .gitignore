@@ -15,3 +15,6 @@ __pycache__/
 # IDE
 .vscode/
 .idea/
+
+# Виправлення агентів з демо: тікети можуть містити персональні дані
+task2_agent_assistant/feedback/
