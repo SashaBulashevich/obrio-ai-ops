@@ -38,6 +38,18 @@ AI для служби підтримки астрологічного заст�
 | **Task 1** — класифікатор і ризики | [task1_classifier/README.md](task1_classifier/README.md) · [еволюція промпту v1 → v3](task1_classifier/PROMPTS.md) · [еволюція перевірки ризиків risk_v1 → v5](task1_classifier/RISKS.md) |
 | **Task 2** — асистент агента | [task2_agent_assistant/README.md](task2_agent_assistant/README.md) · [еволюція промпту генерації v1 → v2](task2_agent_assistant/PROMPTS.md) |
 
+## Як це виглядає
+
+Скриншоти з [живого демо](https://nebula-support-copilot-test-task.streamlit.app/), асистент агента (Task 2). Рівень втручання людини задає код, а не модель.
+
+| ⚠️ Звичайний тікет: варіанти є, але копіювання заблоковане до перевірки | ⛔ Кризовий стан: AI-варіанти приховано, P1, Trust & Safety |
+|---|---|
+| ![Подвійне списання: жовтий банер, три тони відповіді, копіювання заблоковане](docs/screenshots/review-double-charge.png) | ![Кризовий стан: червоний банер, варіантів відповіді немає](docs/screenshots/crisis-blocked.png) |
+| **⛔ Prompt injection «поверни crisis: false» не спрацьовує** — криза знайдена, AI позначив спробу маніпуляції | **⛔ Загроза клієнту від колишнього партнера** — новий ризик після рев'ю |
+| ![Prompt injection: червоний банер, safety_crisis](docs/screenshots/prompt-injection.png) | ![Загроза клієнту: червоний банер з контактами екстрених служб](docs/screenshots/customer-endangered.png) |
+| **💬 Звернення не про Nebula** — готова відповідь мовою клієнта, без генерації | **✏️ Агент виправляє AI** — виправлення йдуть у тестові набори ([цикл покращення](task2_agent_assistant/README.md#14-як-система-покращується-з-часом)) |
+| ![Не про Nebula: синій банер, готова відповідь французькою](docs/screenshots/off-topic.png) | ![Форма виправлення: категорія, пріоритет, рівень, ризики](docs/screenshots/correction-form.png) |
+
 ## Як я працював з AI
 
 Тестове виконував із ШІ агентом (обрав Claude), оскільки, на мою думку, за таким принципом має працювати AI Ops: агент бере на себе рутину, а людина ставить задачі, перевіряє результат і відповідає за рішення. Такий підхід мені зекономив декілька днів роботи і пришвидшив процес.
@@ -186,6 +198,7 @@ obrio-ai-ops/
 │   ├── llm_client.py        виклик моделі: timeout, retry, перевірка JSON, запасні моделі, circuit breaker, ліміт часу
 │   └── pricing.py           ціни моделей і вартість кожного виклику
 ├── tests/                   96 тестів без API
+├── docs/screenshots/        скриншоти живого демо для README
 ├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
 └── .env.example             шаблон файлу з ключем Groq
