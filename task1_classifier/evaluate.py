@@ -5,6 +5,7 @@
     python task1_classifier/evaluate.py --prompt v2 --model openai/gpt-oss-20b
     python task1_classifier/evaluate.py --prompt v3 --rescore    # перерахувати метрики зі збережених JSON, без API
     python task1_classifier/evaluate.py --prompt v3 --risk --resume   # з перевіркою ризиків; дозапитати лише збійні тікети
+    python task1_classifier/evaluate.py --prompt v3 --risk --run 2    # повторний прогін (стабільність) → <папка>_run2
 
 --rescore не застосовувати до results/v1, v2: вони збережені в старому форматі, і перерахунок дописав би
 колонки, пораховані сьогоднішніми правилами, — історичні прогони лишаються такими, як були.
@@ -182,6 +183,7 @@ def main():
     parser.add_argument("--rescore", action="store_true", help="перерахувати метрики зі збережених JSON, без API")
     parser.add_argument("--risk", action="store_true",
                         help="з окремою перевіркою ризиків моделлю (results/<prompt>_<RISK_PROMPT>)")
+    parser.add_argument("--run", type=int, default=1, help="номер прогону: 2, 3… → окрема папка <...>_runN")
     parser.add_argument("--resume", action="store_true",
                         help="дозапитати лише тікети, де модель не відповіла (денний ліміт Groq, світло)")
     args = parser.parse_args()
@@ -193,6 +195,8 @@ def main():
     if args.risk:
         # results/v3_risk — історичний прогін з risk_v1; кожна версія ризиків пише у свою папку
         out_dir = HERE / "results" / f"{args.prompt}_{RISK_PROMPT}"
+    if args.run > 1:
+        out_dir = out_dir.with_name(f"{out_dir.name}_run{args.run}")
     if args.dataset != "test_set":
         out_dir = out_dir / args.dataset
     out_dir.mkdir(parents=True, exist_ok=True)

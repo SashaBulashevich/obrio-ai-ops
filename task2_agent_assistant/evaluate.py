@@ -11,6 +11,7 @@
 Використання:
     python task2_agent_assistant/evaluate.py --prompt generate_v1
     python task2_agent_assistant/evaluate.py --prompt generate_v2 --model openai/gpt-oss-20b
+    python task2_agent_assistant/evaluate.py --prompt generate_v2 --tag risk_v5 --model openai/gpt-oss-120b --run 2  # повторний прогін
 """
 
 import argparse
@@ -56,7 +57,7 @@ class Verdict(BaseModel):
     issues: str = ""
 
 
-def stage1(tickets: list[dict]) -> dict:
+def stage1(tickets: list[dict], run: int = 1) -> dict:
     """Класифікація + аналіз не залежать від моделі генерації — рахуємо один раз і кешуємо на диск.
     Інвалідація: видалити _stage1_cache.json (або змінити промпт аналізу / класифікатора)."""
     cache = json.loads(STAGE1_CACHE.read_text(encoding="utf-8")) if STAGE1_CACHE.exists() else {}
@@ -65,6 +66,8 @@ def stage1(tickets: list[dict]) -> dict:
     # версія перевірки ризиків — частина ключа: класифікація з іншими ризиками дає інші прапорці й рівні;
     # старі записи (task1-v3 без ризиків моделлю) лишаються у файлі як історія
     key_version = f"{EVAL_ANALYZE_PROMPT}|task1-v3|{RISK_PROMPT}|{RISK_MODELS[0]}"  # змінилась модель ризиків — новий ключ
+    if run > 1:  # повторний прогін: класифікація й аналіз рахуються заново, щоб побачити розкид і на них
+        key_version += f"|run{run}"
     for t in tickets:
         key = f"{key_version}|{t['text']}"
         if key in cache:
@@ -268,17 +271,21 @@ def main():
     parser.add_argument("--model", action="append")
     parser.add_argument("--report-only", action="store_true", help="лише перебудувати звіти з наявних JSON, без API")
     parser.add_argument("--rejudge", action="store_true", help="переоцінити наявні відповіді поточним суддею, без генерації")
+    parser.add_argument("--run", type=int, default=1,
+                        help="номер прогону: 2, 3… — заново stage 1 (класифікація, аналіз) і окрема папка <...>_runN")
     parser.add_argument("--tag", help="суфікс папки результатів, напр. risk_v4 → results/<prompt>_risk_v4 "
                                       "(щоб новий прогін не змішався зі старими рядками в кеші результатів)")
     args = parser.parse_args()
 
     tickets = json.loads((HERE / "data" / "test_set.json").read_text(encoding="utf-8"))
     out_dir = HERE / "results" / (f"{args.prompt}_{args.tag}" if args.tag else args.prompt)
+    if args.run > 1:
+        out_dir = out_dir.with_name(f"{out_dir.name}_run{args.run}")
     out_dir.mkdir(parents=True, exist_ok=True)
     per_model = {}
     if not args.report_only:
         print("=== stage 1: класифікація + аналіз ===")
-        s1 = stage1(tickets)
+        s1 = stage1(tickets, args.run)
     for model in [] if args.report_only else args.model or ALL_MODELS:
         print(f"\n=== {model} / {args.prompt}{' (rejudge)' if args.rejudge else ''} ===")
         per_model[model] = (rejudge(model, s1, out_dir) if args.rejudge
