@@ -201,7 +201,9 @@ obrio-ai-ops/
 ├── docs/screenshots/        скриншоти живого демо для README
 ├── .github/workflows/       автотести на GitHub при кожному push
 ├── requirements.txt         бібліотеки
-└── .env.example             шаблон файлу з ключем Groq
+├── .env.example             шаблон файлу з ключем Groq
+├── TASK.md                  завдання своїми словами і де виконано кожен пункт
+└── LICENSE                  MIT
 ```
 
 ## Стек
@@ -212,3 +214,9 @@ obrio-ai-ops/
 - **Streamlit** — веб-інтерфейс асистента (Task 2).
 - **rank-bm25** — пошук статей у базі знань (Task 2).
 - **langdetect** — перевірка, що відповідь написана мовою клієнта (Task 2).
+
+## Автор і ліцензія
+
+**Oleksandr Bulashevich** — [LinkedIn](https://www.linkedin.com/in/sashabulashevich/).
+
+Код — під ліцензією [MIT](LICENSE). Тікети, база знань і всі дані синтетичні; назва Nebula використана лише як контекст тестового завдання.
